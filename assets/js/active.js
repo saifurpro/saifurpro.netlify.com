@@ -72,9 +72,7 @@
         $("#loadMore").show();
       }
     });
-    if (x <= 6) {
-      $("#showLess").hide();
-    }
+
     /* Load More */
   });
 })(jQuery);
