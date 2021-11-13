@@ -74,5 +74,30 @@
     });
 
     /* Load More */
+    
+    /* 2nd Load More */
+    let reviews_li = $(".reviews .col-md-12").length;
+    let xx = 6;
+    $(".reviews .col-md-12:lt(" + xx + ")").show();
+    $("#loadMoreBtn").click(function (e) {
+      e.preventDefault();
+      xx = xx + 6 <= reviews_li ? xx + 6 : reviews_li;
+      $(".reviews .col-md-12:lt(" + xx + ")").show();
+      if (xx == reviews_li) {
+        $("#loadMoreBtn").hide();
+      }
+      if (xx != reviews_li) {
+        $(".load-more-wrap h5").text(
+          reviews_li - xx + " more testimonials left"
+        );
+      } else {
+        $(".load-more-wrap h5").text(
+          "No more testimonials available. Will update after completing any project"
+        );
+        $(".load-more-wrap h5").css({ color: "red" });
+      }
+      console.log(xx, reviews_li);
+    });
+    /* 2nd Load More */
   });
 })(jQuery);
