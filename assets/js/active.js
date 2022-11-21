@@ -99,5 +99,18 @@
       console.log(xx, reviews_li);
     });
     /* 2nd Load More */
+    
+    
+    /* add dynamic year start */
+    function theYear(){
+      let d = new Date();
+      let y = d.getFullYear();
+      let year = document.querySelector(".year");
+
+      year.innerHTML = y;
+    }
+    theYear();
+    /* add dynamic year end */
+    
   });
 })(jQuery);
