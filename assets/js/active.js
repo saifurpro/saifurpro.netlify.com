@@ -100,8 +100,13 @@
     });
     /* 2nd Load More */
     
+  });
+  
+  
+  
+  jQuery(window).on("load", function(){
     
-    /* add dynamic year start */
+		/* add dynamic year start */
     function theYear(){
       let d = new Date();
       let y = d.getFullYear();
@@ -112,5 +117,6 @@
     theYear();
     /* add dynamic year end */
     
-  });
+	});
+  
 })(jQuery);
