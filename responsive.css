@@ -1,1 +1,60 @@
-@media only screen and (min-width:992px) and (max-width:1200px){.section-title h2{font-size:40px}}@media only screen and (min-width:768px) and (max-width:991px){.section-title h2{font-size:35px}.single-service h3{font-size:18px}.latest-portfolio .ficon{left:-20px}.latest-portfolio .ficon.fa-chevron-right{right:-20px}}@media only screen and (max-width:767px){.logo a{text-align:center}.mainmenu{text-align:center;margin-bottom:5px}.top-banner.style1 .title{font-size:18px}.top-banner .sub-title{font-size:14px}.section-title h2{font-size:22px}.single-portfolio img{height:auto}.single-portfolio h4{font-size:18px}.single-portfolio h5{font-size:14px}.copyright{text-align:center}.footer-menu{text-align:center}.latest-portfolio .ficon{display:none}.img-wrap.img-wrap-4.layer img{display:none!important}.price-btn{text-align:left;margin-top:15px}.pricing-box .title h2{font-size:26px}}
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .section-title h2 {
+    font-size: 40px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .section-title h2 {
+    font-size: 35px;
+  }
+  .single-service h3 {
+    font-size: 18px;
+  }
+  .latest-portfolio .ficon {
+    left: -20px;
+  }
+  .latest-portfolio .ficon.fa-chevron-right {
+    right: -20px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .logo a {
+    text-align: center;
+  }
+  .mainmenu {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .section-title h2 {
+    font-size: 22px;
+  }
+  .top-banner .title {
+      font-size: 32px;
+  }
+  .single-portfolio h4 {
+    font-size: 18px;
+  }
+  .single-portfolio h5 {
+    font-size: 14px;
+  }
+  .mt-100 {
+    margin-top: 0px;
+  }
+  .copyright {
+    text-align: center;
+  }
+  .footer-menu {
+    text-align: center;
+  }
+  .latest-portfolio .ficon {
+    display: none;
+  }
+  .price-btn {
+    text-align: left;
+    margin-top: 15px;
+  }
+  .pricing-box .title h2 {
+    font-size: 26px;
+  }
+
+}

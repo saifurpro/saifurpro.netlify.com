@@ -1,1 +1,615 @@
-.mainmenu ul{margin:0;padding:0;list-style:none}.mainmenu li{display:inline-block}.mainmenu li a{display:block;color:#333;font-weight:700;text-transform:uppercase;padding:11px 20px}.mainmenu li a:hover{background:#1d58ff;color:#fff;border-radius:5px}.mainmenu{text-align:right}.logo h2{margin-bottom:0}.logo a{display:block;padding:4px 0;color:#333;font-weight:700;text-transform:uppercase}.logo a span{color:#1d58ff}.box-btn a{display:block;background:#1d58ff;color:#fff;text-align:center;font-weight:700;text-transform:uppercase;padding:11px;border-radius:5px}header.header{padding:15px 0}.section-padding{padding:50px 0}.single-service{text-align:center;border:1px solid #ddd;padding:20px 15px;border-radius:5px;margin:15px 0;transition:.3s}.single-service:hover{background-color:#1d58ff;border-color:#1d58ff;color:#fff}.section-title h2{font-weight:700;font-size:50px;text-transform:capitalize}.single-service .ficon{font-size:40px;margin-bottom:10px}.bg-grey{background-color:#faf7f7}.latest-portfolio .ficon{position:absolute;left:-50px;top:50%;line-height:30px;margin-top:-15px;font-size:40px}.latest-portfolio .ficon.fa-chevron-right{left:auto;right:-50px}.section-title h2{margin-bottom:30px}.single-portfolio{text-align:center;background:#efefef;padding:15px;border-radius:5px}.single-portfolio h4{font-size:26px;font-weight:700;margin-bottom:7px;margin-top:15px}.single-portfolio a{color:#000;text-decoration:underline;font-weight:700}.testimonials{margin-top:15px}.testimonials span.ficon{color:#ffdd65;font-size:14px}.testimonial-box{background:#fff;border:1px solid #fff;padding:30px 20px;border-radius:5px;position:relative}.testimonial-box::after{position:absolute;content:"";left:30px;bottom:-20px;width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #fff}.single-testimonial img{max-width:60px;margin-top:15px}.single-testimonial h4{display:inline-block}.client-meta h3{display:inline-block;font-size:20px;font-weight:700;margin-top:20px}.client-meta img{display:inline-block;float:left;margin-right:20px;width:60px!important;height:60px!important;border-radius:50%}.client-meta h3 span{display:block;font-size:80%;font-weight:400;margin-top:3px}.client-meta{margin-left:30px;margin-top:20px}.single-portfolio img{height:285px}.single-portfolio a:hover{color:#f54ea2}.dots-bg{background-image:url(assets/img/dotts.png);background-color:#eee}.footer-menu ul{margin:0;padding:0;list-style:none}.footer-menu li{display:inline-block}.footer-menu li a{display:block;padding:10px 15px}.footer-menu{text-align:right}.copyright{padding:10px 0}.footer{background:#333;padding:12px}.footer,.footer a{color:#fff}.footer-menu,.footer-menu a{color:#fff}.single-choose{background:#fff;padding:15px;border-radius:5px;box-shadow:0 0 10px #ccc}.single-choose h3{font-size:18px;font-weight:700}.portfolio .single-portfolio{margin:15px 0;box-shadow:0 0 15px #ccc!important}.faq strong{font-size:20px;text-align:center;display:block;margin-bottom:10px}.faq button.btn.btn-link{text-decoration:none;color:#000}.faq .card-body{border-left:1px solid #ddd;border-right:1px solid #ddd}.contact-box{text-align:center;background-color:#fff;padding:40px;border-radius:10px;box-shadow:0 0 10px #ccc;margin-top:20px}.pricing-box .title{background:#1d4354;color:#fff;padding:20px}.pricing-box .title h2{margin-bottom:0}.single-pricing-box{background:#fff;padding:20px;border-bottom:1px solid #efefef}.single-pricing-box span{font-style:italic;font-size:90%}.price-btn{text-align:inherit}.pricing-box{margin:15px 0}.price-btn a{background:#ddd;padding:10px 20px;border-radius:5px;color:#333}.single-pricing-box strong{display:block}.single-pricing-box:hover{background-color:#f9f9f9;cursor:pointer}.single-choose{margin:15px 0;font-size: 18px;}.footer-menu li a:hover{color:#ddd}.portfolio .col-md-6,.reviews .col-md-12{display:none}.load-more-wrap{display:flex;flex-direction:row;justify-content:space-between}.load-more-wrap.dnot-flex{display:block;text-align:center}.load-more-wrap a,.testimonial-btn{background:#1d58ff;color:#fff;text-transform:uppercase;border-radius:5px;padding:5px 20px}.testimonial-btn{background-color:#f54ea2;padding:10px 20px;line-height:2.5;}.testimonial-btn:hover{color:#fff;background-color:#1d58ff}.load-more-wrap a:hover{background-color:#f54ea2}#showLess{display:none}.iframe-container{position:relative;width:100%;height:0;padding-bottom:52.25%;border:10px solid #1d58ff;border-radius:10px}.iframe-container iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+/*------Start Base CSS------*/
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+	font-family: 'Roboto', sans-serif;
+    background-color: #0F172A;
+    font-size: 20px;
+    font-weight: 500;
+    color: #7C7D7D;
+}
+img {
+    height: auto;
+    max-width: 100%;
+    border: none;
+}
+body, html {
+    height: 100%;
+}
+a, a:hover {
+    text-decoration: none;
+}
+a:focus {
+	color: #13B0EA;
+	text-decoration: none;
+}
+a:focus, input:focus, textarea:focus, button:focus {
+	outline: 0 solid;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+p {
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 400;
+}
+.float_left {
+	float: left;
+}
+.float_right {
+	float: right;
+}
+.fix:before, .fix:after {
+	content: "";
+	display: table;
+}
+.fix:after {
+	clear: both;
+}
+.section-padding {
+  padding: 50px 0;
+}
+.pdt-0 {
+    padding-top: 0;
+}
+.mt-40 {
+  margin-top: 40px;
+}
+.mt-100 {
+  margin-top: 100px;
+}
+.section-title {
+  font-weight: 400;
+}
+.section-title h2 {
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 1.3;
+  text-transform: capitalize;
+  margin-bottom: 30px;
+}
+
+/*------Start Top Banner CSS------*/
+.top-banner .title {
+    font-size: 50px;
+    color: #7C7D7D;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+.top-banner.center_content .content {
+    text-align: center;
+    margin: 60px 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 30px 15px;
+}
+
+  /* Start Menu CSS */
+.mainmenu {
+  text-align: right;
+  margin-top: 10px;
+}
+.mainmenu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mainmenu li {
+  display: inline-block;
+}
+.mainmenu li a {
+  display: block;
+  color: #7C7D7D;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 10px 15px;
+}
+.mainmenu li a:hover {
+  color: #858585;
+  border-radius: 5px;
+}
+/* Start Header CSS */
+.logo h2 {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+header.header {
+  padding: 15px 0;
+}
+.header .box-btn {
+    margin-top: 10px;
+}
+.box-btn a, .mainmenu a.box-btn, a.box-btn {
+  display: inline-block;
+  background: #13B0EA;
+  color: #fff;
+  text-align: center;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 5px;
+}
+.mainmenu a.box-btn {
+  margin-left: 10px;
+}
+/* Trust by Brand CSS */
+.brand-logo img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+}
+.brand-logo {
+    background: #1E293B;
+    padding: 30px 0 0;
+    border-top: 5px solid #13B0EA;
+    position: relative;
+    margin-top: 30px;
+}
+.brand-logo::before {
+    position: absolute;
+    content: "Trusted By";
+    left: 50%;
+    top: -16px;
+    width: 140px;
+    background: #13B0EA;
+    color: #FFF;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 2px;
+    padding: 2px 10px;
+    margin-left: -70px;
+    font-size: 16px;
+}
+
+/* Service CSS Start */
+.single-service h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 15px;
+}
+.single-service {
+  text-align: center;
+  border: 1px solid #1E293B;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 15px 0;
+  transition: 0.3s;
+  font-weight: 400;
+}
+.single-service:hover {
+  background-color: #1E293B;
+  border-color: #1E293B;
+  color: #9ca3af;
+}
+
+/* Skills and Tools CSS */
+.skills-logo img {
+    background: #FFF;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    transition: .8s;
+    opacity: .8;
+}
+.skills-logo img:hover {
+    opacity: .7;
+}
+
+/* Portfolio CSS Start */
+.latest-portfolio .ficon {
+  position: absolute;
+  left: -50px;
+  top: 50%;
+  line-height: 30px;
+  margin-top: -15px;
+  font-size: 40px;
+}
+.latest-portfolio .ficon.fa-chevron-right {
+  left: auto;
+  right: -50px;
+}
+
+.single-portfolio {
+  text-align: center;
+  background: #1E293B;
+  padding: 15px;
+  border-radius: 5px;
+}
+.single-portfolio h4 {
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 7px;
+  margin-top: 15px;
+}
+.single-portfolio a {
+  color: #13B0EA;
+  text-decoration: underline;
+  font-weight: 500;
+}
+/* Testimonial CSS Start */
+.testimonials {
+  margin-top: 15px;
+}
+.testimonials span.ficon, .reviews span.ficon{
+  color: #ffdd65;
+  font-size: 14px;
+}
+.review-text {
+  font-weight: 400;
+}
+.testimonial-box {
+  background: #1E293B;
+  border: 1px solid #1E293B;
+  padding: 30px 20px;
+  border-radius: 5px;
+  position: relative;
+}
+.testimonial-box::after {
+  position: absolute;
+  content: "";
+  left: 30px;
+  bottom: -20px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #1E293B;
+}
+.single-testimonial img {
+  max-width: 60px;
+  margin-top: 15px;
+}
+.single-testimonial h4 {
+  display: inline-block;
+}
+.reviews .single-testimonial {
+  margin-bottom: 15px;
+}
+.client-meta h3 {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 900;
+  margin-top: 35px;
+  color: #13B0EA;
+}
+.client-meta img {
+  display: inline-block;
+  float: left;
+  margin-right: 20px;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50%;
+}
+.client-meta {
+  margin-left: 30px;
+  margin-top: 20px;
+}
+.testimonial-btn {
+  background-color: #13B0EA;
+  padding: 8px 20px;
+  line-height: 2.5;
+  font-weight: 400;
+}
+.testimonial-btn:hover {
+  color: #fff;
+  background-color: #13B0EA;
+}
+
+.single-review {
+text-align: center;
+border: 1px solid #1E293B;
+padding: 20px;
+border-radius: 5px;
+margin: 15px 0;
+transition: 0.3s;
+font-weight: 400;
+}
+.single-review:hover {
+background-color: #1E293B;
+border-color: #1E293B;
+color: #9ca3af;
+}
+/* Portfolio CSS Start */
+.email-template-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.single-portfolio img {
+  height: 285px;
+  width: 100%;
+}
+.single-portfolio.email-template img {
+  height: inherit;
+}
+.single-portfolio a:hover {
+  color: #7F7F80;
+}
+.portfolio .single-portfolio {
+  margin: 15px 0;
+  font-weight: 400;
+}
+.portfolio .single-portfolio {
+  text-align: left;
+}
+.portfolio .single-portfolio span {
+  background-color: #0F172A;
+  padding: 2px 7px;
+  border-radius: 5px;
+  margin-top: 10px;
+  display: inline-block;
+}
+.portfolio .single-portfolio h5 {
+  margin-top: 10px;
+}
+/* Footer CSS Start */
+.footer {
+  padding: 12px;
+}
+.footer,
+.footer a {
+  color: #7C7D7D;
+}
+.footer-menu,
+.footer-menu a {
+  color: #7C7D7D;
+}
+.footer-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.footer-menu li {
+  display: inline-block;
+}
+.footer-menu li a {
+  display: block;
+  padding: 10px 15px;
+}
+.footer-menu li a:hover {
+  color: #858585;
+}
+.copyright {
+  padding: 10px 0;
+}
+/* Why Choose CSS Start */
+.single-choose h3 {
+    font-size: 24px;
+    font-weight: 600;
+}
+.single-choose {
+  background: #1E293B;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 20px;
+  margin: 15px 0;
+  color: #9ca3af;
+}
+
+
+/* FAQ Start */
+.faq strong {
+  font-size: 24px;
+  text-align: center;
+  display: block;
+  margin-bottom: 10px;
+  color: #13B0EA;
+}
+.faq button.btn.btn-link {
+  text-decoration: none;
+  color: #7C7D7D;
+  font-weight: 500;
+  font-size: 22px;
+  text-align: left;
+}
+.faq .card-header {
+  background: #1E293B;
+  text-align: left;
+}
+.faq .card-body {
+  border-left: 1px solid #1E293B;
+  border-right: 1px solid #1E293B;
+  background: #1E293B;
+  font-weight: 400;
+  font-size: 20px;
+}
+.card, .card2, .card3, .card4 {
+  border: none;
+  margin-bottom: 5px;
+}
+/* Contact Start */
+.single-contact-box h6{
+  color: #13B0EA;
+  font-size: 24px;
+  font-weight: 700;
+}
+.contact-box a.box-btn {
+  padding: 20px 30px;
+  margin-top: 20px;
+}
+/* Pricing Start */
+.pricing-box .title {
+  background: #161e2b;
+  color: #fff;
+  padding: 20px;
+}
+.pricing-box .title h2 {
+  margin-bottom: 0;
+}
+.single-pricing-box {
+  background: #0F172A;
+  padding: 20px;
+  border-left: 1px solid #1E293B;
+  border-right: 1px solid #1E293B;
+  border-bottom: 1px solid #1E293B;
+}
+.single-pricing-box span {
+  font-style: italic;
+  font-size: 90%;
+}
+.price-btn {
+  text-align: inherit;
+  margin-top: 15px;
+}
+.pricing-box {
+  margin: 15px 0;
+}
+.price-btn a {
+  background: #7C7D7D;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #333;
+  font-weight: 400;
+}
+.pricing-table {
+  border: 1px solid;
+  padding: 20px 10px;
+  margin-bottom: 15px;
+}
+.pricing-table h6 {
+  color: #13B0EA;
+  font-size: 20px;
+  font-weight: 700;
+}
+.single-pricing-box strong {
+  display: block;
+}
+.single-pricing-box:hover {
+  background-color: #1E293B;
+  cursor: pointer;
+}
+.single-price-list-item span {
+  display: inline-block;
+}
+.single-price-list-item {
+  display: flex;
+  align-items: center;
+  flex-basis: 100%;
+  justify-content: space-between;
+  width: 100%;
+}
+span.price-list-title {
+  padding-right: 0px;
+  position: relative;
+  font-size: 16px;
+  width: 100%;
+}
+span.pricing-list-sep {
+  border-bottom-style: dotted;
+    border-bottom-width: 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-color: #7C7D7D;
+    width: 50%;
+}
+.price-list-price {
+  font-size: 16px;
+}
+/* About CSS Start */
+.about-desc p {
+  margin-bottom: 25px;
+}
+.single-experience {
+  background: #1E293B;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.single-experience h5 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #13B0EA;
+}
+
+/* Load More Portfolio CSS Start */
+.load-more-wrap.dnot-flex {
+  display: block;
+  text-align: center;
+}
+.load-more-wrap a,
+.testimonial-btn {
+  background: #13B0EA;
+  color: #fff;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 8px 20px;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+#showLess {
+  display: none;
+}
+.iframe-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 52.25%;
+  border: 10px solid #1d58ff;
+  border-radius: 10px;
+}
+.iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Slick Nav CSS Start */
+.slicknav_menu {
+	display:none;
+}
+
+@media screen and (max-width: 40em) {
+    #menu {
+    display:none;
+    }
+
+    .slicknav_menu {
+      display:block;
+      background: transparent;
+      position: absolute;
+      right: 15px;
+      top: 40px;
+      z-index: 1;
+      width: 95% !important;
+    }
+    .logo {
+        position: relative;
+        z-index: 2;
+    }
+    .slicknav_menu a {
+      background: #1E293B;
+    }
+    .slicknav_menu nav {
+      background: #1E293B;
+      padding: 10px;
+    }
+    .slicknav_menu nav ul {
+      margin: 0;
+    }
+    .slicknav_menu nav li a:hover, .slicknav_menu nav a.box-btn:hover {
+      background-color: #13B0EA;
+      color: #1E293B;
+
+    }
+}
