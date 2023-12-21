@@ -20,6 +20,7 @@ body, html {
 }
 a, a:hover {
     text-decoration: none;
+    color: #7C7D7D;
 }
 a:focus {
 	color: #13B0EA;
@@ -583,7 +584,7 @@ span.pricing-list-sep {
 	display:none;
 }
 
-@media screen and (max-width: 40em) {
+@media screen and (max-width: 1200px) {
     #menu {
     display:none;
     }
@@ -593,9 +594,20 @@ span.pricing-list-sep {
       background: transparent;
       position: absolute;
       right: 15px;
-      top: 40px;
-      z-index: 1;
-      width: 95% !important;
+      top: 20px;
+      z-index: 9;
+      width: 40% !important;
+    }
+    nav.slicknav_nav {
+      width: 290px;
+      position: absolute;
+      right: 10px;
+      top: 50px;
+    }
+    .slicknav_menu a.box-btn {
+      padding-left: 10px;
+      display: block;
+      text-align: left;
     }
     .logo {
         position: relative;
