@@ -18,6 +18,12 @@
   }
 }
 @media only screen and (max-width: 767px) {
+  header.header {
+    width: 60%;
+  }
+  header.header .col-md-3.col-6 {
+      min-width: 100%;
+  }
   .logo a {
     text-align: center;
   }
@@ -26,16 +32,29 @@
     margin-bottom: 5px;
   }
   .section-title h2 {
-    font-size: 22px;
+    font-size: 24px;
+  }
+  .section-title.mt-50 {
+    margin-top: 15px;
   }
   .top-banner .title {
-      font-size: 32px;
+      font-size: 24px;
   }
   .single-portfolio h4 {
     font-size: 18px;
   }
   .single-portfolio h5 {
     font-size: 14px;
+  }
+  .brand-logo img {
+    height: auto;
+    margin-bottom: 10px;
+  }
+  a.box-btn {
+      font-size: 16px;
+  }
+  .contact-box a.box-btn {
+    padding: 8px 20px;
   }
   .mt-100 {
     margin-top: 0px;
@@ -55,6 +74,9 @@
   }
   .pricing-box .title h2 {
     font-size: 26px;
+  }
+  .xs-mt15 {
+    margin-top: 15px;
   }
 
 }
