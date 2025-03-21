@@ -641,3 +641,35 @@ span.pricing-list-sep {
 
     }
 }
+
+/* Contact Form CSS */
+form#contact-form {
+    margin-top: 20px;
+}
+
+form#contact-form input, form#contact-form textarea {
+    background: #1E293B;
+    margin: 5px 0;
+    border: 1px solid #1E293B;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #FFF;
+}
+
+form#contact-form textarea {
+    width: 99%;
+    resize: none;
+    min-height: 100px;
+}
+
+form#contact-form input {
+    width: 49%;
+}
+
+form#contact-form button {
+    background: #13B0EA;
+    border: 1px solid #13B0EA;
+    padding: 5px 30px;
+    border-radius: 5px;
+    color: #FFF;
+}

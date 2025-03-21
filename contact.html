@@ -118,20 +118,10 @@
 			<h6>Hours</h6>
 			<p>Saturday — Thursday 8:00 AM — 11:00 PM (GMT+6)</p>
 		</div>
-		  
-            <div class="single-contact-box">
-              <h6>Email</h6>
-              <p><a href="mailto:info.saifurpro@gmail.com" target="_blank">info.saifurpro@gmail.com (Recommended)</a></p>
-            </div>
 
             <div class="single-contact-box">
               <h6>WhatsApp</h6>
-              <p><a href="https://wa.me/+8801612047558" target="_blank">+8801612-047558 (Instant Reply)</a></p>
-            </div>
-
-            <div class="single-contact-box">
-              <h6>Skype</h6>
-              <p><a href="https://join.skype.com/invite/l0O7tdQcG3gX" target="_blank">saifur703 (Always Available)</a></p>
+              <p><a href="https://wa.me/+8801612047558" target="_blank">Click here (Instant Reply)</a></p>
             </div>
 
             <div class="single-contact-box">
@@ -190,9 +180,12 @@
             email: document.getElementById("email").value,
             message: document.getElementById("message").value
         }).then(function(response) {
-            alert("Message sent successfully!");
+            formMessage.textContent = "✅ Message sent successfully!";
+            formMessage.style.color = "green";
+	    document.getElementById("contact-form").reset();
         }, function(error) {
-            alert("Failed to send message. Please try again.");
+            formMessage.textContent = "❌ Failed to send message. Please try again.";
+            formMessage.style.color = "red";
         });
     });
 </script>
