@@ -101,20 +101,24 @@
             I am interested in working with any company that thinks my skill will be helpful for them. If you are
             looking for someone like me, please let me know. Or you can just say 'Hi' to me.
 
-            <div class="single-contact-box mt-3">
-              <h6>Hours</h6>
-              <p>Saturday — Thursday 8:00 AM — 11:00 PM (GMT+6)</p>
-            </div>
-
-            <a class="box-btn" target="_blank" href="mailto:info.saifurpro@gmail.com">Contact Me</a>
-
+            	<form id="contact-form">
+		    <input type="text" id="name" placeholder="Your Name" required>
+		    <input type="email" id="email" placeholder="Your Email" required>
+		    <textarea id="message" placeholder="Your Message" required></textarea>
+		    <button type="submit">Send</button>
+		</form>
           </div>
 
         </div>
 
         <div class="col-md-6 xs-mt15">
           <div class="contact-box">
-
+		  
+		<div class="single-contact-box mt-3">
+			<h6>Hours</h6>
+			<p>Saturday — Thursday 8:00 AM — 11:00 PM (GMT+6)</p>
+		</div>
+		  
             <div class="single-contact-box">
               <h6>Email</h6>
               <p><a href="mailto:info.saifurpro@gmail.com" target="_blank">info.saifurpro@gmail.com (Recommended)</a></p>
@@ -174,7 +178,24 @@
   </footer>
   <!-- Footer End -->
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    emailjs.init("Ab_le6uqVdP6SIcuv"); // Replace with your EmailJS user ID
 
+    document.getElementById("contact-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        emailjs.send("service_l0l5ws7", "template_n365g5c", {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            message: document.getElementById("message").value
+        }).then(function(response) {
+            alert("Message sent successfully!");
+        }, function(error) {
+            alert("Failed to send message. Please try again.");
+        });
+    });
+</script>
   <script type="text/javascript" src="assets/js/jquery-1.12.4.min.js"></script>
   <!-- Bootstrap Js -->
   <script type="text/javascript"
