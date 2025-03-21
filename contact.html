@@ -105,8 +105,11 @@
 		    <input type="text" id="name" placeholder="Your Name" required>
 		    <input type="email" id="email" placeholder="Your Email" required>
 		    <textarea id="message" placeholder="Your Message" required></textarea>
-		    <button type="submit">Send</button>
+		    <button type="submit" id="submit-btn">Send</button>
 		</form>
+		
+		<!-- Message container below the form -->
+		<div id="form-message"></div>
           </div>
 
         </div>
@@ -175,17 +178,35 @@
     document.getElementById("contact-form").addEventListener("submit", function(event) {
         event.preventDefault();
 
+        // Disable submit button to prevent multiple submissions
+        document.getElementById("submit-btn").disabled = true;
+
         emailjs.send("service_l0l5ws7", "template_n365g5c", {
             name: document.getElementById("name").value,
             email: document.getElementById("email").value,
             message: document.getElementById("message").value
         }).then(function(response) {
+            // Show success message
+            var formMessage = document.getElementById("form-message");
             formMessage.textContent = "✅ Message sent successfully!";
             formMessage.style.color = "green";
-	    document.getElementById("contact-form").reset();
+            document.getElementById("contact-form").reset();
+
+            // Re-enable submit button after 2 seconds
+            setTimeout(function() {
+                document.getElementById("submit-btn").disabled = false;
+            }, 2000);
+
         }, function(error) {
+            // Show error message
+            var formMessage = document.getElementById("form-message");
             formMessage.textContent = "❌ Failed to send message. Please try again.";
             formMessage.style.color = "red";
+
+            // Re-enable submit button after 2 seconds
+            setTimeout(function() {
+                document.getElementById("submit-btn").disabled = false;
+            }, 2000);
         });
     });
 </script>
