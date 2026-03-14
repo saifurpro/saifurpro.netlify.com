@@ -1,0 +1,83 @@
+name: Add Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        required: true
+      role:
+        required: false
+      text:
+        required: true
+      platform:
+        required: true
+      rating:
+        required: true
+      avatar_base64:
+        required: false
+      avatar_ext:
+        required: false
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SAIFURPRO_GH_TOCKEN }}
+
+      - name: Add review to JSON
+        run: |
+          python3 << 'EOF'
+          import json, base64, os, time
+
+          # Load existing
+          try:
+            with open('data/reviews.json') as f:
+              reviews = json.load(f)
+          except:
+            reviews = []
+
+          # Save avatar if provided
+          avatar_b64 = os.environ.get('AVATAR_BASE64', '')
+          avatar_ext = os.environ.get('AVATAR_EXT', 'jpg')
+          avatar_path = None
+          if avatar_b64:
+            slug = ''.join(c if c.isalnum() else '-' for c in os.environ['NAME'].lower()).strip('-')
+            avatar_path = f"assets/img/reviews/{slug}.{avatar_ext}"
+            os.makedirs('assets/img/reviews', exist_ok=True)
+            with open(avatar_path, 'wb') as f:
+              f.write(base64.b64decode(avatar_b64))
+
+          # Add new review
+          reviews.insert(0, {
+            "id": int(time.time() * 1000),
+            "name": os.environ['NAME'],
+            "role": os.environ.get('ROLE', ''),
+            "text": os.environ['TEXT'],
+            "platform": os.environ['PLATFORM'],
+            "rating": int(os.environ['RATING']),
+            "avatar": avatar_path,
+            "date": __import__('datetime').date.today().isoformat()
+          })
+
+          os.makedirs('data', exist_ok=True)
+          with open('data/reviews.json', 'w') as f:
+            json.dump(reviews, f, indent=2)
+          EOF
+        env:
+          NAME: ${{ inputs.name }}
+          ROLE: ${{ inputs.role }}
+          TEXT: ${{ inputs.text }}
+          PLATFORM: ${{ inputs.platform }}
+          RATING: ${{ inputs.rating }}
+          AVATAR_BASE64: ${{ inputs.avatar_base64 }}
+          AVATAR_EXT: ${{ inputs.avatar_ext }}
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Add review from ${{ inputs.name }}"
+          git push
