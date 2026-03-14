@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124758857-1"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-124758857-1');</script>
+  <style>.hamburger.hide { display: none !important; }</style>
 </head>
 <body>
 
@@ -65,202 +66,9 @@
         <button class="filter-btn" data-filter="email">Email Templates</button>
       </div>
 
-      <div class="works-grid fade-up" id="worksGrid">
+      <!-- Dynamic items from admin panel (data/portfolio.json) -->
+      <div class="works-grid fade-up" id="dynamicWorksGrid"></div>
 
-        <!-- ── WordPress ── -->
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/baiba-solstice.png" alt="CRS Council">
-            <div class="work-overlay"><a href="https://centreofsolstice.ie/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Holistic Healing & Massage Therapy</h4><span>WordPress</span></div>
-        </div>
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/ct-international.png" alt="CRS Council">
-            <div class="work-overlay"><a href="https://ct-international.co.za/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>CT International</h4><span>WordPress</span></div>
-        </div> 
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/solar-panel.png" alt="CRS Council">
-            <div class="work-overlay"><a href="https://www.solar-panel.co.za/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>SOLAR POWER SOLUTIONS</h4><span>WordPress</span></div>
-        </div>
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/crscouncil.png" alt="CRS Council">
-            <div class="work-overlay"><a href="https://crscouncil.org/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>CRS Council Org</h4><span>WordPress</span></div>
-        </div>
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/brick-smoke-kitchen.png" alt="Wedding DJ Melbourne">
-            <div class="work-overlay"><a href="https://bricksmokekitchen.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Brick Smoke Kitchen</h4><span>WordPress Landing Page</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/sqcc.png" alt="SQCC Properties">
-            <div class="work-overlay"><a href="https://sqccproperties.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>SQCC Properties</h4><span>WordPress</span></div>
-        </div> 
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/agency-website.png" alt="Agency Website">
-            <div class="work-overlay"><a href="https://australianwebexperts.com.au/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Australian Web Experts</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/mortgagegirlfirends.png" alt="Mortgage Girlfriends">
-            <div class="work-overlay"><a href="https://mortgagegirlfriends.com/join/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Mortgage Girlfriends</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/jamiehougham.png" alt="Jamie Hougham">
-            <div class="work-overlay"><a href="https://jamiehougham.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Jamie Hougham</h4><span>WordPress</span></div>
-        </div>
-
-        
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/trinidadplumber.png" alt="Trinidad Plumber">
-            <div class="work-overlay"><a href="https://trinidadplumber.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Trinidad Plumber Website</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/titoma.png" alt="Titoma">
-            <div class="work-overlay"><a href="https://titoma.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Titoma — Electronics & Manufacturing</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/reikihealing.png" alt="Reiki Healing">
-            <div class="work-overlay"><a href="https://reikihealing.ie/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Reiki Healing</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/seer-archer.png" alt="Seer & Archer">
-            <div class="work-overlay"><a href="https://seerarcher.co.uk/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Seer & Archer</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/ultimatesoundzzz.png" alt="Ultimate Soundzzz">
-            <div class="work-overlay"><a href="https://ultimatesoundzzz.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Ultimate Soundzzz</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/soteriafoundation.png" alt="The SoTeria Foundation">
-            <div class="work-overlay"><a href="https://www.thesoteriafoundation.life/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>The SoTeria Foundation</h4><span>WordPress</span></div>
-        </div>
-
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/thinkdigital365.png" alt="Think Digital 365">
-            <div class="work-overlay"><a href="https://thinkdigital365.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Think Digital 365</h4><span>WordPress</span></div>
-        </div>
-
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/simafinancial.png" alt="Sima Financial Group">
-            <div class="work-overlay"><a href="https://simafinancialgroup.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Sima Financial Group</h4><span>WordPress</span></div>
-        </div>
-		
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/apccs-web.png" alt="Sima Financial Group">
-            <div class="work-overlay"><a href="https://www.apccs.org/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Local Churches</h4><span>WordPress</span></div>
-        </div>
-
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/multiweigh.png" alt="Wedding DJ Melbourne">
-            <div class="work-overlay"><a href="https://multiweigh.co.za/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Multi-Weigh Technologies</h4><span>WordPress</span></div>
-        </div> 
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/westech.png" alt="Wedding DJ Melbourne">
-            <div class="work-overlay"><a href="https://www.westech.co.za/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Westech - IT Partner</h4><span>WordPress</span></div>
-        </div> 
-		
-        <div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/weddingsparties.png" alt="Wedding DJ Melbourne">
-            <div class="work-overlay"><a href="https://www.weddingspartiesanything.com.au/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Wedding DJ in Melbourne</h4><span>WordPress</span></div>
-        </div>
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/prlivewire.png" alt="Wedding DJ Melbourne">
-            <div class="work-overlay"><a href="https://www.prlivewire.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Blog</h4><span>WordPress</span></div>
-        </div>
-		
-		<div class="work-card" data-category="wordpress">
-          <div class="work-img"><img src="assets/img/graceonline-landing.png" alt="Wedding DJ Melbourne">
-            <div class="work-overlay"><a href="https://courses.graceonline.co.za/courses/youth-pastors-recovering-from-pornography-addiction-basics" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Grace Online Landing Page</h4><span>WordPress</span></div>
-        </div>
-
-        <!-- ── WooCommerce ── -->
-		
-		<div class="work-card" data-category="woocommerce">
-          <div class="work-img"><img src="assets/img/imaswiss.png" alt="Celtic Whispers">
-            <div class="work-overlay"><a href="https://imaswiss.com/en/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Massage Academy</h4><span>WooCommerce</span></div>
-        </div>
-		
-        <div class="work-card" data-category="woocommerce">
-          <div class="work-img"><img src="assets/img/celticwhispers.png" alt="Celtic Whispers">
-            <div class="work-overlay"><a href="https://www.celticwhispers.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Celtic Whispers</h4><span>WooCommerce</span></div>
-        </div>
-
-		<div class="work-card" data-category="woocommerce">
-          <div class="work-img"><img src="assets/img/russon.png" alt="Celtic Whispers">
-            <div class="work-overlay"><a href="https://russon.co.za/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Russon</h4><span>WooCommerce</span></div>
-        </div>
-		
-		<div class="work-card" data-category="woocommerce">
-          <div class="work-img"><img src="assets/img/ozonemedicare.png" alt="Celtic Whispers">
-            <div class="work-overlay"><a href="https://www.ozonemedicare.com/" target="_blank">View Project</a></div></div>
-          <div class="work-info"><h4>Ozone Medicare</h4><span>WooCommerce</span></div>
-        </div>
-		
-        <!-- ── Email Templates ── -->
-        <div class="work-card" data-category="email">
-          <div class="work-img"><img src="assets/img/email-template/christmas-watch-sale.png" alt="Christmas Watch Sale">
-            <div class="work-overlay"><a href="assets/img/email-template/christmas-watch-sale.png">View Template</a></div></div>
-          <div class="work-info"><h4>Christmas Watch Sale</h4><span>Email Template</span></div>
-        </div>
-
-        <div class="work-card" data-category="email">
-          <div class="work-img"><img src="assets/img/email-template/shworoom-template-1.jpg" alt="Showroom Email 1">
-            <div class="work-overlay"><a href="assets/img/email-template/shworoom-template-1.jpg">View Template</a></div></div>
-          <div class="work-info"><h4>Showroom Template #1</h4><span>Email Template</span></div>
-        </div>
-
-        <div class="work-card" data-category="email">
-          <div class="work-img"><img src="assets/img/email-template/shworoom-template-2.jpg" alt="Showroom Email 2">
-            <div class="work-overlay"><a href="assets/img/email-template/shworoom-template-2.jpg">View Template</a></div></div>
-          <div class="work-info"><h4>Showroom Template #2</h4><span>Email Template</span></div>
-        </div>
-
-        <div class="work-card" data-category="email">
-          <div class="work-img"><img src="assets/img/email-template/shworoom-template-3.jpg" alt="Showroom Email 3">
-            <div class="work-overlay"><a href="assets/img/email-template/shworoom-template-3.jpg">View Template</a></div></div>
-          <div class="work-info"><h4>Showroom Template #3</h4><span>Email Template</span></div>
-        </div>
-
-      </div>
     </div>
   </section>
 
@@ -274,7 +82,7 @@
           <div class="social-links" style="margin-top:20px;">
             <a href="https://www.linkedin.com/in/saifurpro" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
             <a href="https://www.facebook.com/hi.saifurpro" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
-            <a href="mailto:info.saifurpro@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+            <a href="/cdn-cgi/l/email-protection#b1d8dfd7de9fc2d0d8d7c4c3c1c3def1d6dcd0d8dd9fd2dedc" class="social-link"><i class="fas fa-envelope"></i></a>
           </div>
         </div>
         <div class="footer-col">
@@ -334,59 +142,97 @@
     }), { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // ── Smart link handler ──
-    // External URL (http/https) → open in new tab
-    // Local image path → open lightbox popup
-    document.querySelectorAll('.work-overlay a').forEach(link => {
-      const href = link.getAttribute('href');
-      const isLocalImage = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(href) && !href.startsWith('http');
-
-      if (isLocalImage) {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          const card = link.closest('.work-card');
-          const title = card.querySelector('h4')?.textContent || '';
-          openLightbox(href, title);
-        });
-      } else {
-        // Ensure external links always open in new tab
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener noreferrer');
-      }
-    });
-
+    // ── Lightbox ──
     function openLightbox(src, title) {
       document.getElementById('lightbox-img').src = src;
       document.getElementById('lightbox-title').textContent = title;
       document.getElementById('lightbox').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
-
     function closeLightbox(e) {
       if (e && e.target.closest('.lightbox-inner') && !e.target.closest('.lightbox-close')) return;
       document.getElementById('lightbox').classList.remove('active');
       document.body.style.overflow = '';
     }
-
-    // Close on Escape key
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
+    // ── Smart link handler (static cards) ──
+    function attachLinkHandlers(container) {
+      container.querySelectorAll('.work-overlay a').forEach(link => {
+        const href = link.getAttribute('href');
+        const isLocalImage = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(href) && !href.startsWith('http');
+        if (isLocalImage) {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            const title = link.closest('.work-card').querySelector('h4')?.textContent || '';
+            openLightbox(href, title);
+          });
+        } else {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        }
+      });
+    }
+    attachLinkHandlers(document.getElementById('worksGrid'));
+
     // ── Filter ──
+    function applyFilter(filter) {
+      document.querySelectorAll('.work-card').forEach(card => {
+        card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+      });
+    }
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.work-card').forEach(card => {
-          if (filter === 'all' || card.dataset.category === filter) {
-            card.style.display = '';
-            card.style.animation = 'fadeIn 0.4s ease';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+        applyFilter(btn.dataset.filter);
       });
     });
+
+    // ── Load dynamic portfolio from data/portfolio.json ──
+    async function loadDynamicPortfolio() {
+      const grid = document.getElementById('dynamicWorksGrid');
+      try {
+        const res = await fetch('data/portfolio.json?t=' + Date.now());
+        if (!res.ok) return; // silently skip — static cards still show
+        const items = await res.json();
+        if (!items.length) return;
+
+        const categoryLabels = {
+          wordpress: 'WordPress', woocommerce: 'WooCommerce',
+          shopify: 'Shopify', email: 'Email Template', lead: 'Lead Generation'
+        };
+
+        grid.innerHTML = items.map(item => {
+          const isLocalImage = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
+          const linkHref = isLocalImage ? item.image : item.url;
+          const linkExtra = isLocalImage ? '' : 'target="_blank" rel="noopener noreferrer"';
+          return `
+            <div class="work-card" data-category="${item.category}">
+              <div class="work-img">
+                <img src="${item.image}" alt="${item.title}">
+                <div class="work-overlay"><a href="${linkHref}" ${linkExtra}>View Project</a></div>
+              </div>
+              <div class="work-info">
+                <h4>${item.title}</h4>
+                <span>${categoryLabels[item.category] || item.category}</span>
+              </div>
+            </div>`;
+        }).join('');
+
+        // Attach smart link handlers to new dynamic cards
+        attachLinkHandlers(grid);
+
+        // Re-apply active filter to include new cards
+        const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+        applyFilter(activeFilter);
+
+      } catch(e) {
+        // silently fail — static works still show
+      }
+    }
+
+    loadDynamicPortfolio();
   </script>
 </body>
 </html>
