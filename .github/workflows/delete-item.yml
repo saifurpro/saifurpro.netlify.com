@@ -1,0 +1,46 @@
+name: Delete Item
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        required: true  # 'review' or 'portfolio'
+      id:
+        required: true
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SAIFURPRO_GH_TOCKEN }}
+
+      - name: Delete item from JSON
+        run: |
+          python3 << 'EOF'
+          import json, os
+
+          item_type = os.environ['TYPE']
+          item_id = int(os.environ['ID'])
+          file = 'data/reviews.json' if item_type == 'review' else 'data/portfolio.json'
+
+          with open(file) as f:
+            items = json.load(f)
+
+          items = [i for i in items if i['id'] != item_id]
+
+          with open(file, 'w') as f:
+            json.dump(items, f, indent=2)
+          EOF
+        env:
+          TYPE: ${{ inputs.type }}
+          ID: ${{ inputs.id }}
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Delete ${{ inputs.type }} #${{ inputs.id }}"
+          git push
