@@ -86,6 +86,10 @@
         <div class="tag">Written Reviews</div>
         <h2>What Clients Say</h2>
       </div>
+	  
+	  <!-- Dynamic reviews from JSON (admin uploaded) -->
+      <div class="reviews-grid fade-up" id="dynamicReviewsGrid" style="margin-bottom:0;"></div>
+	  
       <div class="reviews-grid fade-up">
 
         <div class="review-card">
@@ -327,6 +331,61 @@
 	  mobileNav.classList.remove('open');
 	  hamburger.style.display = '';
 	});
+	
+	/* ── Load dynamic reviews from data/reviews.json ── */
+    const platformClasses = {
+      Upwork:'platform-upwork', Fiverr:'platform-fiverr',
+      Direct:'platform-direct', LinkedIn:'platform-linkedin', Google:'platform-google'
+    };
+    const platformBadgeStyle = {
+      Upwork: 'background:rgba(20,163,20,0.12);color:#14a314;border:1px solid rgba(20,163,20,0.2);',
+      Fiverr: 'background:rgba(29,191,115,0.12);color:#1dbf73;border:1px solid rgba(29,191,115,0.2);',
+      Direct: 'background:rgba(108,99,255,0.12);color:var(--accent);border:1px solid rgba(108,99,255,0.2);',
+      LinkedIn:'background:rgba(0,119,181,0.12);color:#0077b5;border:1px solid rgba(0,119,181,0.2);',
+      Google: 'background:rgba(234,67,53,0.12);color:#ea4335;border:1px solid rgba(234,67,53,0.2);',
+      WhatsApp:'background:rgba(37,211,102,0.12);color:#25d366;border:1px solid rgba(37,211,102,0.2);'
+    };
+
+    async function loadDynamicReviews() {
+      const grid = document.getElementById('dynamicReviewsGrid');
+      try {
+        const res = await fetch('data/reviews.json?t=' + Date.now());
+        if (!res.ok) return; // silently skip if file doesn't exist yet
+        const reviews = await res.json();
+        if (!reviews.length) return;
+
+        grid.innerHTML = reviews.map(r => {
+          const stars = Array.from({length:5}, (_,i) =>
+            `<span class="${i < r.rating ? 'star' : 'star empty'}">★</span>`
+          ).join('');
+          const badgeStyle = platformBadgeStyle[r.platform] || platformBadgeStyle.Direct;
+          const avatarFallback = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44'><circle cx='22' cy='22' r='22' fill='%236c63ff33'/><text x='22' y='27' text-anchor='middle' font-size='16' fill='%236c63ff'>${r.name[0].toUpperCase()}</text></svg>`;
+          const avatarSrc = r.avatar ? r.avatar : avatarFallback;
+
+          return `
+            <div class="review-card">
+              <div class="review-platform" style="${badgeStyle}padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;display:inline-block;margin-bottom:4px;">${r.platform}</div>
+              <div class="review-stars">${stars}</div>
+              <div class="review-quote">"</div>
+              <p class="review-text">${r.text}</p>
+              <div class="review-author">
+                <img src="${avatarSrc}" alt="${r.name}" class="review-avatar" onerror="this.src='${avatarFallback}'">
+                <div>
+                  <div class="review-name">${r.name}</div>
+                  <div class="review-role">${r.role || ''}</div>
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+
+      } catch(e) {
+        // silently fail — static reviews still show
+      }
+    }
+
+    loadDynamicReviews();
+	
+	
     const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   </script>
