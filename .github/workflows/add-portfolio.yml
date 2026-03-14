@@ -1,0 +1,71 @@
+name: Add Portfolio Item
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        required: true
+      category:
+        required: true
+      url:
+        required: false
+      image_base64:
+        required: true
+      image_ext:
+        required: true
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SAIFURPRO_GH_TOCKEN }}
+
+      - name: Add portfolio item
+        run: |
+          python3 << 'EOF'
+          import json, base64, os, time
+
+          try:
+            with open('data/portfolio.json') as f:
+              portfolio = json.load(f)
+          except:
+            portfolio = []
+
+          slug = ''.join(c if c.isalnum() else '-' for c in os.environ['TITLE'].lower()).strip('-')
+          ext = os.environ['IMAGE_EXT']
+          image_path = f"assets/img/{slug}.{ext}"
+
+          os.makedirs('assets/img', exist_ok=True)
+          with open(image_path, 'wb') as f:
+            f.write(base64.b64decode(os.environ['IMAGE_BASE64']))
+
+          url = os.environ.get('URL', '') or image_path
+          portfolio.insert(0, {
+            "id": int(time.time() * 1000),
+            "title": os.environ['TITLE'],
+            "category": os.environ['CATEGORY'],
+            "image": image_path,
+            "url": url,
+            "date": __import__('datetime').date.today().isoformat()
+          })
+
+          os.makedirs('data', exist_ok=True)
+          with open('data/portfolio.json', 'w') as f:
+            json.dump(portfolio, f, indent=2)
+          EOF
+        env:
+          TITLE: ${{ inputs.title }}
+          CATEGORY: ${{ inputs.category }}
+          URL: ${{ inputs.url }}
+          IMAGE_BASE64: ${{ inputs.image_base64 }}
+          IMAGE_EXT: ${{ inputs.image_ext }}
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Add portfolio: ${{ inputs.title }}"
+          git push
