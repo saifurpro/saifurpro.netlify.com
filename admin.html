@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -398,6 +399,9 @@
         <button class="upload-tab" data-tab="manage" onclick="switchTab('manage')">
           <i class="fas fa-list"></i> Manage Reviews
         </button>
+        <button class="upload-tab" data-tab="manage-portfolio" onclick="switchTab('manage-portfolio')">
+          <i class="fas fa-images"></i> Manage Portfolio
+        </button>
       </div>
 
       <!-- =========== TAB: ADD REVIEW =========== -->
@@ -418,7 +422,7 @@
               <div class="gh-config-body">
                 <div class="form-group">
                   <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
-                  <input type="password" id="r-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                  <input type="password" id="r-gh-token" value="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" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
                 </div>
                 <div class="form-row">
                   <div class="form-group">
@@ -659,6 +663,33 @@
         </div>
       </div>
 
+      <!-- =========== TAB: MANAGE PORTFOLIO =========== -->
+      <div class="tab-panel" id="tab-manage-portfolio">
+        <div class="form-card fade-up" style="max-width:100%;">
+          <h3><i class="fas fa-images" style="color:var(--accent);margin-right:8px;"></i>Manage Portfolio</h3>
+          <p>View and delete existing portfolio items. Changes are committed directly to your GitHub repository.</p>
+
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:240px;margin:0;">
+              <label>GitHub Personal Access Token</label>
+              <input type="password" id="mp-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            </div>
+            <button class="btn-outline" onclick="loadPortfolio()" style="flex-shrink:0;height:46px;">
+              <i class="fas fa-sync"></i> Load Portfolio
+            </button>
+          </div>
+
+          <div id="manage-portfolio-status" style="margin-top:14px;font-size:13px;color:var(--text-muted);"></div>
+
+          <div class="existing-reviews-grid" id="existingPortfolioGrid" style="margin-top:32px;">
+            <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">
+              <i class="fas fa-briefcase" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>
+              Enter your token and click "Load Portfolio" to see existing items.
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -672,7 +703,7 @@
           <div class="social-links" style="margin-top:20px;">
             <a href="https://www.linkedin.com/in/saifurpro" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
             <a href="https://www.facebook.com/hi.saifurpro" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
-            <a href="mailto:info.saifurpro@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+            <a href="/cdn-cgi/l/email-protection#a8c1c6cec786dbc9c1cedddad8dac7e8cfc5c9c1c486cbc7c5" class="social-link"><i class="fas fa-envelope"></i></a>
           </div>
         </div>
         <div class="footer-col">
@@ -704,7 +735,7 @@
     </div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* ────────────────────────────────
        INIT
     ──────────────────────────────── */
@@ -1177,11 +1208,128 @@
         if (item) { item.style.opacity = '0'; item.style.transform = 'scale(0.9)'; item.style.transition = '0.3s'; setTimeout(() => item.remove(), 300); }
         statusEl.textContent = 'Review deleted successfully.';
         statusEl.style.color = 'var(--accent3)';
+
+        // update sha for next delete
+        const updated = await ghGetJSON(token, user, repo, 'data/reviews.json');
+        reviewsFileSha = updated.sha;
+
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
       }
     }
+
+    /* ────────────────────────────────
+       LOAD & MANAGE PORTFOLIO
+    ──────────────────────────────── */
+    let loadedPortfolio = [];
+    let portfolioFileSha = null;
+
+    async function loadPortfolio() {
+      const token = document.getElementById('mp-gh-token').value.trim();
+      const user = localStorage.getItem('sp_gh_user') || 'saifurpro';
+      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.github.io';
+      const statusEl = document.getElementById('manage-portfolio-status');
+      const grid = document.getElementById('existingPortfolioGrid');
+
+      if (!token) {
+        statusEl.textContent = '⚠️ Please enter your GitHub token above.';
+        statusEl.style.color = 'var(--accent2)';
+        return;
+      }
+
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading portfolio from GitHub...';
+      statusEl.style.color = 'var(--accent)';
+
+      try {
+        const result = await ghGetJSON(token, user, repo, 'data/portfolio.json');
+        loadedPortfolio = result.data;
+        portfolioFileSha = result.sha;
+
+        if (!loadedPortfolio.length) {
+          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-briefcase" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No portfolio items found in data/portfolio.json yet.</div>';
+          statusEl.textContent = 'No items found.';
+          return;
+        }
+
+        statusEl.textContent = `${loadedPortfolio.length} item${loadedPortfolio.length !== 1 ? 's' : ''} loaded.`;
+        statusEl.style.color = 'var(--accent3)';
+        renderPortfolioList(token, user, repo);
+
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">Could not load portfolio. Make sure <code>data/portfolio.json</code> exists in your repo.</div>';
+      }
+    }
+
+    const categoryLabelsMap = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template', lead:'Lead Generation' };
+    const categoryColors = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
+
+    function renderPortfolioList(token, user, repo) {
+      const grid = document.getElementById('existingPortfolioGrid');
+      grid.innerHTML = loadedPortfolio.map(item => {
+        const catLabel = categoryLabelsMap[item.category] || item.category;
+        const catColor = categoryColors[item.category] || 'var(--text-muted)';
+        const isLocal = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
+        return `
+          <div class="existing-review-item" id="portfolio-item-${item.id}">
+            <button class="delete-btn" onclick="deletePortfolioItem(${item.id}, '${token}', '${user}', '${repo}')" title="Delete item"><i class="fas fa-trash"></i></button>
+            <div style="width:100%;height:110px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:var(--bg3);border:1px solid var(--border);">
+              <img src="${item.image}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+            </div>
+            <div class="er-name" style="padding-right:32px;">${item.title}</div>
+            <div style="margin-top:4px;margin-bottom:8px;">
+              <span style="font-size:10px;font-weight:700;color:${catColor};padding:2px 8px;border-radius:100px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);">${catLabel}</span>
+            </div>
+            ${!isLocal
+              ? `<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`
+              : `<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`
+            }
+            <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date || ''}</p>
+          </div>`;
+      }).join('');
+    }
+
+    async function deletePortfolioItem(id, token, user, repo) {
+      if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
+      const statusEl = document.getElementById('manage-portfolio-status');
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+      statusEl.style.color = 'var(--accent)';
+
+      try {
+        loadedPortfolio = loadedPortfolio.filter(p => p.id !== id);
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedPortfolio, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+        const body = { message: `Delete portfolio item #${id}`, content: jsonContent, branch };
+        if (portfolioFileSha) body.sha = portfolioFileSha;
+
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/portfolio.json`, {
+          method: 'PUT',
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+
+        const el = document.getElementById(`portfolio-item-${id}`);
+        if (el) { el.style.opacity = '0'; el.style.transform = 'scale(0.9)'; el.style.transition = '0.3s'; setTimeout(() => el.remove(), 300); }
+        statusEl.textContent = 'Item deleted successfully.';
+        statusEl.style.color = 'var(--accent3)';
+
+        // update sha for next delete in same session
+        const updated = await ghGetJSON(token, user, repo, 'data/portfolio.json');
+        portfolioFileSha = updated.sha;
+
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+      }
+    }
+
+    // Auto-fill mp token from saved config
+    const _savedTok = localStorage.getItem('sp_gh_token');
+    if (_savedTok) document.getElementById('mp-gh-token').value = _savedTok;
+
   </script>
 </body>
 </html>
