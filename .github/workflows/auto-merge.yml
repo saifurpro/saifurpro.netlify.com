@@ -1,0 +1,43 @@
+name: Auto merge master to gh-pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Merge master into gh-pages
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout gh-pages
+          git merge master --no-edit
+          git push origin gh-pages
+```
+
+Click **Commit changes**.
+
+---
+
+**Step 2 — Give Actions permission to push**
+
+1. Go to your repo → **Settings → Actions → General**
+2. Scroll to **"Workflow permissions"**
+3. Select **"Read and write permissions"**
+4. Click **Save**
+
+---
+
+**That's it!** Now every time your admin panel commits to `master`, GitHub Actions will automatically merge it into `gh-pages` within about 30 seconds, and Netlify will deploy automatically after that.
+
+**Total flow:**
+```
+Admin panel → commits to master → GitHub Action runs → merges to gh-pages → Netlify deploys ✅
