@@ -1,725 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="author" content="Saifur Rahman">
-
-	<!-- Title -->
-	<title>SaifurPro - WordPress Expert</title>
-	<!-- Bootstrap CSS -->
-	<link type="text/css" rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-	<!-- Font Awesome CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
-
-	<!-- Google Fonts -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-	<!-- Owl Carousel CSS -->
-	<link type="text/css" rel="stylesheet" href="assets/css/owl.carousel.min.css">
-	<!-- Slick Nav CSS -->
-	<link type="text/css" rel="stylesheet" href="assets/css/slicknav.min.css">
-	<!-- Main CSS -->
-	<link type="text/css" rel="stylesheet" href="style.css">
-	<!-- Responsive CSS -->
-	<link type="text/css" rel="stylesheet" href="responsive.css">
-
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!-- [if It IE 9]>
-			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
-	
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-124758857-1"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-
-	  gtag('config', 'UA-124758857-1');
-	</script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Saifur Rahman">
+  <title>SaifurPro — WordPress Expert & Web Designer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124758857-1"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-124758857-1');</script>
+  <style>
+    .hero-logo-badge { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .hero-logo-badge img { height: 44px; border-radius: 10px; }
+    .marketplace-logos { display: flex; gap: 24px; align-items: center; margin-top: 32px; flex-wrap: wrap; }
+    .marketplace-logos a { opacity: 0.4; transition: opacity 0.3s; font-size: 13px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .marketplace-logos a:hover { opacity: 1; }
+    .upwork-badge { background: rgba(20,163,20,0.12); border: 1px solid rgba(20,163,20,0.2); color: #14a314 !important; padding: 6px 14px; border-radius: 100px; }
+    .fiverr-badge { background: rgba(29,191,115,0.12); border: 1px solid rgba(29,191,115,0.2); color: #1dbf73 !important; padding: 6px 14px; border-radius: 100px; }
+    .expertise-list { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+    .expertise-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-muted); }
+    .expertise-item i { color: var(--accent3); width: 16px; }
+  </style>
 </head>
-
 <body>
-	<!-- Header Area Start -->
-	<header class="header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 col-6">
-					<div class="logo">
-						<h2><a href="index.html"><img src="assets/img/saifurpro-logo.jpg" alt=""></a></h2>
-					</div>
-				</div>
 
-				<div class="col-md-9 col-6">
-					<nav class="mainmenu" id="menu">
-						<ul>
-							<li><a href="about.html">About</a></li>
-							<li><a href="works.html">Works</a></li>
-							<li><a href="reviews.html">Reviews</a></li>
-							<li><a href="contact.html">Contact</a></li>
-							<a class="box-btn" target="_blank" href="https://calendly.com/saifurpro/appointment">BOOK A FREE CALL</a>
-						</ul>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</header>
-	<!-- Header Area End -->
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/img/saifurpro-logo.svg" alt="SaifurPro" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Saifur<span>Pro</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="active">About</a>
+        <a href="works.html">Works</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary btn-sm">
+          <i class="fa fa-calendar"></i> Book Free Call
+        </a>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
 
-	<!-- Banner Area Start -->
-	<div class="container top-banner center_content">		
-		<div class="content">
-			<div class="row">
-				<div class="col-md-12">
-					<h3 class="title">Provide high-quality, attractive, and modern website design, redesign, and development services for small businesses and agencies.</h3>
-				</div>
-			</div>
-		</div>
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <span class="close-btn" id="closeNav">✕</span>
+    <a href="index.html">About</a>
+    <a href="works.html">Works</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary">Book Free Call</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="glow-blob" style="width:600px;height:600px;background:var(--accent);top:-200px;left:-100px;"></div>
+    <div class="glow-blob" style="width:400px;height:400px;background:var(--accent3);bottom:-100px;right:-100px;"></div>
+    <div class="container">
+	<div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <div class="hero-dot"></div>
+          <span>Available for new projects</span>
+        </div>
+        <h1>Invest in a website<br>that <span class="highlight">you love</span> and<br>grow your business.</h1>
+        <p>I'll help you get an amazing website that converts visitors to customers. WordPress, WooCommerce & Shopify expert with 7+ years of experience.</p>
+        <div class="hero-actions">
+          <a href="works.html" class="btn-primary"><i class="fa fa-briefcase"></i> View My Work</a>
+          <a href="https://resume-wp.netlify.app/" target="_blank" class="btn-outline"><i class="fa fa-file"></i> View Resume</a>
+        </div>
+        <div class="marketplace-logos">
+          <a href="#" class="upwork-badge"><i class="fab fa-upwork"></i> Top Rated on Upwork</a>
+          <a href="#" class="fiverr-badge">🟢 Level 2 Seller on Fiverr</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-img-wrap">
+          <img src="assets/img/design-tools.png" alt="Design Tools">
+          <div class="floating-badge badge-1">
+            <div class="badge-icon">⭐</div>
+            <div class="badge-text">
+              <strong>5-Star Rated</strong>
+              <span>50+ Reviews</span>
+            </div>
+          </div>
+          <div class="floating-badge badge-2">
+            <div class="badge-icon">🚀</div>
+            <div class="badge-text">
+              <strong>Fast Delivery</strong>
+              <span>Within 48hrs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 	</div>
-	<!-- Banner Area End -->
+  </section>
 
-	<!-- Trusted By Area Start -->
-	<div class="section-padding brand-logo">
-		<div class="container">
-			<div class="row">
-				<div class="col-4 col-md-2">
-					<img src="assets/img/Australian-Web-Experts-Logo.png" alt="">
-				</div>
-				<div class="col-4 col-md-2">
-					<img src="assets/img/celtic-whispers-logo.png" alt="">
-				</div>
-				<div class="col-4 col-md-2">
-					<img src="assets/img/banshee-apps-logo.png" alt="">
-				</div>
-				<div class="col-4 col-md-2">
-					<img src="assets/img/SIMA-White.png" alt="">
-				</div>
-				<div class="col-4 col-md-2">
-					<img src="assets/img/thinkdigital365-logo.png" alt="">
-				</div>
-				<div class="col-4 col-md-2">
-					<img src="assets/img/TITOMA-Logo.png" alt="">
-				</div>
-			</div>
-		</div>
+  <!-- ABOUT ME -->
+  <section style="padding: 100px 0;">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text fade-up">
+          <div class="tag">About Me</div>
+          <h2>Who is Saifur<span>Pro</span>?</h2>
+          <p>I am specialized in WordPress, WooCommerce, Elementor, Shopify, PageFly and Shogun page builder.</p>
+          <p>Having a strong background in Web design, web development, and Email Marketing, I have developed more than 180 websites for various niche like: Sports, Healthcare, Hospitality, Marketing, Design & Development, Fashions, Cars, Apps and so on.</p>
+          <p>I am a creative designer, marketer & developer working to deliver positive shopping experiences for eCommerce brands.</p>
+          <div class="expertise-list">
+            <div class="expertise-item"><i class="fa fa-check-circle"></i> WordPress & WooCommerce Development</div>
+            <div class="expertise-item"><i class="fa fa-check-circle"></i> Elementor, Divi & Page Builders</div>
+            <div class="expertise-item"><i class="fa fa-check-circle"></i> Shopify, PageFly & Shogun</div>
+            <div class="expertise-item"><i class="fa fa-check-circle"></i> MailChimp Email Marketing</div>
+          </div>
+        </div>
+        <div class="about-stats fade-up">
+          <div class="stat-card">
+            <h3>50+</h3>
+            <p>Happy Clients</p>
+          </div>
+          <div class="stat-card">
+            <h3>7</h3>
+            <p>Years Experience</p>
+          </div>
+          <div class="stat-card">
+            <h3>180+</h3>
+            <p>Total Projects</p>
+          </div>
+          <div class="stat-card">
+            <h3>100%</h3>
+            <p>Satisfaction Rate</p>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+	<div class="container">
+		<div class="about-tools" style="margin-top:28px;">
+            <span class="tool-pill">WordPress</span>
+            <span class="tool-pill">WooCommerce</span>
+            <span class="tool-pill">Elementor</span>
+            <span class="tool-pill">Brizy</span>
+            <span class="tool-pill">Divi</span>
+            <span class="tool-pill">Avada</span>
+            <span class="tool-pill">Shopify</span>
+            <span class="tool-pill">MailChimp</span>
+            <span class="tool-pill">Webflow</span>
+            <span class="tool-pill">PageFly</span>
+            <span class="tool-pill">HTML/CSS</span>
+			<span class="tool-pill">JavaScript</span>
+			<span class="tool-pill">PHP</span>
+          </div>
 	</div>
-	<!-- Trusted By Area End -->
+  </section>
 
-	<!-- Services Area Start -->
-	<section class="section-padding ">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10 offset-md-1 text-center">
-					<div class="section-title">
-						<h2>Love to find simple solutions <br> to complex challenges.</h2>
-					</div>
-				</div>
-			</div>
+  <!-- VIDEO TESTIMONIALS -->
+  <section style="padding: 0 0 100px;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">In Their Own Words</div>
+        <h2>Client Video Testimonials</h2>
+        <p>Hear directly from clients who have worked with me on their projects.</p>
+      </div>
+      <div class="video-grid fade-up">
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/jD_azNaRRbM?si=W4K5VPpzaljbLTke" title="Client Testimonial 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/wapOS3NOlJA?si=CpR-MIQZ_Qns0Z06" title="Client Testimonial 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
 
-			<div class="row">
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/responsive-design.png" alt="">
-						<h3>Web Design</h3>
-						<p>Create a clean, unique and modern looking PSD / Figma to HTML5 website with Responsive in all devices, pixel perfect, W3C validated and SEO friendly.</p>
-					</div>
-				</div>
+  <!-- WHY CHOOSE ME -->
+  <section class="why-section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Why SaifurPro</div>
+        <h2>Interested in hiring SaifurPro?<br>Here are some reasons why.</h2>
+        <p>These are the values I bring to every project, every client, every time.</p>
+      </div>
+      <div class="choose-grid fade-up">
+        <div class="choose-card">
+          <div class="choose-number">01</div>
+          <div class="choose-icon">⚡</div>
+          <h3>Response Time</h3>
+          <p>I reply your message instantly via WhatsApp and via Email / LinkedIn within 2 hours.</p>
+        </div>
+        <div class="choose-card">
+          <div class="choose-number">02</div>
+          <div class="choose-icon">💎</div>
+          <h3>Quality of Work</h3>
+          <p>Our websites are modern, eye-catchy, mobile friendly and easy to navigate.</p>
+        </div>
+        <div class="choose-card">
+          <div class="choose-number">03</div>
+          <div class="choose-icon">✅</div>
+          <h3>100% Satisfaction</h3>
+          <p>In the end, I am extremely patient and make sure you are 100% satisfied.</p>
+        </div>
+        <div class="choose-card">
+          <div class="choose-number">04</div>
+          <div class="choose-icon">⭐</div>
+          <h3>5 Star Reviews</h3>
+          <p>50+ Five Star Reviews across Fiverr & Upwork marketplace.</p>
+        </div>
+        <div class="choose-card">
+          <div class="choose-number">05</div>
+          <div class="choose-icon">🎯</div>
+          <h3>Expertise</h3>
+          <p>WordPress expert with more than 7 years experience across 180+ projects.</p>
+        </div>
+        <div class="choose-card">
+          <div class="choose-number">06</div>
+          <div class="choose-icon">💰</div>
+          <h3>Money-back Guarantee</h3>
+          <p>I provide refunds to those who are dissatisfied with their purchases.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/development.png" alt="">
-						<h3>Web Development</h3>
-						<p>Develop PSD/HTML to Custom WordPress website with fully Responsive in all devices, pixel perfect, W3C validated and SEO friendly.</p>
-					</div>
-				</div>
+  <!-- SKILLS & TOOLS -->
+  <section class="skills-section" style="background:var(--bg);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Skills & Tools</div>
+        <h2>What I Work With</h2>
+        <p>A curated set of tools and platforms I use to build exceptional websites.</p>
+      </div>
+      <div class="skills-grid fade-up">
+        <div class="skill-card">
+          <div class="skill-icon"><i class="fab fa-wordpress" style="color:var(--accent)"></i></div>
+          <h4>WordPress</h4>
+          <p>Custom themes, plugins, and full site builds with performance optimization.</p>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon"><i class="fas fa-shopping-cart" style="color:var(--accent3)"></i></div>
+          <h4>WooCommerce</h4>
+          <p>End-to-end eCommerce setups, payment gateways, and inventory systems.</p>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">
+            <img src="assets/img/elementor-logo.png" alt="Elementor" class="skill-logo">
+          </div>
+          <h4>Elementor</h4>
+          <p>Pixel-perfect page designs with dynamic widgets and advanced templates.</p>
+        </div>
+		<div class="skill-card">
+          <div class="skill-icon">
+			<img src="assets/img/brizy-page-builder.png" alt="Elementor" class="skill-logo">
+		  </div>
+          <h4>Brizy Page Builder</h4>
+          <p>Pixel-perfect Website designs with Brizy page builder.</p>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">
+            <img src="assets/img/divi-page-builder.png" alt="Divi" class="skill-logo">
+          </div>
+          <h4>Divi Builder</h4>
+          <p>Beautiful, responsive Divi layouts for any industry or brand.</p>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon"><i class="fab fa-shopify" style="color:#96bf48"></i></div>
+          <h4>Shopify</h4>
+          <p>Store setup, PageFly & Shogun page building, and Shopify theme customization.</p>
+        </div>
+        <div class="skill-card">
+		  <div class="skill-icon"><i class="fa-brands fa-mailchimp" style="color:var(--accent2)"></i></div>
+          <h4>MailChimp</h4>
+          <p>Email campaigns, automation, segmentation, and template design.</p>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon"><i class="fas fa-envelope-open" style="color:var(--accent2)"></i></div>
+          <h4>Email Marketing</h4>
+          <p>Designing HTML email templates for promotions, newsletters and drip campaigns.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/web.png" alt="">
-						<h3>WordPress Website Design</h3>
-						<p>My specialty is WordPress Web Design. If I set up your website with WordPress & Elementor, you can manage the whole website yourself easily.</p>
-					</div>
-				</div>
+  <!-- CTA STRIP -->
+  <section style="padding:80px 0; background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(67,232,216,0.05)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container" style="text-align:center;">
+      <h2 style="font-size:clamp(28px,4vw,48px);color:var(--white);margin-bottom:16px;">Ready to build something amazing?</h2>
+      <p style="color:var(--text-muted);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto;">Let's jump on a free 30-minute call to discuss your project goals and how I can help you achieve them.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary"><i class="fa fa-calendar"></i> Book a Free Call</a>
+        <a href="contact.html" class="btn-outline"><i class="fa fa-envelope"></i> Send a Message</a>
+      </div>
+    </div>
+  </section>
 
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/online-store.png" alt="">
-						<h3>eCommerce Solutions</h3>
-						<p>Create your online eCommerce WordPress Website by WooCommerce with very Professional looking. Add eCommerce Shopping cart, add products and payment gateway systems and so on.</p>
-					</div>
-				</div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="font-size:20px;">Saifur<span>Pro</span></a>
+          <p>WordPress expert helping businesses build websites that convert visitors to customers.</p>
+          <div class="social-links" style="margin-top:20px;">
+            <a href="https://www.linkedin.com/in/saifurpro" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.facebook.com/hi.saifurpro" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="mailto:info.saifurpro@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="index.html">About</a>
+          <a href="works.html">Works</a>
+          <a href="reviews.html">Reviews</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <a href="#">WordPress Development</a>
+          <a href="#">WooCommerce</a>
+          <a href="#">Shopify</a>
+          <a href="#">Email Marketing</a>
+        </div>
+        <div class="footer-col">
+          <h5>More</h5>
+          <a href="pricing.html">Pricing</a>
+          <a href="faq.html">FAQ</a>
+          <a href="https://resume-wp.netlify.app/" target="_blank">Resume</a>
+          <a href="https://calendly.com/saifurpro/appointment" target="_blank">Book a Call</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright <span id="year"></span> © <a href="index.html" style="color:var(--accent);">SaifurPro</a> — All Rights Reserved.</span>
+        <span style="color:var(--text-dim);">WordPress Expert · Web Designer · Email Marketer</span>
+      </div>
+    </div>
+  </footer>
 
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/page-speed.png" alt="">
-						<h3>Speed optimizations</h3>
-						<p>Speed Optimization will better chance of ranking on Google over slow sites that drive high bounce rate. I'll make your site loading time less than 4-5 seconds and speed optimize 85+ score on GT-Metrix and PSI.</p>
-					</div>
-				</div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+    const hamburger = document.getElementById('hamburger');
+	const mobileNav = document.getElementById('mobileNav');
+	const closeNav = document.getElementById('closeNav');
 
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/website-error.png" alt="">
-						<h3>WordPress Bug Fixing</h3>
-						<p>Some common errors: internal server error, error establishing database connection in WordPress, posts returning 404 error, fatal error, 503, 500, 502, corrupted htaccess file and so on. I will fix any kind of WP Errors.</p>
-					</div>
-				</div>
-
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/website-malware.png" alt="">
-						<h3>WordPress Malware Remove</h3>
-						<p>If your website has been infected with spam or malware attacks, I will remove malicious code. I safely remove malicious code injections in your website & database. quickly to repair the damage. Remove any type of blacklist.</p>
-					</div>
-				</div>
-
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/email-marketing.png" alt="">
-						<h3>Email marketing</h3>
-						<p>I can help you to promote your business. Design Email Template, Email Campaign, Signup Form, Popup Form, an Eye-catchy Landing Page with MailChimp Email Collection Form. Manage MailChimp Campaign with 10k+ Leads upload.</p>
-					</div>
-				</div>
-
-				<div class="col-md-4">
-					<div class="single-service">
-						<img src="assets/img/lead.png" alt="">
-						<h3>B2B Lead Generation</h3>
-						<p>I provide B2B Lead (Name, Email, Phone Number, Country, Job Title) from LinkedIn for any industry. Based on Targeted Industry, Targeted location. Also I provide more than 10M Data from Apollo.io based on your requirements.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Services Area End -->
-
-	<!-- Skils Area Start -->
-	<div class="section-padding skills-logo pdt-0">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10 offset-md-1 text-center">
-					<div class="section-title">
-						<h2>I have Solid In-depth knowledge.</h2>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 col-6">
-					<img src="assets/img/wordpress-logo.png" alt="">
-				</div>
-				<div class="col-md-4 col-6">
-					<img src="assets/img/elementor-logo.png" alt="">
-				</div>
-				<div class="col-md-4 col-6">
-					<img src="assets/img/woocommerce-logo.jpg" alt="">
-				</div>
-				<div class="col-md-4 col-6">
-					<img src="assets/img/divi-page-builder.png" alt="">
-				</div>
-				<div class="col-md-4 col-6">
-					<img src="assets/img/shopify-logo.png" alt="">
-				</div>
-				<div class="col-md-4 col-6">
-					<img src="assets/img/mailchimp-logo-black.png" alt="">
-				</div>
-			</div>
-			
-		</div>
-	</div>
-	<!-- Skils Area End -->
-
-	<!-- Latest Portfolio -->
-	<section class="section-padding pdt-0">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10 offset-md-1 text-center">
-					<div class="section-title">
-						<h2>Latest 5 Projects</h2>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-12">
-					<div class="latest-portfolio owl-carousel">
-						<div class="single-portfolio">
-							<img src="assets/img/agency-website.png" alt="">
-							<h4>Australian Agency Website Redesign</h4>
-							<h5><a href="https://australianwebexperts.com.au/" target="_blank">View Project</a></h5>
-						</div>
-						
-						<div class="single-portfolio">
-							<img src="assets/img/prlivewire.png" alt="">
-							<h4>PR Live Wire</h4>
-							<h5><a href="https://prlivewire.com/" target="_blank">View Project</a></h5>
-						</div>
-						
-						<div class="single-portfolio">
-							<img src="assets/img/chrysalissa.png" alt="">
-							<h4>Chrysalissa</h4>
-							<h5><a href="https://chrysalissa.com/" target="_blank">View Project</a></h5>
-						</div>
-						<div class="single-portfolio">
-							<img src="assets/img/wheel-plumber.png" alt="">
-							<h4>Wheeling Plumbers</h4>
-							<h5><a href="https://wheelingplumbers.com/" target="_blank">View Project</a></h5>
-						</div>
-						<div class="single-portfolio">
-							<img src="assets/img/trinidadplumber.png" alt="">
-							<h4>Trinidad Plumber</h4>
-							<h5><a href="https://trinidadplumber.com/" target="_blank">View Project</a></h5>
-						</div>
-						
-						<div class="single-portfolio">
-							<img src="assets/img/graceonline.png" alt="">
-							<h4>Grace Online</h4>
-							<h5><a href="https://graceonline.co.za/" target="_blank">View Project</a></h5>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Latest Portfolio End -->
-
-	<!-- Testimonial Start -->
-	<section class="section-padding pdt-0">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10 offset-md-1 text-center">
-					<div class="section-title">
-						<h2>meet my happy clients</h2>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="testimonials owl-carousel">
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									He has been phenomenal to work with! It was my first time on Upwork and I'm glad I went with him. After the project finished, I'm continuing to work with him on multiple other projects and gave him extra bonuses as well. Also recommended him to others in my network. Going at this stuff on your own is ineffective and a headache - work with an expert like Saifur. Highly recommend!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/Ramin-Shahabadi.jpeg" alt="">
-								<h3>Ramin</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur does AMAZING work! He is so fast and is also an extremely good communicator.
-									I am so grateful that my friend referred me to him, I have hired him to build 2 of
-									my WordPress websites so far and will continue to hire him for maintenance as
-									needed. His prices are more than fair, he really is a star shining bright in this
-									sea of freelancers. Highly recommend!!!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/tanyaraven.png" alt="">
-								<h3>Tanya Raven</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur was an absolute pleasure to work with. He is polite, professional, PATIENT
-									which is important when dealing with a neurotic person as myself. Most of all the
-									job was done, done well and he even went above and beyond to fix files issues that I
-									caused. I am already putting together next gig and will request Saifur. Great
-									choice!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/vangor.png" alt="">
-								<h3>Vangor</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur is the BEST. I enjoy working with him. He responds very quickly and goes
-									ABOVE AND BEYOND to make sure the job is done to your utmost satisfaction. I will
-									definitely continue working with him. HIGHLY recommended!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/noa.jpg" alt="">
-								<h3>Noa Lakshmi</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur recently did another project for me and he was great to work with, so when
-									another project came up immediately, I did not think twice, I called on him again. I
-									am just starting a new eCommerce business and really needed help. I hired people in
-									person that did not deliver the quality of work that Saifur has done for me in less
-									than a week.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/vangor.png" alt="">
-								<h3>Vangor</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur is kind, knowledgable, patient, reliable, timely and very helpful. I highly
-									recommend and I will be working with him again. Saifur is reliable and does amazing work. He went above and beyond and delivered
-									perfect results. Thank you!!!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/tanyaraven.png" alt="">
-								<h3>Tanya Raven</h3>
-							</div>
-						</div>
-						
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Working with saifurpro was an excellent experience. I was having a number of problems with my WordPress website.saifurpro fixed them all. He was extremely easy to work with. I recommend him highly. I will definitely use saifurpro for my digital needs.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/Marie.jpg" alt="">
-								<h3>Marie</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									He was very easy to work with and did a wonderful job. He's very patient in
-									understanding your vision so he can give you exactly what you are looking for.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/Sylvia-Reid.jpg" alt="">
-								<h3>Sylvia Reid</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Working with saifurpro was an excellent experience. I was having a number of problems with my WordPress website.saifurpro fixed them all. He was extremely easy to work with. I recommend him highly. I will definitely use saifurpro for my digital needs.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/sharon-brock.jpg" alt="">
-								<h3>Sharon Block</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									He got in touch with me right away and stayed in communication to get a clear
-									understanding of what I wanted. Very patient and did great work.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/teenastewart.jpg" alt="">
-								<h3>Reena Stewart</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									We have been together a number of months and I think I will be hassling Saifur for ages. Started as two websites and he's done another three for me also. we have got the communication worked out and now understand. He always works on things so quickly - even if he doesn't need to. Really appreciate all his help and highly recommend :)
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/g-list.png" alt="">
-								<h3>Callista</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									very nice work, he created a landing page for me, it was 100% how I wanted it, and
-									he added his experience touch as well, highly recommended
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/g-list.png" alt="">
-								<h3>Ammar Hadi</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur is the best! He helped me with my WordPress website and worked around the
-									clock to make sure I was happy with the product.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/sharon-brock.jpg" alt="">
-								<h3>Sharon Brock</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									I strongly recommend Saifurpro! He did really amazing job for my site, actually more
-									than expected! I'm sure I will order more services from him. amazing! delivered in
-									24 hours, 1 day faster.
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/mdpabel684.jpg" alt="">
-								<h3>Pabel</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Saifur is amazingly helpful and always goes above and beyond. He is reliable and
-									trustworthy and always gets the job done on time and right. Thank you!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/tanyaraven.png" alt="">
-								<h3>Tanya</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									I can always depend on Saifur
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/g-list.png" alt="">
-								<h3>Jeromy</h3>
-							</div>
-						</div>
-						<div class="single-testimonial">
-							<div class="testimonial-box">
-								<div class="rating">
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-									<span class="ficon"><i class="fa fa-star"></i></span>
-								</div>
-								<div class="review-text">
-									Working with Saifur was a pleasant experience, he did all the work requested and
-									communicated very well. Highly recommend working with him!
-								</div>
-							</div>
-							<div class="client-meta fix">
-								<img src="assets/img/Tatiana-Tiess.jpg" alt="">
-								<h3>Tatiana Ties</h3>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="video-testimonial">
-						<iframe width="100%" height="350" src="https://www.youtube.com/embed/BlIK8FbQKyk?si=NhAkkgI6tqLDnh7i" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-						<a class="testimonial-btn" href="reviews.html">Check out More Reviews</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Testimonial End -->
-
-	<!-- Why Choose Me Section Start -->
-	<section class="section-padding pdt-0">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10 offset-md-1 text-center">
-					<div class="section-title">
-						<h2>Why choose SaifurPro</h2>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="single-choose">
-						<h3>Responsive & User friendly Website Design</h3>
-						I will Provide excellent Design & Development Services. Your website will be loaded fast & it will show perfectly in every devices with mobile. The best designs & results are our goals.
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="single-choose">
-						<h3>Secure & Using latest Tools.</h3>
-						I will use the latest tools to make your website clean, unique and professional. Your website must be clean. I will ensure that every code is SEO-friendly and W3C-validated and Speed-optimized. Besides, I will add security to prevent hacking.
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="single-choose">
-						<h3>Reasonable Cost & trustworthy</h3>
-						I usually works closely with my clients on each project to create not only an amazing design that will help the business grow but also to create a long term relationship of trust and caring.
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Why Choose Me Section End -->
-
-	<!-- Footer Start -->
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-7 text-left">
-					<div class="footer-menu">
-						<ul>
-							<li><a href="about.html">About</a></li>
-							<li><a href="works.html">Works</a></li>
-							<li><a href="reviews.html">Reviews</a></li>
-							<li><a href="faq.html">FAQ</a></li>
-							<li><a href="pricing.html">Pricing</a></li>
-							<li><a href="contact.html">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-md-5 text-right">
-					<div class="copyright">
-						Copyright <span class="year"></span> @ <a href="index.html">SaifurPro</a> | All Rights Reserved.
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
-	<!-- Footer End -->
-
-
-	<script type="text/javascript" src="assets/js/jquery-1.12.4.min.js"></script>
-	<!-- Bootstrap Js -->
-	<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/js/all.min.js"></script>
-	<!-- Owl Carousel Js -->
-	<script type="text/javascript" src="assets/js/owl.carousel.min.js"></script>
-	<!-- Slick Nav -->
-	<script type="text/javascript" src="assets/js/jquery.slicknav.min.js"></script>
-	<!-- Main Js -->
-	<script type="text/javascript" src="assets/js/active.js"></script>
+	hamburger.addEventListener('click', () => {
+	  mobileNav.classList.add('open');
+	  hamburger.style.display = 'none';
+	});
+	closeNav.addEventListener('click', () => {
+	  mobileNav.classList.remove('open');
+	  hamburger.style.display = '';
+	});
+    // Fade up animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
 </body>
-
 </html>
