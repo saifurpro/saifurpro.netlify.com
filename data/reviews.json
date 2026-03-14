@@ -1,12 +1,92 @@
 [
   {
-    "id": 1773505254863,
-    "name": "Jeromy Johnson",
-    "role": "Spain",
-    "text": "Saifur was prompt and paid attention to requirements. I particularly appreciated his willingness to work on the page despite the contract being over. I would work with him again when I have a Wordpress project.",
+    "id": 1,
+    "name": "Kennith",
+    "role": "Business Owner",
+    "text": "Saifur did an excellent job redesigning our website. He was professional, communicative and delivered beyond expectations. Highly recommended!",
     "platform": "Upwork",
     "rating": 5,
-    "avatar": null,
-    "date": "2026-03-14"
+    "avatar": "assets/img/Kennith.png",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 2,
+    "name": "Marie",
+    "role": "eCommerce Owner",
+    "text": "Very talented and patient developer. Saifur stayed with me through multiple revisions and made sure everything was perfect before delivery.",
+    "platform": "Upwork",
+    "rating": 5,
+    "avatar": "assets/img/Marie.jpg",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 3,
+    "name": "Kjell",
+    "role": "Store Owner, Norway",
+    "text": "Saifur is a real pro. He built our WooCommerce store from scratch and integrated all our payment gateways perfectly. Outstanding work!",
+    "platform": "WhatsApp",
+    "rating": 5,
+    "avatar": "assets/img/kjell.png",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 4,
+    "name": "Lalit",
+    "role": "Marketing Director",
+    "text": "Best freelancer I've worked with. Fast, reliable, and the results were incredible. My website conversion rate doubled after the redesign!",
+    "platform": "Upwork",
+    "rating": 5,
+    "avatar": "assets/img/lalit.png",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 5,
+    "name": "Noa",
+    "role": "Shopify Store Owner",
+    "text": "Amazing work on our Shopify store! Saifur knew exactly what we needed even before we explained it clearly. Will definitely work with him again.",
+    "platform": "Fiverr",
+    "rating": 5,
+    "avatar": "assets/img/noa.jpg",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 6,
+    "name": "Matt",
+    "role": "Agency Director, Australia",
+    "text": "Saifur is creative and very skilled. He transformed our outdated website into a modern masterpiece. Our clients are loving it!",
+    "platform": "Upwork",
+    "rating": 5,
+    "avatar": "assets/img/matt.png",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 7,
+    "name": "Imran C.",
+    "role": "Email Marketing Manager",
+    "text": "Incredible attention to detail. The email templates Saifur designed for us have a much higher open and click rate than what we had before.",
+    "platform": "Direct",
+    "rating": 5,
+    "avatar": "assets/img/imranc.png",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 8,
+    "name": "Katrien Philips",
+    "role": "Entrepreneur, Belgium",
+    "text": "Would recommend to anyone looking for a skilled WordPress developer. Saifur completed the work quickly and was available whenever we had questions.",
+    "platform": "Fiverr",
+    "rating": 5,
+    "avatar": "assets/img/Katrien-Philips.jpeg",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 9,
+    "name": "Grassroots Health",
+    "role": "Healthcare Provider",
+    "text": "Exceptional developer! He understood our healthcare niche and built a compliant, beautiful website. Our patients love the new experience.",
+    "platform": "Upwork",
+    "rating": 5,
+    "avatar": "assets/img/Grassroots.jpeg",
+    "date": "2024-01-01"
   }
 ]
