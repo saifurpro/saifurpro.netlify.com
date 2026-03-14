@@ -811,9 +811,9 @@
     // Restore saved config
     const savedToken = localStorage.getItem('sp_gh_token');
     const savedUser = localStorage.getItem('sp_gh_user') || 'saifurpro';
-    const savedRepo = localStorage.getItem('sp_gh_repo') || 'saifurpro.github.io';
+    const savedRepo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
     if (savedToken) {
-      ['r-gh-token','p-gh-token','m-gh-token'].forEach(id => document.getElementById(id).value = savedToken);
+      ['r-gh-token','p-gh-token','m-gh-token','mp-gh-token'].forEach(id => document.getElementById(id).value = savedToken);
     }
     ['r-gh-user','p-gh-user'].forEach(id => document.getElementById(id).value = savedUser);
     ['r-gh-repo','p-gh-repo'].forEach(id => document.getElementById(id).value = savedRepo);
@@ -1123,7 +1123,7 @@
     async function loadReviews() {
       const token = document.getElementById('m-gh-token').value.trim();
       const user = localStorage.getItem('sp_gh_user') || 'saifurpro';
-      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.github.io';
+      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
       const statusEl = document.getElementById('manage-status');
       const grid = document.getElementById('existingReviewsGrid');
 
@@ -1228,7 +1228,7 @@
     async function loadPortfolio() {
       const token = document.getElementById('mp-gh-token').value.trim();
       const user = localStorage.getItem('sp_gh_user') || 'saifurpro';
-      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.github.io';
+      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
       const statusEl = document.getElementById('manage-portfolio-status');
       const grid = document.getElementById('existingPortfolioGrid');
 
@@ -1326,9 +1326,7 @@
       }
     }
 
-    // Auto-fill mp token from saved config
-    const _savedTok = localStorage.getItem('sp_gh_token');
-    if (_savedTok) document.getElementById('mp-gh-token').value = _savedTok;
+    // token auto-fill handled in Restore saved config section above
 
   </script>
 </body>
