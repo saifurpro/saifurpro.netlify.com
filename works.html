@@ -1,507 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Saifur Rahman">
-
-    <!-- Title -->
-    <title>SaifurPro - WordPress Expert</title>
-    <!-- Bootstrap CSS -->
-    <link type="text/css" rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Owl Carousel CSS -->
-    <link type="text/css" rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <!-- Slick Nav CSS -->
-    <link type="text/css" rel="stylesheet" href="assets/css/slicknav.min.css">
-    <!-- Main CSS -->
-    <link type="text/css" rel="stylesheet" href="style.css">
-    <!-- Responsive CSS -->
-    <link type="text/css" rel="stylesheet" href="responsive.css">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!-- [if It IE 9]>
-			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124758857-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-124758857-1');
-    </script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Works — SaifurPro</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124758857-1"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-124758857-1');</script>
 </head>
-
 <body>
-    <!-- Header Area Start -->
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-6">
-                    <div class="logo">
-                        <h2><a href="index.html"><img src="assets/img/saifurpro-logo.jpg" alt=""></a></h2>
-                    </div>
-                </div>
 
-                <div class="col-md-9 col-6">
-                    <nav class="mainmenu" id="menu">
-                        <ul>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="works.html">Works</a></li>
-                            <li><a href="reviews.html">Reviews</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <a class="box-btn" target="_blank" href="https://calendly.com/saifurpro/appointment">BOOK A
-                                FREE CALL</a>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/img/saifurpro-logo.svg" alt="SaifurPro" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Saifur<span>Pro</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">About</a>
+        <a href="works.html" class="active">Works</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary btn-sm"><i class="fa fa-calendar"></i> Book Free Call</a>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <span class="close-btn" id="closeNav">✕</span>
+    <a href="index.html">About</a>
+    <a href="works.html">Works</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary">Book Free Call</a>
+  </div>
+
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="tag">Portfolio</div>
+      <h1>My Work</h1>
+      <p>A curated collection of websites and projects I've built for clients around the world.</p>
+      <div class="breadcrumb-bar">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Works</span>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="works-filter fade-up">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="wordpress">WordPress</button>
+        <button class="filter-btn" data-filter="woocommerce">WooCommerce</button>
+        <button class="filter-btn" data-filter="shopify">Shopify</button>
+        <button class="filter-btn" data-filter="email">Email Templates</button>
+      </div>
+
+      <div class="works-grid fade-up" id="worksGrid">
+
+        <!-- ── WordPress ── -->
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/baiba-solstice.png" alt="CRS Council">
+            <div class="work-overlay"><a href="https://centreofsolstice.ie/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Holistic Healing & Massage Therapy</h4><span>WordPress</span></div>
         </div>
-    </header>
-    <!-- Header Area End -->
-
-
-    <!-- Latest Portfolio -->
-    <section class="section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 offset-md-1 text-center">
-                    <div class="section-title">
-                        <h2>My Works for Satisfied Clients.</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/wheel-plumber.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Wheeling Plumbers</h4>
-                            Redesign the full site and Increasing lead collection & conversion rate of the Plumber website.
-                            <h5><a href="https://wheelingplumbers.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/agency-website.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Agency Website for Australia</h4>
-                            I helped the agency to redesign their website to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://australianwebexperts.com.au/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/prlivewire.png" alt="">
-                            <span>Case Study</span>
-                            <h4>PR Live Wire News Website</h4>
-                            I developed a mobile-optimized news feed website that delivers a current and breaking news about South Africa.
-                            <h5><a href="https://prlivewire.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/expressvietnam.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Vietnam Tourist Visa</h4>
-                            I helped Kjell redesigning his client website Homepage using WordPress with Astra theme using Elementor.
-                            <h5><a href="https://expressvietnam.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/trinidadplumber.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Trinidad Plumber Website</h4>
-                            I helped Plumber brand to overcome their challenges and improve their business model, website, and customer satisfaction.
-                            <h5><a href="https://trinidadplumber.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-		<div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/astronomy.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Astro Bulletin - Astronomy Website</h4>
-                            Make the full website in WordPress from scratch. Used Elementor Page Builder in WordPress.
-                            <h5><a href="https://astrobulletin.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-			
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/titoma.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Titoma - Electronics and Manufacturing</h4>
-                            Make the full website in WordPress from scratch PSD to WordPress. Used Elementor Page Builder in WordPress.
-                            <h5><a href="https://titoma.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/mortgagegirlfirends.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Mortgage Girlfriends - Landing Page</h4>
-                            I helped the client by redesigning their full website to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://mortgagegirlfriends.com/join/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-		    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/collinmortgage.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Collin Mortgage - Landing Page</h4>
-                            I helped the client by redesigning their full website to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://collinmortgage.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/reikihealing-ie.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Reiki Healing</h4>
-                            Make the full website for Adrian Girlfriend "Liga" based on their requirements in WordPress and Elementor.
-                            <h5><a href="https://reikihealing.ie/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/healthierpractices.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Healthier Practices</h4>
-                            Another project for Jeromey: I've designed a mobile-optimized News website with  WordPress Newspaper theme for Jeromey.
-                            <h5><a href="https://healthierpractices.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/celticwhispers.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Banshee Apps ltd</h4>
-                            I am helping Adrian to maintain the full website from last 3 years and adding more features based on his requirements.
-                            <h5><a href="https://www.celticwhispers.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-			
-		<div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/seerarcher.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Seer & Archer</h4>
-                            I've designed a mobile-optimized website with WordPress Elementor.
-                            <h5><a href="https://seerarcher.co.uk/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-			
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/ultimatesoundzzz.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Ultimate Soundzzz</h4>
-                            I've designed a mobile-optimized News website with Newsflash WordPress theme for Jeromey.
-                            <h5><a href="https://ultimatesoundzzz.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/chrysalissa.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Chrysalissa</h4>
-                            Redesign the full website with existing features to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://chrysalissa.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/The-SoTeria-Foundation.png" alt="">
-                            <span>Case Study</span>
-                            <h4>The SoTeria Foundation</h4>
-                            I helped Noa Lakshmi to transfer the full website from WordPress to Kajabi with full functionality based on her requirements.
-                            <h5><a href="https://www.thesoteriafoundation.life/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/graceonline-landing.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Grace Online Landing Page </h4>
-                            After working first project, Kennith give me a another project to make the landing page in Thinkific platform with Course features.
-                            <h5><a href="https://courses.graceonline.co.za/courses/youth-pastors-recovering-from-pornography-addiction-basics"
-                                    target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/graceonline.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Grace Online</h4>
-                            I helped Kennith to redesign the full website in WordPress Elementor to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://graceonline.co.za/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/thinkdigital365.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Think Digital 365</h4>
-                            Another big project done for Jeromey. Make the full website in WordPress from scratch. Used Divi Theme in WordPress.
-                            <h5><a href="https://thinkdigital365.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/selfhelprobot.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Self Help Robot</h4>
-                            I helped Jeromey to redesign the full website in Elementor WordPress to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://selfhelprobot.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/sima.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Sima Financial Group</h4>
-                            Wedding was so big project for me. I helped the client to redesign the full website to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://simafinancialgroup.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/wpg.png" alt="">
-                            <span>Case Study</span>
-                            <h4>WPG Academy</h4>
-                            It was a business website with ecommerce functionality. I helped them to make the full website in WordPress with WooCommerce and add membership features.
-                            <h5><a href="https://wpg-academy.it/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/wedding1.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Wedding DJ in Melbourne</h4>
-                            Wedding was a different project for me. I helped the client to redesign the full website to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://www.weddingspartiesanything.com.au/" target="_blank">View Project</a>
-                            </h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/chefsmultifamily.png" alt="">
-                            <span>Case Study</span>
-                            <h4>big city chefs multi family</h4>
-                            I helped them to make the full Restaurant website in WordPress based on their requirements.
-                            <h5><a href="https://bigcitychefsmultifamily.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/visualtensor.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Visualtensor</h4>
-                            I helped them to make the full Business website in WordPress based on their requirements.
-                            <h5><a href="https://visualtensor.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/member-apccs.png" alt="member apccs">
-                            <span>Case Study</span>
-                            <h4>Membership Website by MemberPress</h4>
-                            After working APCCS website. I make APCCS Membership site in WordPress for Charis Lee.
-                            <h5><a href="https://member.apccs.org/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/apccs-web.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Divi Team Slider & MailChimp Form</h4>
-                            Make Team SLider by Divi Module and fix a lot of issue for APCCS website.
-                            <h5><a href="https://www.apccs.org/for-pastors/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/pinjaman-landing-page.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Project: eLoan Landing Page</h4>
-                            WM See wants a landing page with functional calculator. I make the landing page with functional calculator and functional table in WordPress.
-                            <h5><a href="http://nsepinjaman.onlineinternetquest.com/personal-loan/" target="_blank">View
-                                    Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/seekerslibrary.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Website by Thrive Theme</h4>
-                            Tanya wants a simple website for her seekers library to show podcast. I help her to make the full website by Godaddy page builder.
-                            <h5><a href="https://seekerslibrary.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/jamiehougham.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Project: Website Design</h4>
-                            I helped the insurance to make the full website with Contact form with modern looking and fully responsive features for all devices.
-                            <h5><a href="https://jamiehougham.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/wildmarksshopen.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Wild Marks Shopen</h4>
-                            He wants a very simple and modern website. So I make a simple eye-catchy website within his budget. He get 100% satisfaction.
-                            <h5><a href="http://wildmarksshopen.se/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/geneva-for-excel.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Geneva For Excel</h4>
-                            I helped the client to make a long landing page with contact form in WordPress with Excel screenshoots.
-                            <h5><a href="https://jujuconsultinggroup.com/geneva-for-excel/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/multigadget.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Project: Website Design</h4>
-                            I redesign Multi Gadget Company Website to make it more stylish, eye-catchy and user-friendly.
-                            <h5><a href="https://www.multigadget.insure/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="single-portfolio">
-                            <img src="assets/img/popup.png" alt="">
-                            <span>Case Study</span>
-                            <h4>Project: Popup Integration</h4>
-                            I helped to create a Popup Form in MailChimp and integrate into the WordPress site.
-                            <h5><a href="https://www.nxtgphysio.com/" target="_blank">View Project</a></h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 email-template-wrap">
-                        
-                        <div class="single-portfolio email-template">
-                            <img src="assets/img/email-template/christmas-watch-sale.png" alt="">
-                            <h4>MailChimp Email Template Design</h4>
-                        </div>
-
-                        <div class="single-portfolio email-template">
-                            <img src="assets/img/email-template/shworoom-template-1.jpg" alt="">
-                            <h4>MailChimp Email Template Design</h4>
-                        </div>
-
-                        <div class="single-portfolio email-template">
-                            <img src="assets/img/email-template/shworoom-template-2.jpg" alt="">
-                        </div>
-                        
-                        <div class="single-portfolio email-template">
-                            <img src="assets/img/email-template/shworoom-template-3.jpg" alt="">
-                        </div>                       
-                        
-                        
-                    </div>
-
-                </div>
-            </div>
-
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/ct-international.png" alt="CRS Council">
+            <div class="work-overlay"><a href="https://ct-international.co.za/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>CT International</h4><span>WordPress</span></div>
+        </div> 
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/solar-panel.png" alt="CRS Council">
+            <div class="work-overlay"><a href="https://www.solar-panel.co.za/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>SOLAR POWER SOLUTIONS</h4><span>WordPress</span></div>
         </div>
-    </section>
-    <!-- Latest Portfolio End -->
-
-
-    <!-- Footer Start -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7 text-left">
-                    <div class="footer-menu">
-                        <ul>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="works.html">Works</a></li>
-                            <li><a href="reviews.html">Reviews</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="pricing.html">Pricing</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-5 text-right">
-                    <div class="copyright">
-                        Copyright <span class="year"></span> @ <a href="index.html">SaifurPro</a> | All Rights Reserved.
-                    </div>
-                </div>
-            </div>
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/crscouncil.png" alt="CRS Council">
+            <div class="work-overlay"><a href="https://crscouncil.org/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>CRS Council Org</h4><span>WordPress</span></div>
         </div>
-    </footer>
-    <!-- Footer End -->
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/brick-smoke-kitchen.png" alt="Wedding DJ Melbourne">
+            <div class="work-overlay"><a href="https://bricksmokekitchen.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Brick Smoke Kitchen</h4><span>WordPress Landing Page</span></div>
+        </div>
 
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/sqcc.png" alt="SQCC Properties">
+            <div class="work-overlay"><a href="https://sqccproperties.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>SQCC Properties</h4><span>WordPress</span></div>
+        </div> 
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/agency-website.png" alt="Agency Website">
+            <div class="work-overlay"><a href="https://australianwebexperts.com.au/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Australian Web Experts</h4><span>WordPress</span></div>
+        </div>
 
-    <script type="text/javascript" src="assets/js/jquery-1.12.4.min.js"></script>
-    <!-- Bootstrap Js -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/js/all.min.js"></script>
-    <!-- Owl Carousel Js -->
-    <script type="text/javascript" src="assets/js/owl.carousel.min.js"></script>
-    <!-- Slick Nav -->
-    <script type="text/javascript" src="assets/js/jquery.slicknav.min.js"></script>
-    <!-- Main Js -->
-    <script type="text/javascript" src="assets/js/active.js"></script>
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/mortgagegirlfirends.png" alt="Mortgage Girlfriends">
+            <div class="work-overlay"><a href="https://mortgagegirlfriends.com/join/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Mortgage Girlfriends</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/jamiehougham.png" alt="Jamie Hougham">
+            <div class="work-overlay"><a href="https://jamiehougham.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Jamie Hougham</h4><span>WordPress</span></div>
+        </div>
+
+        
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/trinidadplumber.png" alt="Trinidad Plumber">
+            <div class="work-overlay"><a href="https://trinidadplumber.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Trinidad Plumber Website</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/titoma.png" alt="Titoma">
+            <div class="work-overlay"><a href="https://titoma.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Titoma — Electronics & Manufacturing</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/reikihealing.png" alt="Reiki Healing">
+            <div class="work-overlay"><a href="https://reikihealing.ie/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Reiki Healing</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/seer-archer.png" alt="Seer & Archer">
+            <div class="work-overlay"><a href="https://seerarcher.co.uk/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Seer & Archer</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/ultimatesoundzzz.png" alt="Ultimate Soundzzz">
+            <div class="work-overlay"><a href="https://ultimatesoundzzz.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Ultimate Soundzzz</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/soteriafoundation.png" alt="The SoTeria Foundation">
+            <div class="work-overlay"><a href="https://www.thesoteriafoundation.life/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>The SoTeria Foundation</h4><span>WordPress</span></div>
+        </div>
+
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/thinkdigital365.png" alt="Think Digital 365">
+            <div class="work-overlay"><a href="https://thinkdigital365.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Think Digital 365</h4><span>WordPress</span></div>
+        </div>
+
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/simafinancial.png" alt="Sima Financial Group">
+            <div class="work-overlay"><a href="https://simafinancialgroup.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Sima Financial Group</h4><span>WordPress</span></div>
+        </div>
+		
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/apccs-web.png" alt="Sima Financial Group">
+            <div class="work-overlay"><a href="https://www.apccs.org/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Local Churches</h4><span>WordPress</span></div>
+        </div>
+
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/multiweigh.png" alt="Wedding DJ Melbourne">
+            <div class="work-overlay"><a href="https://multiweigh.co.za/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Multi-Weigh Technologies</h4><span>WordPress</span></div>
+        </div> 
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/westech.png" alt="Wedding DJ Melbourne">
+            <div class="work-overlay"><a href="https://www.westech.co.za/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Westech - IT Partner</h4><span>WordPress</span></div>
+        </div> 
+		
+        <div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/weddingsparties.png" alt="Wedding DJ Melbourne">
+            <div class="work-overlay"><a href="https://www.weddingspartiesanything.com.au/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Wedding DJ in Melbourne</h4><span>WordPress</span></div>
+        </div>
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/prlivewire.png" alt="Wedding DJ Melbourne">
+            <div class="work-overlay"><a href="https://www.prlivewire.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Blog</h4><span>WordPress</span></div>
+        </div>
+		
+		<div class="work-card" data-category="wordpress">
+          <div class="work-img"><img src="assets/img/graceonline-landing.png" alt="Wedding DJ Melbourne">
+            <div class="work-overlay"><a href="https://courses.graceonline.co.za/courses/youth-pastors-recovering-from-pornography-addiction-basics" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Grace Online Landing Page</h4><span>WordPress</span></div>
+        </div>
+
+        <!-- ── WooCommerce ── -->
+		
+		<div class="work-card" data-category="woocommerce">
+          <div class="work-img"><img src="assets/img/imaswiss.png" alt="Celtic Whispers">
+            <div class="work-overlay"><a href="https://imaswiss.com/en/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Massage Academy</h4><span>WooCommerce</span></div>
+        </div>
+		
+        <div class="work-card" data-category="woocommerce">
+          <div class="work-img"><img src="assets/img/celticwhispers.png" alt="Celtic Whispers">
+            <div class="work-overlay"><a href="https://www.celticwhispers.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Celtic Whispers</h4><span>WooCommerce</span></div>
+        </div>
+
+		<div class="work-card" data-category="woocommerce">
+          <div class="work-img"><img src="assets/img/russon.png" alt="Celtic Whispers">
+            <div class="work-overlay"><a href="https://russon.co.za/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Russon</h4><span>WooCommerce</span></div>
+        </div>
+		
+		<div class="work-card" data-category="woocommerce">
+          <div class="work-img"><img src="assets/img/ozonemedicare.png" alt="Celtic Whispers">
+            <div class="work-overlay"><a href="https://www.ozonemedicare.com/" target="_blank">View Project</a></div></div>
+          <div class="work-info"><h4>Ozone Medicare</h4><span>WooCommerce</span></div>
+        </div>
+		
+        <!-- ── Email Templates ── -->
+        <div class="work-card" data-category="email">
+          <div class="work-img"><img src="assets/img/email-template/christmas-watch-sale.png" alt="Christmas Watch Sale">
+            <div class="work-overlay"><a href="assets/img/email-template/christmas-watch-sale.png">View Template</a></div></div>
+          <div class="work-info"><h4>Christmas Watch Sale</h4><span>Email Template</span></div>
+        </div>
+
+        <div class="work-card" data-category="email">
+          <div class="work-img"><img src="assets/img/email-template/shworoom-template-1.jpg" alt="Showroom Email 1">
+            <div class="work-overlay"><a href="assets/img/email-template/shworoom-template-1.jpg">View Template</a></div></div>
+          <div class="work-info"><h4>Showroom Template #1</h4><span>Email Template</span></div>
+        </div>
+
+        <div class="work-card" data-category="email">
+          <div class="work-img"><img src="assets/img/email-template/shworoom-template-2.jpg" alt="Showroom Email 2">
+            <div class="work-overlay"><a href="assets/img/email-template/shworoom-template-2.jpg">View Template</a></div></div>
+          <div class="work-info"><h4>Showroom Template #2</h4><span>Email Template</span></div>
+        </div>
+
+        <div class="work-card" data-category="email">
+          <div class="work-img"><img src="assets/img/email-template/shworoom-template-3.jpg" alt="Showroom Email 3">
+            <div class="work-overlay"><a href="assets/img/email-template/shworoom-template-3.jpg">View Template</a></div></div>
+          <div class="work-info"><h4>Showroom Template #3</h4><span>Email Template</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="font-size:20px;">Saifur<span>Pro</span></a>
+          <p>WordPress expert helping businesses build websites that convert visitors to customers.</p>
+          <div class="social-links" style="margin-top:20px;">
+            <a href="https://www.linkedin.com/in/saifurpro" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.facebook.com/hi.saifurpro" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="mailto:info.saifurpro@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="index.html">About</a>
+          <a href="works.html">Works</a>
+          <a href="reviews.html">Reviews</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <a href="#">WordPress Development</a>
+          <a href="#">WooCommerce</a>
+          <a href="#">Shopify</a>
+          <a href="#">Email Marketing</a>
+        </div>
+        <div class="footer-col">
+          <h5>More</h5>
+          <a href="pricing.html">Pricing</a>
+          <a href="faq.html">FAQ</a>
+          <a href="https://resume-wp.netlify.app/" target="_blank">Resume</a>
+          <a href="https://calendly.com/saifurpro/appointment" target="_blank">Book a Call</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright <span id="year"></span> © <a href="index.html" style="color:var(--accent);">SaifurPro</a> — All Rights Reserved.</span>
+        <span style="color:var(--text-dim);">WordPress Expert · Web Designer · Email Marketer · <a href="admin.html">Admin</a></span> 
+          
+      </div>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <img id="lightbox-img" src="" alt="">
+      <div class="lightbox-title" id="lightbox-title"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+
+    // ── Mobile nav ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const closeNav  = document.getElementById('closeNav');
+    hamburger.addEventListener('click', () => { mobileNav.classList.add('open'); hamburger.classList.add('hide'); });
+    closeNav.addEventListener('click',  () => { mobileNav.classList.remove('open'); hamburger.classList.remove('hide'); });
+
+    // ── Scroll animations ──
+    const observer = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    }), { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── Smart link handler ──
+    // External URL (http/https) → open in new tab
+    // Local image path → open lightbox popup
+    document.querySelectorAll('.work-overlay a').forEach(link => {
+      const href = link.getAttribute('href');
+      const isLocalImage = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(href) && !href.startsWith('http');
+
+      if (isLocalImage) {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const card = link.closest('.work-card');
+          const title = card.querySelector('h4')?.textContent || '';
+          openLightbox(href, title);
+        });
+      } else {
+        // Ensure external links always open in new tab
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+
+    function openLightbox(src, title) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-title').textContent = title;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+      if (e && e.target.closest('.lightbox-inner') && !e.target.closest('.lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ── Filter ──
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.work-card').forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+            card.style.animation = 'fadeIn 0.4s ease';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </body>
-
 </html>

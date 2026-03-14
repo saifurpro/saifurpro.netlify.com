@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uploads — SaifurPro Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ── Tab System ── */
+    .upload-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px;
+      margin-bottom: 36px;
+      width: fit-content;
+    }
+    .upload-tab {
+      padding: 10px 28px;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .upload-tab.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+    }
+    .upload-tab:not(.active):hover { color: var(--white); background: rgba(255,255,255,0.05); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Two-col layout ── */
+    .upload-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 32px;
+      align-items: start;
+    }
+    @media(max-width:900px){ .upload-layout { grid-template-columns: 1fr; } }
+
+    /* ── Form Card ── */
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+    }
+    .form-card h3 {
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .form-card > p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── GitHub Config Box ── */
+    .gh-config {
+      background: rgba(108,99,255,0.06);
+      border: 1px solid rgba(108,99,255,0.18);
+      border-radius: var(--radius-sm);
+      padding: 20px 22px;
+      margin-bottom: 28px;
+    }
+    .gh-config-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .gh-config-header span {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gh-config-header .toggle-icon { font-size: 11px; transition: transform 0.3s; }
+    .gh-config.open .toggle-icon { transform: rotate(180deg); }
+    .gh-config-body { display: none; margin-top: 18px; }
+    .gh-config.open .gh-config-body { display: block; }
+    .gh-saved-pill {
+      font-size: 11px;
+      background: rgba(67,232,216,0.12);
+      border: 1px solid rgba(67,232,216,0.25);
+      color: var(--accent3);
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    /* ── Star Rating Picker ── */
+    .star-picker {
+      display: flex;
+      gap: 6px;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+    .star-picker input { display: none; }
+    .star-picker label {
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--text-dim);
+      transition: color 0.15s, transform 0.15s;
+    }
+    .star-picker label:hover,
+    .star-picker label:hover ~ label,
+    .star-picker input:checked ~ label { color: #ffd700; }
+    .star-picker label:hover { transform: scale(1.15); }
+
+    /* ── Avatar Upload ── */
+    .avatar-upload-area {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .avatar-preview-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px dashed var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--text-dim);
+      transition: border-color 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+    .avatar-preview-wrap:hover { border-color: var(--accent); }
+    .avatar-preview-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-preview-wrap .avatar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(108,99,255,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-size: 18px;
+      color: #fff;
+    }
+    .avatar-preview-wrap:hover .avatar-overlay { opacity: 1; }
+    .avatar-info { font-size: 13px; color: var(--text-muted); }
+    .avatar-info strong { display: block; color: var(--white); font-size: 14px; margin-bottom: 4px; }
+
+    /* ── Preview Card ── */
+    .preview-panel { position: sticky; top: 100px; }
+    .preview-panel h4 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preview-panel h4::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .preview-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .preview-card .review-quote { font-size: 40px; color: var(--accent); line-height: 1; margin-bottom: 12px; font-family: Georgia, serif; }
+    .preview-card .preview-text { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; min-height: 60px; font-style: italic; }
+    .preview-card .preview-stars { display: flex; gap: 2px; margin-bottom: 16px; }
+    .preview-card .star { color: #ffd700; font-size: 13px; }
+    .preview-card .star.empty { color: var(--text-dim); }
+    .preview-card .review-author { display: flex; align-items: center; gap: 12px; }
+    .preview-card .preview-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--border);
+      background: var(--card); display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--text-dim); flex-shrink: 0;
+      overflow: hidden;
+    }
+    .preview-card .preview-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--white); }
+    .preview-card .preview-role { font-size: 12px; color: var(--text-muted); }
+    .preview-platform-badge {
+      position: absolute; top: 20px; right: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
+    }
+    .platform-upwork { background: rgba(20,163,20,0.12); color: #14a314; border: 1px solid rgba(20,163,20,0.2); }
+    .platform-fiverr { background: rgba(29,191,115,0.12); color: #1dbf73; border: 1px solid rgba(29,191,115,0.2); }
+    .platform-direct { background: rgba(108,99,255,0.12); color: var(--accent); border: 1px solid rgba(108,99,255,0.2); }
+    .platform-linkedin { background: rgba(0,119,181,0.12); color: #0077b5; border: 1px solid rgba(0,119,181,0.2); }
+    .platform-google { background: rgba(234,67,53,0.12); color: #ea4335; border: 1px solid rgba(234,67,53,0.2); }
+
+    /* ── Existing Reviews list ── */
+    .existing-reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .existing-review-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .existing-review-item:hover { border-color: rgba(108,99,255,0.3); }
+    .existing-review-item .delete-btn {
+      position: absolute; top: 12px; right: 12px;
+      width: 28px; height: 28px; border-radius: 6px;
+      background: rgba(255,101,132,0.1); border: 1px solid rgba(255,101,132,0.2);
+      color: var(--accent2); cursor: pointer; font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .existing-review-item .delete-btn:hover { background: rgba(255,101,132,0.2); }
+    .er-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-right: 36px; }
+    .er-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      object-fit: cover; background: var(--bg3);
+      border: 1px solid var(--border); flex-shrink: 0;
+    }
+    .er-name { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--white); }
+    .er-role { font-size: 11px; color: var(--text-muted); }
+    .er-text { font-size: 12px; color: var(--text-muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .er-stars { display: flex; gap: 2px; margin-bottom: 8px; }
+    .er-stars .star { font-size: 11px; color: #ffd700; }
+
+    /* ── Status ── */
+    #review-status, #portfolio-status {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      display: none;
+    }
+    .status-success { background: rgba(67,232,216,0.1); border: 1px solid rgba(67,232,216,0.3); color: var(--accent3); display: block !important; }
+    .status-error { background: rgba(255,101,132,0.1); border: 1px solid rgba(255,101,132,0.3); color: var(--accent2); display: block !important; }
+    .status-loading { background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.3); color: var(--accent); display: block !important; }
+
+    /* ── Admin lock screen ── */
+    .admin-lock {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(10,10,15,0.97);
+      backdrop-filter: blur(24px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px;
+    }
+    .admin-lock.hidden { display: none; }
+    .lock-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .lock-icon { font-size: 40px; margin-bottom: 16px; }
+    .lock-card h2 { font-size: 24px; color: var(--white); margin-bottom: 8px; }
+    .lock-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+    #lock-error { font-size: 13px; color: var(--accent2); margin-top: 10px; min-height: 20px; }
+
+    /* ── Progress bar ── */
+    .upload-progress {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 12px;
+      overflow: hidden;
+      display: none;
+    }
+    .upload-progress.show { display: block; }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN LOCK SCREEN -->
+  <div class="admin-lock" id="adminLock">
+    <div class="lock-card">
+      <div class="lock-icon">🔐</div>
+      <h2>Admin Access</h2>
+      <p>Enter the admin password to access the uploads panel.</p>
+      <div class="form-group" style="text-align:left;">
+        <label>Password</label>
+        <input type="password" id="admin-password" placeholder="Enter password..." onkeydown="if(event.key==='Enter') checkPassword()">
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center;margin-top:4px;" onclick="checkPassword()">
+        <i class="fas fa-unlock"></i> Unlock Panel
+      </button>
+      <div id="lock-error"></div>
+      
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/img/saifurpro-logo.svg" alt="SaifurPro" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Saifur<span>Pro</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">About</a>
+        <a href="works.html">Works</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary btn-sm">
+          <i class="fa fa-calendar"></i> Book Free Call
+        </a>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <span class="close-btn" id="closeNav">✕</span>
+    <a href="index.html">About</a>
+    <a href="works.html">Works</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://calendly.com/saifurpro/appointment" target="_blank" class="btn-primary">Book Free Call</a>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="tag">Admin Panel</div>
+      <h1>Content Uploads</h1>
+      <p>Add new reviews and portfolio items directly to your GitHub-hosted site.</p>
+      <div class="breadcrumb-bar">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Uploads</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <section style="padding:80px 0 120px;">
+    <div class="container">
+
+      <!-- TABS -->
+      <div class="upload-tabs">
+        <button class="upload-tab active" data-tab="reviews" onclick="switchTab('reviews')">
+          <i class="fas fa-star"></i> Add Review
+        </button>
+        <button class="upload-tab" data-tab="portfolio" onclick="switchTab('portfolio')">
+          <i class="fas fa-briefcase"></i> Add Portfolio
+        </button>
+        <button class="upload-tab" data-tab="manage" onclick="switchTab('manage')">
+          <i class="fas fa-list"></i> Manage Reviews
+        </button>
+      </div>
+
+      <!-- =========== TAB: ADD REVIEW =========== -->
+      <div class="tab-panel active" id="tab-reviews">
+        <div class="upload-layout">
+
+          <!-- FORM -->
+          <div class="form-card fade-up">
+            <h3><i class="fas fa-star" style="color:var(--accent);margin-right:8px;"></i>Add New Review</h3>
+            <p>Fill in the review details. The review will be saved to your GitHub repo and appear on the Reviews page.</p>
+
+            <!-- GitHub Config (collapsible) -->
+            <div class="gh-config" id="ghConfigReview">
+              <div class="gh-config-header" onclick="toggleConfig('ghConfigReview')">
+                <span><i class="fab fa-github"></i> GitHub Configuration <span class="gh-saved-pill" id="gh-saved-pill-r" style="display:none">✓ Saved</span></span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+              </div>
+              <div class="gh-config-body">
+                <div class="form-group">
+                  <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
+                  <input type="password" id="r-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>GitHub Username</label>
+                    <input type="text" id="r-gh-user" value="saifurpro">
+                  </div>
+                  <div class="form-group">
+                    <label>Repository</label>
+                    <input type="text" id="r-gh-repo" value="saifurpro.github.io">
+                  </div>
+                </div>
+                <button class="btn-outline btn-sm" onclick="saveGhConfig('review')"><i class="fas fa-save"></i> Save Config</button>
+              </div>
+            </div>
+
+            <!-- Reviewer Details -->
+            <div class="form-group">
+              <label>Reviewer Avatar</label>
+              <div class="avatar-upload-area">
+                <div class="avatar-preview-wrap" onclick="document.getElementById('r-avatar-input').click()">
+                  <span id="r-avatar-placeholder">👤</span>
+                  <img id="r-avatar-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+                  <div class="avatar-overlay"><i class="fas fa-camera"></i></div>
+                </div>
+                <input type="file" id="r-avatar-input" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+                <div class="avatar-info">
+                  <strong>Upload Photo</strong>
+                  Click to upload a client photo (JPG, PNG). Will be saved to <code style="color:var(--accent);font-size:11px;">assets/img/reviews/</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Reviewer Name <span style="color:var(--accent2)">*</span></label>
+                <input type="text" id="r-name" placeholder="John Smith" oninput="updatePreview()">
+              </div>
+              <div class="form-group">
+                <label>Role / Title</label>
+                <input type="text" id="r-role" placeholder="eCommerce Owner, USA" oninput="updatePreview()">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Platform <span style="color:var(--accent2)">*</span></label>
+                <select id="r-platform" onchange="updatePreview()">
+                  <option value="Upwork">Upwork</option>
+                  <option value="Fiverr">Fiverr</option>
+                  <option value="Direct">Direct</option>
+                  <option value="LinkedIn">LinkedIn</option>
+                  <option value="Google">Google</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Star Rating <span style="color:var(--accent2)">*</span></label>
+                <div class="star-picker" id="starPicker">
+                  <input type="radio" id="s5" name="rating" value="5" checked onchange="updatePreview()"><label for="s5">★</label>
+                  <input type="radio" id="s4" name="rating" value="4" onchange="updatePreview()"><label for="s4">★</label>
+                  <input type="radio" id="s3" name="rating" value="3" onchange="updatePreview()"><label for="s3">★</label>
+                  <input type="radio" id="s2" name="rating" value="2" onchange="updatePreview()"><label for="s2">★</label>
+                  <input type="radio" id="s1" name="rating" value="1" onchange="updatePreview()"><label for="s1">★</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Review Text <span style="color:var(--accent2)">*</span></label>
+              <textarea id="r-text" rows="4" placeholder="Write the client's review here..." oninput="updatePreview()"></textarea>
+            </div>
+
+            <button class="btn-primary" id="review-upload-btn" onclick="uploadReview()" style="width:100%;justify-content:center;">
+              <i class="fas fa-upload"></i> Save Review to GitHub
+            </button>
+            <div class="upload-progress" id="review-progress"><div class="progress-bar" id="review-progress-bar"></div></div>
+            <div id="review-status"></div>
+          </div>
+
+          <!-- LIVE PREVIEW -->
+          <div class="preview-panel fade-up">
+            <h4>Live Preview</h4>
+            <div class="preview-card" id="previewCard">
+              <div class="preview-platform-badge platform-upwork" id="preview-platform">Upwork</div>
+              <div class="preview-stars" id="preview-stars">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+              </div>
+              <div class="review-quote">"</div>
+              <p class="preview-text" id="preview-text">Your review text will appear here as you type...</p>
+              <div class="review-author">
+                <div class="preview-avatar" id="preview-avatar-wrap">
+                  <span>👤</span>
+                </div>
+                <div>
+                  <div class="preview-name" id="preview-name">Client Name</div>
+                  <div class="preview-role" id="preview-role">Role / Title</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- How it works -->
+            <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;">
+              <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">How it works</p>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--text-muted);">
+                  <span style="color:var(--accent);font-weight:700;flex-shrink:0;">①</span> Avatar image is uploaded to <code style="color:var(--accent3);">assets/img/reviews/</code> in your repo
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--text-muted);">
+                  <span style="color:var(--accent);font-weight:700;flex-shrink:0;">②</span> Review data is saved to <code style="color:var(--accent3);">data/reviews.json</code> in your repo
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--text-muted);">
+                  <span style="color:var(--accent);font-weight:700;flex-shrink:0;">③</span> GitHub Pages rebuilds your site (~60 sec) and the review appears live
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========== TAB: ADD PORTFOLIO =========== -->
+      <div class="tab-panel" id="tab-portfolio">
+        <div class="upload-layout">
+          <div class="form-card fade-up">
+            <h3><i class="fas fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>Add New Portfolio Item</h3>
+            <p>Upload a project screenshot. It will be committed to GitHub and added to the Works page automatically.</p>
+
+            <!-- GitHub Config (collapsible) -->
+            <div class="gh-config" id="ghConfigPortfolio">
+              <div class="gh-config-header" onclick="toggleConfig('ghConfigPortfolio')">
+                <span><i class="fab fa-github"></i> GitHub Configuration <span class="gh-saved-pill" id="gh-saved-pill-p" style="display:none">✓ Saved</span></span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+              </div>
+              <div class="gh-config-body">
+                <div class="form-group">
+                  <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
+                  <input type="password" id="p-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>GitHub Username</label>
+                    <input type="text" id="p-gh-user" value="saifurpro">
+                  </div>
+                  <div class="form-group">
+                    <label>Repository</label>
+                    <input type="text" id="p-gh-repo" value="saifurpro.github.io">
+                  </div>
+                </div>
+                <button class="btn-outline btn-sm" onclick="saveGhConfig('portfolio')"><i class="fas fa-save"></i> Save Config</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Project Title <span style="color:var(--accent2)">*</span></label>
+                <input type="text" id="p-title" placeholder="Awesome Client Website">
+              </div>
+              <div class="form-group">
+                <label>Category <span style="color:var(--accent2)">*</span></label>
+                <select id="p-category">
+                  <option value="wordpress">WordPress</option>
+                  <option value="woocommerce">WooCommerce</option>
+                  <option value="shopify">Shopify</option>
+                  <option value="email">Email Template</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Project Screenshot <span style="color:var(--accent2)">*</span></label>
+              <input type="file" id="p-image" accept="image/*" style="padding:10px 16px;" onchange="previewPortfolioImg(this)">
+            </div>
+
+            <div id="p-img-preview" style="display:none;margin-top:4px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);margin-bottom:4px;">
+              <img id="p-preview-img" style="width:100%;max-height:220px;object-fit:cover;">
+            </div>
+
+            <button class="btn-primary" id="portfolio-upload-btn" onclick="uploadPortfolioItem()" style="width:100%;justify-content:center;margin-top:8px;">
+              <i class="fas fa-upload"></i> Upload to GitHub
+            </button>
+            <div class="upload-progress" id="portfolio-progress"><div class="progress-bar" id="portfolio-progress-bar"></div></div>
+            <div id="portfolio-status"></div>
+          </div>
+
+          <!-- Info Panel -->
+          <div class="preview-panel fade-up">
+            <h4>Upload Info</h4>
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:20px;">
+              <div>
+                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:10px;">File Destination</p>
+                <div style="background:var(--bg3);border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--accent3);font-family:monospace;">assets/img/[slug].[ext]</div>
+              </div>
+              <div>
+                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:10px;">Categories</p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <span style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.2);color:var(--accent);padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;">WordPress</span>
+                  <span style="background:rgba(67,232,216,0.1);border:1px solid rgba(67,232,216,0.2);color:var(--accent3);padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;">WooCommerce</span>
+                  <span style="background:rgba(150,191,72,0.1);border:1px solid rgba(150,191,72,0.2);color:#96bf48;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;">Shopify</span>
+                  <span style="background:rgba(255,101,132,0.1);border:1px solid rgba(255,101,132,0.2);color:var(--accent2);padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;">Email</span>
+                </div>
+              </div>
+              <div>
+                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:10px;">Tips</p>
+                <ul style="font-size:12px;color:var(--text-muted);display:flex;flex-direction:column;gap:8px;">
+                  <li style="display:flex;gap:8px;"><i class="fas fa-check-circle" style="color:var(--accent3);margin-top:2px;flex-shrink:0;"></i> Use PNG or JPG, minimum 800px wide</li>
+                  <li style="display:flex;gap:8px;"><i class="fas fa-check-circle" style="color:var(--accent3);margin-top:2px;flex-shrink:0;"></i> 16:10 aspect ratio looks best in the grid</li>
+                  <li style="display:flex;gap:8px;"><i class="fas fa-check-circle" style="color:var(--accent3);margin-top:2px;flex-shrink:0;"></i> Keep file size under 2MB for fast loading</li>
+                  <li style="display:flex;gap:8px;"><i class="fas fa-check-circle" style="color:var(--accent3);margin-top:2px;flex-shrink:0;"></i> Site rebuilds in ~60 seconds on GitHub Pages</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========== TAB: MANAGE REVIEWS =========== -->
+      <div class="tab-panel" id="tab-manage">
+        <div class="form-card fade-up" style="max-width:100%;">
+          <h3><i class="fas fa-list" style="color:var(--accent);margin-right:8px;"></i>Manage Reviews</h3>
+          <p>View, preview, and delete existing reviews. Changes are committed directly to your GitHub repository.</p>
+
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:240px;margin:0;">
+              <label>GitHub Personal Access Token</label>
+              <input type="password" id="m-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            </div>
+            <button class="btn-outline" onclick="loadReviews()" style="flex-shrink:0;height:46px;">
+              <i class="fas fa-sync"></i> Load Reviews
+            </button>
+          </div>
+
+          <div id="manage-status" style="margin-top:14px;font-size:13px;color:var(--text-muted);"></div>
+
+          <div class="existing-reviews-grid" id="existingReviewsGrid">
+            <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">
+              <i class="fas fa-star" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>
+              Enter your token and click "Load Reviews" to see existing reviews.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="font-size:20px;">Saifur<span>Pro</span></a>
+          <p>WordPress expert helping businesses build websites that convert visitors to customers.</p>
+          <div class="social-links" style="margin-top:20px;">
+            <a href="https://www.linkedin.com/in/saifurpro" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.facebook.com/hi.saifurpro" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="mailto:info.saifurpro@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="index.html">About</a>
+          <a href="works.html">Works</a>
+          <a href="reviews.html">Reviews</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <a href="#">WordPress Development</a>
+          <a href="#">WooCommerce</a>
+          <a href="#">Shopify</a>
+          <a href="#">Email Marketing</a>
+        </div>
+        <div class="footer-col">
+          <h5>More</h5>
+          <a href="pricing.html">Pricing</a>
+          <a href="faq.html">FAQ</a>
+          <a href="https://resume-wp.netlify.app/" target="_blank">Resume</a>
+          <a href="https://calendly.com/saifurpro/appointment" target="_blank">Book a Call</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright <span id="year"></span> © <a href="index.html" style="color:var(--accent);">SaifurPro</a> — All Rights Reserved.</span>
+        <span style="color:var(--text-dim);">Admin Panel</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ────────────────────────────────
+       INIT
+    ──────────────────────────────── */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+    const hamburger = document.getElementById('hamburger');
+	const mobileNav = document.getElementById('mobileNav');
+	const closeNav = document.getElementById('closeNav');
+
+	hamburger.addEventListener('click', () => {
+	  mobileNav.classList.add('open');
+	  hamburger.style.display = 'none';
+	});
+	closeNav.addEventListener('click', () => {
+	  mobileNav.classList.remove('open');
+	  hamburger.style.display = '';
+	});
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* ────────────────────────────────
+       ADMIN LOCK
+    ──────────────────────────────── */
+    const ADMIN_PASS = '0000';
+    function checkPassword() {
+      const val = document.getElementById('admin-password').value;
+      if (val === ADMIN_PASS) {
+        document.getElementById('adminLock').classList.add('hidden');
+        localStorage.setItem('sp_admin_unlocked', '1');
+      } else {
+        document.getElementById('lock-error').textContent = '❌ Incorrect password. Try again.';
+        document.getElementById('admin-password').value = '';
+        document.getElementById('admin-password').focus();
+      }
+    }
+    // Auto-unlock if previously unlocked in this session
+    if (localStorage.getItem('sp_admin_unlocked') === '1') {
+      document.getElementById('adminLock').classList.add('hidden');
+    }
+    document.getElementById('admin-password').addEventListener('keydown', e => { if(e.key === 'Enter') checkPassword(); });
+
+    /* ────────────────────────────────
+       TABS
+    ──────────────────────────────── */
+    function switchTab(name) {
+      document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+      document.getElementById(`tab-${name}`).classList.add('active');
+    }
+
+    /* ────────────────────────────────
+       GH CONFIG
+    ──────────────────────────────── */
+    function toggleConfig(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    function saveGhConfig(type) {
+      const prefix = type === 'review' ? 'r' : 'p';
+      const token = document.getElementById(`${prefix}-gh-token`).value.trim();
+      const user = document.getElementById(`${prefix}-gh-user`).value.trim();
+      const repo = document.getElementById(`${prefix}-gh-repo`).value.trim();
+      if (token) {
+        localStorage.setItem('sp_gh_token', token);
+        localStorage.setItem('sp_gh_user', user);
+        localStorage.setItem('sp_gh_repo', repo);
+        document.getElementById(`gh-saved-pill-${prefix[0]}`).style.display = 'inline-block';
+        setTimeout(() => document.getElementById(`gh-saved-pill-${prefix[0]}`).style.display = 'none', 3000);
+      }
+    }
+    // Restore saved config
+    const savedToken = localStorage.getItem('sp_gh_token');
+    const savedUser = localStorage.getItem('sp_gh_user') || 'saifurpro';
+    const savedRepo = localStorage.getItem('sp_gh_repo') || 'saifurpro.github.io';
+    if (savedToken) {
+      ['r-gh-token','p-gh-token','m-gh-token'].forEach(id => document.getElementById(id).value = savedToken);
+    }
+    ['r-gh-user','p-gh-user'].forEach(id => document.getElementById(id).value = savedUser);
+    ['r-gh-repo','p-gh-repo'].forEach(id => document.getElementById(id).value = savedRepo);
+
+    /* ────────────────────────────────
+       AVATAR PREVIEW
+    ──────────────────────────────── */
+    let avatarBase64 = null;
+    let avatarExt = 'jpg';
+
+    function previewAvatar(input) {
+      const file = input.files[0];
+      if (!file) return;
+      avatarExt = file.name.split('.').pop().toLowerCase();
+      const reader = new FileReader();
+      reader.onload = e => {
+        avatarBase64 = e.target.result.split(',')[1];
+        const wrap = document.getElementById('r-avatar-preview');
+        wrap.src = e.target.result;
+        wrap.style.display = 'block';
+        document.getElementById('r-avatar-placeholder').style.display = 'none';
+        // Update preview card
+        const pa = document.getElementById('preview-avatar-wrap');
+        pa.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ────────────────────────────────
+       PORTFOLIO IMG PREVIEW
+    ──────────────────────────────── */
+    function previewPortfolioImg(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('p-preview-img').src = e.target.result;
+        document.getElementById('p-img-preview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ────────────────────────────────
+       LIVE PREVIEW UPDATE
+    ──────────────────────────────── */
+    const platformClasses = {
+      Upwork: 'platform-upwork', Fiverr: 'platform-fiverr',
+      Direct: 'platform-direct', LinkedIn: 'platform-linkedin', Google: 'platform-google'
+    };
+
+    function updatePreview() {
+      const name = document.getElementById('r-name').value || 'Client Name';
+      const role = document.getElementById('r-role').value || 'Role / Title';
+      const text = document.getElementById('r-text').value || 'Your review text will appear here as you type...';
+      const platform = document.getElementById('r-platform').value;
+      const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+
+      document.getElementById('preview-name').textContent = name;
+      document.getElementById('preview-role').textContent = role;
+      document.getElementById('preview-text').textContent = text;
+
+      const badge = document.getElementById('preview-platform');
+      badge.textContent = platform;
+      badge.className = `preview-platform-badge ${platformClasses[platform] || 'platform-direct'}`;
+
+      const starsEl = document.getElementById('preview-stars');
+      starsEl.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const s = document.createElement('span');
+        s.className = i <= rating ? 'star' : 'star empty';
+        s.textContent = '★';
+        starsEl.appendChild(s);
+      }
+    }
+
+    /* ────────────────────────────────
+       PROGRESS HELPERS
+    ──────────────────────────────── */
+    function showProgress(id, pct) {
+      const bar = document.getElementById(`${id}-progress`);
+      const fill = document.getElementById(`${id}-progress-bar`);
+      bar.classList.add('show');
+      fill.style.width = pct + '%';
+      if (pct >= 100) setTimeout(() => bar.classList.remove('show'), 800);
+    }
+    function setStatus(id, msg, type) {
+      const el = document.getElementById(`${id}-status`);
+      el.innerHTML = msg;
+      el.className = `status-${type}`;
+    }
+
+    /* ────────────────────────────────
+       GITHUB API HELPER
+    ──────────────────────────────── */
+	
+	/* ────────────────────────────────
+   GET DEFAULT BRANCH (auto-detect)
+	──────────────────────────────── */
+	
+	const _branchCache = {};
+	async function getDefaultBranch(token, user, repo) {
+	  const key = `${user}/${repo}`;
+	  if (_branchCache[key]) return _branchCache[key];
+	  const res = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+		headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+	  });
+	  if (!res.ok) throw new Error('Could not fetch repo info. Check your token and repo name.');
+	  const data = await res.json();
+	  _branchCache[key] = data.default_branch;
+	  return data.default_branch;
+	}
+	
+    async function ghPutFile(token, user, repo, path, content, message) {
+      let sha = null;
+      try {
+        const check = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+        });
+        if (check.ok) sha = (await check.json()).sha;
+      } catch(e) {}
+
+		const branch = await getDefaultBranch(token, user, repo);
+		const body = { message, content, branch };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'GitHub API error'); }
+      return res.json();
+    }
+
+    async function ghGetJSON(token, user, repo, path) {
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+      });
+      if (!res.ok) return { data: [], sha: null };
+      const file = await res.json();
+      const data = JSON.parse(atob(file.content.replace(/\n/g, '')));
+      return { data, sha: file.sha };
+    }
+
+    /* ────────────────────────────────
+       UPLOAD REVIEW
+    ──────────────────────────────── */
+    async function uploadReview() {
+      const token = document.getElementById('r-gh-token').value.trim();
+      const user = document.getElementById('r-gh-user').value.trim();
+      const repo = document.getElementById('r-gh-repo').value.trim();
+      const name = document.getElementById('r-name').value.trim();
+      const role = document.getElementById('r-role').value.trim();
+      const text = document.getElementById('r-text').value.trim();
+      const platform = document.getElementById('r-platform').value;
+      const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+      const btn = document.getElementById('review-upload-btn');
+
+      if (!token) return setStatus('review', '⚠️ Please enter your GitHub Token (expand the GitHub Configuration section).', 'error');
+      if (!name || !text) return setStatus('review', '⚠️ Reviewer name and review text are required.', 'error');
+
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+      btn.disabled = true;
+      setStatus('review', '⏳ Uploading to GitHub...', 'loading');
+      showProgress('review', 20);
+
+      try {
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        let avatarPath = `assets/img/reviews/${slug}.${avatarExt}`;
+
+        // 1. Upload avatar if provided
+        if (avatarBase64) {
+          showProgress('review', 35);
+          await ghPutFile(token, user, repo, avatarPath, avatarBase64, `Add reviewer avatar: ${name}`);
+        } else {
+          avatarPath = null;
+        }
+
+        showProgress('review', 60);
+
+        // 2. Load existing reviews.json or start fresh
+        let reviews = [];
+        let existingSha = null;
+        try {
+          const result = await ghGetJSON(token, user, repo, 'data/reviews.json');
+          reviews = result.data;
+          existingSha = result.sha;
+        } catch(e) {}
+
+        // 3. Add new review
+        const newReview = {
+          id: Date.now(),
+          name,
+          role: role || '',
+          text,
+          platform,
+          rating,
+          avatar: avatarPath,
+          date: new Date().toISOString().split('T')[0]
+        };
+        reviews.unshift(newReview);
+
+        showProgress('review', 80);
+
+        // 4. Save reviews.json
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(reviews, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+		const jsonBody = { message: `Add review from ${name}`, content: jsonContent, branch };
+        if (existingSha) jsonBody.sha = existingSha;
+
+        const jsonRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(jsonBody)
+        });
+        if (!jsonRes.ok) { const e = await jsonRes.json(); throw new Error(e.message); }
+
+        showProgress('review', 100);
+        setStatus('review', `✅ <strong>Review saved!</strong> "${name}'s" review has been committed to GitHub. It will appear live on the Reviews page after the site rebuilds (~60 seconds).`, 'success');
+
+        // Reset form
+        document.getElementById('r-name').value = '';
+        document.getElementById('r-role').value = '';
+        document.getElementById('r-text').value = '';
+        document.getElementById('r-avatar-input').value = '';
+        document.getElementById('r-avatar-preview').style.display = 'none';
+        document.getElementById('r-avatar-placeholder').style.display = '';
+        avatarBase64 = null;
+        updatePreview();
+
+      } catch(err) {
+        setStatus('review', `❌ <strong>Error:</strong> ${err.message}`, 'error');
+        showProgress('review', 0);
+      } finally {
+        btn.innerHTML = '<i class="fas fa-upload"></i> Save Review to GitHub';
+        btn.disabled = false;
+      }
+    }
+
+    /* ────────────────────────────────
+       UPLOAD PORTFOLIO ITEM
+    ──────────────────────────────── */
+    async function uploadPortfolioItem() {
+      const token = document.getElementById('p-gh-token').value.trim();
+      const user = document.getElementById('p-gh-user').value.trim();
+      const repo = document.getElementById('p-gh-repo').value.trim();
+      const title = document.getElementById('p-title').value.trim();
+      const category = document.getElementById('p-category').value;
+      const fileInput = document.getElementById('p-image');
+      const btn = document.getElementById('portfolio-upload-btn');
+
+      if (!token) return setStatus('portfolio', '⚠️ Please enter your GitHub Token.', 'error');
+      if (!title) return setStatus('portfolio', '⚠️ Project title is required.', 'error');
+      if (!fileInput.files[0]) return setStatus('portfolio', '⚠️ Please select a project screenshot.', 'error');
+
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+      btn.disabled = true;
+      setStatus('portfolio', '⏳ Uploading image to GitHub...', 'loading');
+      showProgress('portfolio', 30);
+
+      try {
+        const file = fileInput.files[0];
+        const ext = file.name.split('.').pop().toLowerCase();
+        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const imagePath = `assets/img/${slug}.${ext}`;
+
+        const base64 = await new Promise((res, rej) => {
+          const reader = new FileReader();
+          reader.onload = () => res(reader.result.split(',')[1]);
+          reader.onerror = rej;
+          reader.readAsDataURL(file);
+        });
+
+        showProgress('portfolio', 60);
+        await ghPutFile(token, user, repo, imagePath, base64, `Add portfolio item: ${title}`);
+        showProgress('portfolio', 100);
+
+        const categoryLabels = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template' };
+        setStatus('portfolio', `✅ <strong>Uploaded!</strong> "${title}" (${categoryLabels[category]}) has been committed to GitHub at <code>${imagePath}</code>. It will appear in your Works page after the site rebuilds (~60 seconds).`, 'success');
+
+        document.getElementById('p-title').value = '';
+        document.getElementById('p-image').value = '';
+        document.getElementById('p-img-preview').style.display = 'none';
+
+      } catch(err) {
+        setStatus('portfolio', `❌ <strong>Error:</strong> ${err.message}`, 'error');
+      } finally {
+        btn.innerHTML = '<i class="fas fa-upload"></i> Upload to GitHub';
+        btn.disabled = false;
+      }
+    }
+
+    /* ────────────────────────────────
+       LOAD & MANAGE REVIEWS
+    ──────────────────────────────── */
+    let loadedReviews = [];
+    let reviewsFileSha = null;
+
+    async function loadReviews() {
+      const token = document.getElementById('m-gh-token').value.trim();
+      const user = localStorage.getItem('sp_gh_user') || 'saifurpro';
+      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.github.io';
+      const statusEl = document.getElementById('manage-status');
+      const grid = document.getElementById('existingReviewsGrid');
+
+      if (!token) {
+        statusEl.textContent = '⚠️ Please enter your GitHub token above.';
+        statusEl.style.color = 'var(--accent2)';
+        return;
+      }
+
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading reviews from GitHub...';
+      statusEl.style.color = 'var(--accent)';
+
+      try {
+        const result = await ghGetJSON(token, user, repo, 'data/reviews.json');
+        loadedReviews = result.data;
+        reviewsFileSha = result.sha;
+
+        if (!loadedReviews.length) {
+          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-star" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No reviews found in data/reviews.json yet.</div>';
+          statusEl.textContent = 'No reviews found.';
+          return;
+        }
+
+        statusEl.textContent = `${loadedReviews.length} review${loadedReviews.length !== 1 ? 's' : ''} loaded.`;
+        statusEl.style.color = 'var(--accent3)';
+        renderReviewsList(token, user, repo);
+
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">Could not load reviews. Make sure <code>data/reviews.json</code> exists in your repo.</div>';
+      }
+    }
+
+    function renderReviewsList(token, user, repo) {
+      const grid = document.getElementById('existingReviewsGrid');
+      const platformColors = { Upwork:'#14a314', Fiverr:'#1dbf73', Direct:'var(--accent)', LinkedIn:'#0077b5', Google:'#ea4335' };
+
+      grid.innerHTML = loadedReviews.map((r, i) => {
+        const stars = Array.from({length:5}, (_,j) => `<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
+        const avatarHtml = r.avatar
+          ? `<img src="${r.avatar}" class="er-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22><circle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%236c63ff33%22/><text x=%2218%22 y=%2223%22 text-anchor=%22middle%22 font-size=%2214%22 fill=%22%236c63ff%22>${r.name[0]}</text></svg>'">`
+          : `<div class="er-avatar" style="display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);">${r.name[0].toUpperCase()}</div>`;
+        return `
+          <div class="existing-review-item" id="review-item-${r.id}">
+            <button class="delete-btn" onclick="deleteReview(${r.id}, '${token}', '${user}', '${repo}')" title="Delete review"><i class="fas fa-trash"></i></button>
+            <div class="er-header">
+              ${avatarHtml}
+              <div>
+                <div class="er-name">${r.name}</div>
+                <div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role || '—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div>
+              </div>
+            </div>
+            <div class="er-stars">${stars}</div>
+            <p class="er-text">${r.text}</p>
+            <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date || ''}</p>
+          </div>`;
+      }).join('');
+    }
+
+    async function deleteReview(id, token, user, repo) {
+      if (!confirm('Delete this review? This cannot be undone.')) return;
+      const statusEl = document.getElementById('manage-status');
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+      statusEl.style.color = 'var(--accent)';
+
+      try {
+        loadedReviews = loadedReviews.filter(r => r.id !== id);
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedReviews, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+		const body = { message: `Delete review #${id}`, content: jsonContent, branch };
+        if (reviewsFileSha) body.sha = reviewsFileSha;
+
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
+          method: 'PUT',
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+
+        const item = document.getElementById(`review-item-${id}`);
+        if (item) { item.style.opacity = '0'; item.style.transform = 'scale(0.9)'; item.style.transition = '0.3s'; setTimeout(() => item.remove(), 300); }
+        statusEl.textContent = 'Review deleted successfully.';
+        statusEl.style.color = 'var(--accent3)';
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+      }
+    }
+  </script>
+</body>
+</html>
