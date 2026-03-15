@@ -1,13 +1,5 @@
 [
   {
-    "id": 1773545636942,
-    "title": "Gear",
-    "category": "shopify",
-    "image": "assets/img/gear.png",
-    "url": "assets/img/gear.png",
-    "date": "2026-03-15"
-  },
-  {
     "id": 1,
     "title": "Holistic Healing & Massage Therapy",
     "category": "wordpress",
@@ -89,7 +81,7 @@
   },
   {
     "id": 11,
-    "title": "Titoma â Electronics & Manufacturing",
+    "title": "Titoma Ã¢ÂÂ Electronics & Manufacturing",
     "category": "wordpress",
     "image": "assets/img/titoma.png",
     "url": "https://titoma.com/",
