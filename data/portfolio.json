@@ -1,5 +1,13 @@
 [
   {
+    "id": 1773546528650,
+    "title": "Gear",
+    "category": "shopify",
+    "image": "assets/img/gear.png",
+    "url": "https://p1simgear.com.au/",
+    "date": "2026-03-15"
+  },
+  {
     "id": 1,
     "title": "Holistic Healing & Massage Therapy",
     "category": "wordpress",
@@ -81,7 +89,7 @@
   },
   {
     "id": 11,
-    "title": "Titoma Ã¢ÂÂ Electronics & Manufacturing",
+    "title": "Titoma ÃÂ¢ÃÂÃÂ Electronics & Manufacturing",
     "category": "wordpress",
     "image": "assets/img/titoma.png",
     "url": "https://titoma.com/",
