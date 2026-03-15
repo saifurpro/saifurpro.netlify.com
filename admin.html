@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -561,6 +560,11 @@
               <input type="file" id="p-image" accept="image/*" style="padding:10px 16px;" onchange="previewPortfolioImg(this)">
             </div>
 
+            <div class="form-group">
+              <label>Project URL <span style="color:var(--text-dim);font-size:12px;font-weight:400;">(optional — leave blank for image popup)</span></label>
+              <input type="url" id="p-url" placeholder="https://clientwebsite.com">
+            </div>
+
             <div id="p-img-preview" style="display:none;margin-top:4px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);margin-bottom:4px;">
               <img id="p-preview-img" style="width:100%;max-height:220px;object-fit:cover;">
             </div>
@@ -900,6 +904,7 @@
       const token = document.getElementById('r-gh-token').value.trim() || localStorage.getItem('sp_gh_token') || '';
       const title    = document.getElementById('p-title').value.trim();
       const category = document.getElementById('p-category').value;
+      const projectUrl = document.getElementById('p-url').value.trim();
       const fileInput = document.getElementById('p-image');
       const btn = document.getElementById('portfolio-upload-btn');
 
@@ -920,7 +925,7 @@
         await ghPutFile(token, imagePath, base64, `Add portfolio image: ${title}`);
         showProgress('portfolio',65);
         const { data: portfolio, sha } = await ghGetJSON(token, 'data/portfolio.json');
-        portfolio.unshift({ id:Date.now(), title, category, image:imagePath, url:imagePath, date:new Date().toISOString().split('T')[0] });
+        portfolio.unshift({ id:Date.now(), title, category, image:imagePath, url: projectUrl || imagePath, date:new Date().toISOString().split('T')[0] });
         showProgress('portfolio',82);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(portfolio, null, 2))));
         const body = { message:`Add portfolio: ${title}`, content:jsonContent, branch:GH_BRANCH };
@@ -932,7 +937,7 @@
         showProgress('portfolio',100);
         const catLabels={wordpress:'WordPress',woocommerce:'WooCommerce',shopify:'Shopify',email:'Email Template'};
         setStatus('portfolio', `✅ <strong>Uploaded!</strong> "${title}" (${catLabels[category]||category}) saved. Works page updates in ~60 seconds.`, 'success');
-        document.getElementById('p-title').value=''; document.getElementById('p-image').value=''; document.getElementById('p-img-preview').style.display='none';
+        document.getElementById('p-title').value=''; document.getElementById('p-url').value=''; document.getElementById('p-image').value=''; document.getElementById('p-img-preview').style.display='none';
       } catch(err) { setStatus('portfolio',`❌ <strong>Error:</strong> ${err.message}`,'error'); showProgress('portfolio',0); }
       finally { btn.innerHTML='<i class="fas fa-upload"></i> Upload to GitHub'; btn.disabled=false; }
     }
