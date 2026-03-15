@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -831,13 +830,8 @@
       };
     }
 
-    async function getDefaultBranch(token, user, repo) {
-      const res = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
-        headers: ghHeaders(token)
-      });
-      if (!res.ok) throw new Error('Cannot fetch repo info. Check your token and repo name.');
-      return (await res.json()).default_branch;
-    }
+    /* Branch is always master — commits go to master, auto-merge workflow pushes to gh-pages */
+    async function getDefaultBranch() { return 'master'; }
 
     async function ghPutFile(token, user, repo, path, content, message) {
       let sha = null;
@@ -848,7 +842,7 @@
         if (check.ok) sha = (await check.json()).sha;
       } catch(e) {}
 
-      const branch = await getDefaultBranch(token, user, repo);
+      const branch = 'master';
       const body = { message, content, branch };
       if (sha) body.sha = sha;
 
@@ -995,7 +989,7 @@
 
         showProgress('review', 80);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(reviews, null, 2))));
-        const branch = await getDefaultBranch(token, user, repo);
+        const branch = 'master';
         const body = { message: `Add review from ${name}`, content: jsonContent, branch };
         if (existingSha) body.sha = existingSha;
 
@@ -1074,7 +1068,7 @@
 
         showProgress('portfolio', 82);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(portfolio, null, 2))));
-        const branch = await getDefaultBranch(token, user, repo);
+        const branch = 'master';
         const body = { message: `Add portfolio: ${title}`, content: jsonContent, branch };
         if (existingSha) body.sha = existingSha;
 
@@ -1162,7 +1156,7 @@
       try {
         loadedReviews = loadedReviews.filter(r => r.id !== id);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedReviews, null, 2))));
-        const branch = await getDefaultBranch(token, user, repo);
+        const branch = 'master';
         const body = { message: `Delete review #${id}`, content: jsonContent, branch };
         if (reviewsFileSha) body.sha = reviewsFileSha;
         const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
@@ -1247,7 +1241,7 @@
       try {
         loadedPortfolio = loadedPortfolio.filter(p => p.id !== id);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedPortfolio, null, 2))));
-        const branch = await getDefaultBranch(token, user, repo);
+        const branch = 'master';
         const body = { message: `Delete portfolio #${id}`, content: jsonContent, branch };
         if (portfolioFileSha) body.sha = portfolioFileSha;
         const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/portfolio.json`, {
