@@ -412,20 +412,7 @@
             <h3><i class="fas fa-star" style="color:var(--accent);margin-right:8px;"></i>Add New Review</h3>
             <p>Fill in the review details. The review will be saved to your GitHub repo and appear on the Reviews page.</p>
 
-            <!-- GitHub Config (collapsible) -->
-            <div class="gh-config" id="ghConfigReview">
-              <div class="gh-config-header" onclick="toggleConfig('ghConfigReview')">
-                <span><i class="fab fa-github"></i> GitHub Configuration <span class="gh-saved-pill" id="gh-saved-pill-r" style="display:none">✓ Saved</span></span>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-              </div>
-              <div class="gh-config-body">
-                <div class="form-group">
-                  <label>Workflow Token <span style="color:var(--accent2)">*</span> <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(needs only <code>workflow</code> scope — safe to store)</span></label>
-                  <input type="password" id="wf-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-                </div>
-                <button class="btn-outline btn-sm" onclick="saveWfToken()"><i class="fas fa-save"></i> Save Token</button>
-              </div>
-            </div>
+
 
             <!-- Reviewer Details -->
             <div class="form-group">
@@ -537,20 +524,7 @@
             <h3><i class="fas fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>Add New Portfolio Item</h3>
             <p>Upload a project screenshot. It will be committed to GitHub and added to the Works page automatically.</p>
 
-            <!-- GitHub Config (collapsible) -->
-            <div class="gh-config" id="ghConfigPortfolio">
-              <div class="gh-config-header" onclick="toggleConfig('ghConfigPortfolio')">
-                <span><i class="fab fa-github"></i> GitHub Configuration <span class="gh-saved-pill" id="gh-saved-pill-p" style="display:none">✓ Saved</span></span>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-              </div>
-              <div class="gh-config-body">
-                <div class="form-group">
-                  <label>Workflow Token <span style="color:var(--accent2)">*</span> <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(same token as Add Review tab)</span></label>
-                  <input type="password" id="wf-token-p" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-                </div>
-                <button class="btn-outline btn-sm" onclick="saveWfToken()"><i class="fas fa-save"></i> Save Token</button>
-              </div>
-            </div>
+
 
             <div class="form-row">
               <div class="form-group">
@@ -712,7 +686,7 @@
        IMG_TOKEN  → only needs contents:write scope (for image uploads only)
        Workflows handle all JSON via SAIFURPRO_GH_TOCKEN secret
     ──────────────────────────────── */
-    const IMG_TOKEN = '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'; // paste token with contents:write scope only
+    const IMG_TOKEN = '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'; // ← replace this with your ghp_ token
     const GH_USER   = 'saifurpro';
     const GH_REPO   = 'saifurpro.netlify.com';
     const GH_BRANCH = 'master';
