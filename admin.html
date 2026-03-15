@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -420,20 +421,10 @@
               </div>
               <div class="gh-config-body">
                 <div class="form-group">
-                  <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
-                  <input type="password" id="r-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                  <label>Workflow Token <span style="color:var(--accent2)">*</span> <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(needs only <code>workflow</code> scope — safe to store)</span></label>
+                  <input type="password" id="wf-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
                 </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>GitHub Username</label>
-                    <input type="text" id="r-gh-user" value="saifurpro">
-                  </div>
-                  <div class="form-group">
-                    <label>Repository</label>
-                    <input type="text" id="r-gh-repo" value="saifurpro.netlify.com">
-                  </div>
-                </div>
-                <button class="btn-outline btn-sm" onclick="saveGhConfig('review')"><i class="fas fa-save"></i> Save Config</button>
+                <button class="btn-outline btn-sm" onclick="saveWfToken()"><i class="fas fa-save"></i> Save Token</button>
               </div>
             </div>
 
@@ -555,20 +546,10 @@
               </div>
               <div class="gh-config-body">
                 <div class="form-group">
-                  <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
-                  <input type="password" id="p-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                  <label>Workflow Token <span style="color:var(--accent2)">*</span> <span style="font-size:11px;color:var(--text-dim);font-weight:400;">(same token as Add Review tab)</span></label>
+                  <input type="password" id="wf-token-p" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
                 </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>GitHub Username</label>
-                    <input type="text" id="p-gh-user" value="saifurpro">
-                  </div>
-                  <div class="form-group">
-                    <label>Repository</label>
-                    <input type="text" id="p-gh-repo" value="saifurpro.netlify.com">
-                  </div>
-                </div>
-                <button class="btn-outline btn-sm" onclick="saveGhConfig('portfolio')"><i class="fas fa-save"></i> Save Config</button>
+                <button class="btn-outline btn-sm" onclick="saveWfToken()"><i class="fas fa-save"></i> Save Token</button>
               </div>
             </div>
 
@@ -642,10 +623,6 @@
           <p>View, preview, and delete existing reviews. Changes are committed directly to your GitHub repository.</p>
 
           <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
-            <div class="form-group" style="flex:1;min-width:240px;margin:0;">
-              <label>GitHub Personal Access Token</label>
-              <input type="password" id="m-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-            </div>
             <button class="btn-outline" onclick="loadReviews()" style="flex-shrink:0;height:46px;">
               <i class="fas fa-sync"></i> Load Reviews
             </button>
@@ -669,10 +646,6 @@
           <p>View and delete existing portfolio items. Changes are committed directly to your GitHub repository.</p>
 
           <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
-            <div class="form-group" style="flex:1;min-width:240px;margin:0;">
-              <label>GitHub Personal Access Token</label>
-              <input type="password" id="mp-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-            </div>
             <button class="btn-outline" onclick="loadPortfolio()" style="flex-shrink:0;height:46px;">
               <i class="fas fa-sync"></i> Load Portfolio
             </button>
@@ -734,8 +707,14 @@
     </div>
   </footer>
 
-
   <script>
+    /* ────────────────────────────────
+       CONFIG — only change these
+    ──────────────────────────────── */
+    const GH_USER = 'saifurpro';
+    const GH_REPO = 'saifurpro.netlify.com';
+    const GH_BRANCH = 'master';
+
     /* ────────────────────────────────
        INIT
     ──────────────────────────────── */
@@ -744,9 +723,9 @@
     window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
-    const closeNav  = document.getElementById('closeNav');
+    const closeNav = document.getElementById('closeNav');
     hamburger.addEventListener('click', () => { mobileNav.classList.add('open'); hamburger.style.display = 'none'; });
-    closeNav.addEventListener('click',  () => { mobileNav.classList.remove('open'); hamburger.style.display = ''; });
+    closeNav.addEventListener('click', () => { mobileNav.classList.remove('open'); hamburger.style.display = ''; });
     const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
@@ -780,96 +759,79 @@
       document.getElementById(`tab-${name}`).classList.add('active');
     }
 
+    /* ────────────────────────────────
+       WORKFLOW TOKEN (safe — workflow scope only)
+    ──────────────────────────────── */
+    function getToken() {
+      return localStorage.getItem('sp_wf_token') || '';
+    }
+    function saveWfToken() {
+      const t1 = document.getElementById('wf-token').value.trim();
+      const t2 = document.getElementById('wf-token-p').value.trim();
+      const token = t1 || t2;
+      if (!token) return;
+      localStorage.setItem('sp_wf_token', token);
+      document.getElementById('wf-token').value = token;
+      document.getElementById('wf-token-p').value = token;
+      document.getElementById('gh-saved-pill-r').style.display = 'inline-block';
+      document.getElementById('gh-saved-pill-p').style.display = 'inline-block';
+      setTimeout(() => {
+        document.getElementById('gh-saved-pill-r').style.display = 'none';
+        document.getElementById('gh-saved-pill-p').style.display = 'none';
+      }, 3000);
+    }
+    // Restore saved token
+    const _savedToken = getToken();
+    if (_savedToken) {
+      document.getElementById('wf-token').value = _savedToken;
+      document.getElementById('wf-token-p').value = _savedToken;
+    }
+
     function toggleConfig(id) {
       document.getElementById(id).classList.toggle('open');
     }
 
     /* ────────────────────────────────
-       GH CONFIG — save/restore from localStorage
+       WORKFLOW DISPATCH TRIGGER
     ──────────────────────────────── */
-    function saveGhConfig(type) {
-      const prefix = type === 'review' ? 'r' : 'p';
-      const token = document.getElementById(`${prefix}-gh-token`).value.trim();
-      const user  = document.getElementById(`${prefix}-gh-user`).value.trim();
-      const repo  = document.getElementById(`${prefix}-gh-repo`).value.trim();
-      if (!token) return;
-      localStorage.setItem('sp_gh_token', token);
-      localStorage.setItem('sp_gh_user',  user);
-      localStorage.setItem('sp_gh_repo',  repo);
-      // fill all token fields
-      ['r-gh-token','p-gh-token','m-gh-token','mp-gh-token'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = token;
+    async function triggerWorkflow(workflow, inputs) {
+      const token = getToken();
+      if (!token) throw new Error('No workflow token saved. Expand GitHub Configuration and save your token first.');
+      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/actions/workflows/${workflow}/dispatches`, {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ref: GH_BRANCH, inputs })
       });
-      const pillId = `gh-saved-pill-${prefix[0]}`;
-      const pill = document.getElementById(pillId);
-      if (pill) { pill.style.display = 'inline-block'; setTimeout(() => pill.style.display = 'none', 3000); }
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `HTTP ${res.status} — check your token has 'workflow' scope`);
+      }
     }
-
-    // Restore saved config on load
-    const _tok  = localStorage.getItem('sp_gh_token');
-    const _user = localStorage.getItem('sp_gh_user') || 'saifurpro';
-    const _repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
-    if (_tok) {
-      ['r-gh-token','p-gh-token','m-gh-token','mp-gh-token'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = _tok;
-      });
-    }
-    ['r-gh-user','p-gh-user'].forEach(id => { const el=document.getElementById(id); if(el) el.value=_user; });
-    ['r-gh-repo','p-gh-repo'].forEach(id => { const el=document.getElementById(id); if(el) el.value=_repo; });
 
     /* ────────────────────────────────
-       GITHUB API HELPERS
+       READ JSON (uses workflow token — read-only, safe)
     ──────────────────────────────── */
-    function ghHeaders(token) {
-      return {
-        Authorization: `token ${token}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      };
-    }
-
-    /* Branch is always master — commits go to master, auto-merge workflow pushes to gh-pages */
-    async function getDefaultBranch() { return 'master'; }
-
-    async function ghPutFile(token, user, repo, path, content, message) {
-      let sha = null;
-      try {
-        const check = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
-          headers: ghHeaders(token)
-        });
-        if (check.ok) sha = (await check.json()).sha;
-      } catch(e) {}
-
-      const branch = 'master';
-      const body = { message, content, branch };
-      if (sha) body.sha = sha;
-
-      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
-        method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
-      });
-      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'GitHub API error'); }
-      return res.json();
-    }
-
-    async function ghGetJSON(token, user, repo, path) {
-      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
-        headers: ghHeaders(token)
+    async function ghGetJSON(path) {
+      const token = getToken();
+      if (!token) return { data: [], sha: null };
+      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
       });
       if (!res.ok) return { data: [], sha: null };
       const file = await res.json();
-      return {
-        data: JSON.parse(atob(file.content.replace(/\n/g, ''))),
-        sha: file.sha
-      };
+      const data = JSON.parse(atob(file.content.replace(/\n/g, '')));
+      return { data, sha: file.sha };
     }
 
     /* ────────────────────────────────
        PROGRESS / STATUS HELPERS
     ──────────────────────────────── */
     function showProgress(id, pct) {
-      const bar  = document.getElementById(`${id}-progress`);
+      const bar = document.getElementById(`${id}-progress`);
       const fill = document.getElementById(`${id}-progress-bar`);
       bar.classList.add('show');
       fill.style.width = pct + '%';
@@ -894,8 +856,9 @@
       const reader = new FileReader();
       reader.onload = e => {
         avatarBase64 = e.target.result.split(',')[1];
-        document.getElementById('r-avatar-preview').src = e.target.result;
-        document.getElementById('r-avatar-preview').style.display = 'block';
+        const wrap = document.getElementById('r-avatar-preview');
+        wrap.src = e.target.result;
+        wrap.style.display = 'block';
         document.getElementById('r-avatar-placeholder').style.display = 'none';
         document.getElementById('preview-avatar-wrap').innerHTML =
           `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
@@ -925,11 +888,11 @@
       Direct:'platform-direct', LinkedIn:'platform-linkedin', Google:'platform-google'
     };
     function updatePreview() {
-      const name     = document.getElementById('r-name').value || 'Client Name';
-      const role     = document.getElementById('r-role').value || 'Role / Title';
-      const text     = document.getElementById('r-text').value || 'Your review text will appear here as you type...';
+      const name = document.getElementById('r-name').value || 'Client Name';
+      const role = document.getElementById('r-role').value || 'Role / Title';
+      const text = document.getElementById('r-text').value || 'Your review text will appear here as you type...';
       const platform = document.getElementById('r-platform').value;
-      const rating   = parseInt(document.querySelector('input[name="rating"]:checked').value);
+      const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
       document.getElementById('preview-name').textContent = name;
       document.getElementById('preview-role').textContent = role;
       document.getElementById('preview-text').textContent = text;
@@ -947,20 +910,500 @@
     }
 
     /* ────────────────────────────────
-       UPLOAD REVIEW
+       UPLOAD REVIEW → triggers add-review.yml
     ──────────────────────────────── */
     async function uploadReview() {
-      const token = document.getElementById('r-gh-token').value.trim();
-      const user  = document.getElementById('r-gh-user').value.trim();
-      const repo  = document.getElementById('r-gh-repo').value.trim();
       const name     = document.getElementById('r-name').value.trim();
       const role     = document.getElementById('r-role').value.trim();
       const text     = document.getElementById('r-text').value.trim();
       const platform = document.getElementById('r-platform').value;
-      const rating   = parseInt(document.querySelector('input[name="rating"]:checked').value);
+      const rating   = document.querySelector('input[name="rating"]:checked').value;
       const btn      = document.getElementById('review-upload-btn');
 
-      if (!token) return setStatus('review', '⚠️ Please enter your GitHub Token in GitHub Configuration above.', 'error');
+      if (!name || !text) return setStatus('review', '⚠️ Reviewer name and review text are required.', 'error');
+      if (!getToken()) return setStatus('review', '⚠️ Please expand GitHub Configuration and save your workflow token first.', 'error');
+
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering workflow...';
+      btn.disabled = true;
+      setStatus('review', '⏳ Triggering GitHub Action...', 'loading');
+      showProgress('review', 40);
+
+      try {
+        await triggerWorkflow('add-review.yml', {
+          name, role, text, platform, rating,
+          avatar_base64: avatarBase64 || '',
+          avatar_ext: avatarExt
+        });
+
+        showProgress('review', 100);
+        setStatus('review', `✅ <strong>Workflow triggered!</strong> "${name}'s" review is being added by GitHub Actions. It will appear live in ~60 seconds after the site rebuilds.`, 'success');
+
+        // Reset form
+        document.getElementById('r-name').value = '';
+        document.getElementById('r-role').value = '';
+        document.getElementById('r-text').value = '';
+        document.getElementById('r-avatar-input').value = '';
+        document.getElementById('r-avatar-preview').style.display = 'none';
+        document.getElementById('r-avatar-placeholder').style.display = '';
+        avatarBase64 = null;
+        updatePreview();
+
+      } catch(err) {
+        setStatus('review', `❌ <strong>Error:</strong> ${err.message}`, 'error');
+        showProgress('review', 0);
+      } finally {
+        btn.innerHTML = '<i class="fas fa-upload"></i> Save Review to GitHub';
+        btn.disabled = false;
+      }
+    }
+
+    /* ────────────────────────────────
+       UPLOAD PORTFOLIO → triggers add-portfolio.yml
+    ──────────────────────────────── */
+    async function uploadPortfolioItem() {
+      const title     = document.getElementById('p-title').value.trim();
+      const category  = document.getElementById('p-category').value;
+      const projectUrl = document.getElementById('p-url') ? document.getElementById('p-url').value.trim() : '';
+      const fileInput = document.getElementById('p-image');
+      const btn       = document.getElementById('portfolio-upload-btn');
+
+      if (!title) return setStatus('portfolio', '⚠️ Project title is required.', 'error');
+      if (!fileInput.files[0]) return setStatus('portfolio', '⚠️ Please select a project screenshot.', 'error');
+      if (!getToken()) return setStatus('portfolio', '⚠️ Please expand GitHub Configuration and save your workflow token first.', 'error');
+
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering workflow...';
+      btn.disabled = true;
+      setStatus('portfolio', '⏳ Triggering GitHub Action...', 'loading');
+      showProgress('portfolio', 40);
+
+      try {
+        const file = fileInput.files[0];
+        const ext = file.name.split('.').pop().toLowerCase();
+        const image_base64 = await new Promise((res, rej) => {
+          const reader = new FileReader();
+          reader.onload = () => res(reader.result.split(',')[1]);
+          reader.onerror = rej;
+          reader.readAsDataURL(file);
+        });
+
+        await triggerWorkflow('add-portfolio.yml', {
+          title, category,
+          url: projectUrl,
+          image_base64,
+          image_ext: ext
+        });
+
+        showProgress('portfolio', 100);
+        setStatus('portfolio', `✅ <strong>Workflow triggered!</strong> "${title}" is being added by GitHub Actions. It will appear on the Works page in ~60 seconds.`, 'success');
+
+        document.getElementById('p-title').value = '';
+        if (document.getElementById('p-url')) document.getElementById('p-url').value = '';
+        document.getElementById('p-image').value = '';
+        document.getElementById('p-img-preview').style.display = 'none';
+
+      } catch(err) {
+        setStatus('portfolio', `❌ <strong>Error:</strong> ${err.message}`, 'error');
+        showProgress('portfolio', 0);
+      } finally {
+        btn.innerHTML = '<i class="fas fa-upload"></i> Upload to GitHub';
+        btn.disabled = false;
+      }
+    }
+
+    /* ────────────────────────────────
+       LOAD REVIEWS (read-only, safe)
+    ──────────────────────────────── */
+    let loadedReviews = [];
+
+    async function loadReviews() {
+      const statusEl = document.getElementById('manage-status');
+      const grid = document.getElementById('existingReviewsGrid');
+      if (!getToken()) {
+        statusEl.textContent = '⚠️ Save your workflow token in GitHub Configuration first.';
+        statusEl.style.color = 'var(--accent2)';
+        return;
+      }
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading reviews...';
+      statusEl.style.color = 'var(--accent)';
+      try {
+        const result = await ghGetJSON('data/reviews.json');
+        loadedReviews = result.data;
+        if (!loadedReviews.length) {
+          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-star" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No reviews found.</div>';
+          statusEl.textContent = 'No reviews found.';
+          return;
+        }
+        statusEl.textContent = `${loadedReviews.length} review${loadedReviews.length !== 1 ? 's' : ''} loaded.`;
+        statusEl.style.color = 'var(--accent3)';
+        renderReviewsList();
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+      }
+    }
+
+    function renderReviewsList() {
+      const grid = document.getElementById('existingReviewsGrid');
+      const platformColors = { Upwork:'#14a314', Fiverr:'#1dbf73', Direct:'var(--accent)', LinkedIn:'#0077b5', Google:'#ea4335' };
+      grid.innerHTML = loadedReviews.map(r => {
+        const stars = Array.from({length:5}, (_,j) => `<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
+        const avatarHtml = r.avatar
+          ? `<img src="${r.avatar}" class="er-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22><circle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%236c63ff33%22/><text x=%2218%22 y=%2223%22 text-anchor=%22middle%22 font-size=%2214%22 fill=%22%236c63ff%22>${r.name[0]}</text></svg>'">`
+          : `<div class="er-avatar" style="display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);">${r.name[0].toUpperCase()}</div>`;
+        return `
+          <div class="existing-review-item" id="review-item-${r.id}">
+            <button class="delete-btn" onclick="deleteReview(${r.id})" title="Delete review"><i class="fas fa-trash"></i></button>
+            <div class="er-header">
+              ${avatarHtml}
+              <div>
+                <div class="er-name">${r.name}</div>
+                <div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role || '—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div>
+              </div>
+            </div>
+            <div class="er-stars">${stars}</div>
+            <p class="er-text">${r.text}</p>
+            <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date || ''}</p>
+          </div>`;
+      }).join('');
+    }
+
+    async function deleteReview(id) {
+      if (!confirm('Delete this review? This cannot be undone.')) return;
+      const statusEl = document.getElementById('manage-status');
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering delete workflow...';
+      statusEl.style.color = 'var(--accent)';
+      try {
+        await triggerWorkflow('delete-item.yml', { type: 'review', id: String(id) });
+        const item = document.getElementById(`review-item-${id}`);
+        if (item) { item.style.opacity='0'; item.style.transform='scale(0.9)'; item.style.transition='0.3s'; setTimeout(()=>item.remove(),300); }
+        statusEl.textContent = '✅ Delete workflow triggered. Review will be removed in ~30 seconds.';
+        statusEl.style.color = 'var(--accent3)';
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+      }
+    }
+
+    /* ────────────────────────────────
+       LOAD PORTFOLIO (read-only, safe)
+    ──────────────────────────────── */
+    let loadedPortfolio = [];
+    const categoryLabelsMap = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template', lead:'Lead Generation' };
+    const categoryColors = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
+
+    async function loadPortfolio() {
+      const statusEl = document.getElementById('manage-portfolio-status');
+      const grid = document.getElementById('existingPortfolioGrid');
+      if (!getToken()) {
+        statusEl.textContent = '⚠️ Save your workflow token in GitHub Configuration first.';
+        statusEl.style.color = 'var(--accent2)';
+        return;
+      }
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading portfolio...';
+      statusEl.style.color = 'var(--accent)';
+      try {
+        const result = await ghGetJSON('data/portfolio.json');
+        loadedPortfolio = result.data;
+        if (!loadedPortfolio.length) {
+          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-briefcase" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No portfolio items found.</div>';
+          statusEl.textContent = 'No items found.';
+          return;
+        }
+        statusEl.textContent = `${loadedPortfolio.length} item${loadedPortfolio.length !== 1 ? 's' : ''} loaded.`;
+        statusEl.style.color = 'var(--accent3)';
+        renderPortfolioList();
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+      }
+    }
+
+    function renderPortfolioList() {
+      const grid = document.getElementById('existingPortfolioGrid');
+      grid.innerHTML = loadedPortfolio.map(item => {
+        const catLabel = categoryLabelsMap[item.category] || item.category;
+        const catColor = categoryColors[item.category] || 'var(--text-muted)';
+        const isLocal = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
+        return `
+          <div class="existing-review-item" id="portfolio-item-${item.id}">
+            <button class="delete-btn" onclick="deletePortfolioItem(${item.id})" title="Delete item"><i class="fas fa-trash"></i></button>
+            <div style="width:100%;height:110px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:var(--bg3);border:1px solid var(--border);">
+              <img src="${item.image}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+            </div>
+            <div class="er-name" style="padding-right:32px;">${item.title}</div>
+            <div style="margin-top:4px;margin-bottom:8px;">
+              <span style="font-size:10px;font-weight:700;color:${catColor};padding:2px 8px;border-radius:100px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);">${catLabel}</span>
+            </div>
+            ${!isLocal
+              ? `<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`
+              : `<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`
+            }
+            <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date || ''}</p>
+          </div>`;
+      }).join('');
+    }
+
+    async function deletePortfolioItem(id) {
+      if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
+      const statusEl = document.getElementById('manage-portfolio-status');
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering delete workflow...';
+      statusEl.style.color = 'var(--accent)';
+      try {
+        await triggerWorkflow('delete-item.yml', { type: 'portfolio', id: String(id) });
+        const el = document.getElementById(`portfolio-item-${id}`);
+        if (el) { el.style.opacity='0'; el.style.transform='scale(0.9)'; el.style.transition='0.3s'; setTimeout(()=>el.remove(),300); }
+        statusEl.textContent = '✅ Delete workflow triggered. Item will be removed in ~30 seconds.';
+        statusEl.style.color = 'var(--accent3)';
+      } catch(err) {
+        statusEl.textContent = `❌ Error: ${err.message}`;
+        statusEl.style.color = 'var(--accent2)';
+      }
+    }
+
+  </script>
+</body>
+</html>
+    /* ────────────────────────────────
+       INIT
+    ──────────────────────────────── */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+    const hamburger = document.getElementById('hamburger');
+	const mobileNav = document.getElementById('mobileNav');
+	const closeNav = document.getElementById('closeNav');
+
+	hamburger.addEventListener('click', () => {
+	  mobileNav.classList.add('open');
+	  hamburger.style.display = 'none';
+	});
+	closeNav.addEventListener('click', () => {
+	  mobileNav.classList.remove('open');
+	  hamburger.style.display = '';
+	});
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* ────────────────────────────────
+       ADMIN LOCK
+    ──────────────────────────────── */
+    const ADMIN_PASS = '0000';
+    function checkPassword() {
+      const val = document.getElementById('admin-password').value;
+      if (val === ADMIN_PASS) {
+        document.getElementById('adminLock').classList.add('hidden');
+        localStorage.setItem('sp_admin_unlocked', '1');
+      } else {
+        document.getElementById('lock-error').textContent = '❌ Incorrect password. Try again.';
+        document.getElementById('admin-password').value = '';
+        document.getElementById('admin-password').focus();
+      }
+    }
+    // Auto-unlock if previously unlocked in this session
+    if (localStorage.getItem('sp_admin_unlocked') === '1') {
+      document.getElementById('adminLock').classList.add('hidden');
+    }
+    document.getElementById('admin-password').addEventListener('keydown', e => { if(e.key === 'Enter') checkPassword(); });
+
+    /* ────────────────────────────────
+       TABS
+    ──────────────────────────────── */
+    function switchTab(name) {
+      document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+      document.getElementById(`tab-${name}`).classList.add('active');
+    }
+
+    /* ────────────────────────────────
+       GH CONFIG
+    ──────────────────────────────── */
+    function toggleConfig(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    function saveGhConfig(type) {
+      const prefix = type === 'review' ? 'r' : 'p';
+      const token = document.getElementById(`${prefix}-gh-token`).value.trim();
+      const user = document.getElementById(`${prefix}-gh-user`).value.trim();
+      const repo = document.getElementById(`${prefix}-gh-repo`).value.trim();
+      if (token) {
+        localStorage.setItem('sp_gh_token', token);
+        localStorage.setItem('sp_gh_user', user);
+        localStorage.setItem('sp_gh_repo', repo);
+        document.getElementById(`gh-saved-pill-${prefix[0]}`).style.display = 'inline-block';
+        setTimeout(() => document.getElementById(`gh-saved-pill-${prefix[0]}`).style.display = 'none', 3000);
+      }
+    }
+    // Restore saved config
+    const savedToken = localStorage.getItem('sp_gh_token');
+    const savedUser = localStorage.getItem('sp_gh_user') || 'saifurpro';
+    const savedRepo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
+    if (savedToken) {
+      ['r-gh-token','p-gh-token','m-gh-token','mp-gh-token'].forEach(id => document.getElementById(id).value = savedToken);
+    }
+    ['r-gh-user','p-gh-user'].forEach(id => document.getElementById(id).value = savedUser);
+    ['r-gh-repo','p-gh-repo'].forEach(id => document.getElementById(id).value = savedRepo);
+
+    /* ────────────────────────────────
+       AVATAR PREVIEW
+    ──────────────────────────────── */
+    let avatarBase64 = null;
+    let avatarExt = 'jpg';
+
+    function previewAvatar(input) {
+      const file = input.files[0];
+      if (!file) return;
+      avatarExt = file.name.split('.').pop().toLowerCase();
+      const reader = new FileReader();
+      reader.onload = e => {
+        avatarBase64 = e.target.result.split(',')[1];
+        const wrap = document.getElementById('r-avatar-preview');
+        wrap.src = e.target.result;
+        wrap.style.display = 'block';
+        document.getElementById('r-avatar-placeholder').style.display = 'none';
+        // Update preview card
+        const pa = document.getElementById('preview-avatar-wrap');
+        pa.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ────────────────────────────────
+       PORTFOLIO IMG PREVIEW
+    ──────────────────────────────── */
+    function previewPortfolioImg(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('p-preview-img').src = e.target.result;
+        document.getElementById('p-img-preview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ────────────────────────────────
+       LIVE PREVIEW UPDATE
+    ──────────────────────────────── */
+    const platformClasses = {
+      Upwork: 'platform-upwork', Fiverr: 'platform-fiverr',
+      Direct: 'platform-direct', LinkedIn: 'platform-linkedin', Google: 'platform-google'
+    };
+
+    function updatePreview() {
+      const name = document.getElementById('r-name').value || 'Client Name';
+      const role = document.getElementById('r-role').value || 'Role / Title';
+      const text = document.getElementById('r-text').value || 'Your review text will appear here as you type...';
+      const platform = document.getElementById('r-platform').value;
+      const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+
+      document.getElementById('preview-name').textContent = name;
+      document.getElementById('preview-role').textContent = role;
+      document.getElementById('preview-text').textContent = text;
+
+      const badge = document.getElementById('preview-platform');
+      badge.textContent = platform;
+      badge.className = `preview-platform-badge ${platformClasses[platform] || 'platform-direct'}`;
+
+      const starsEl = document.getElementById('preview-stars');
+      starsEl.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const s = document.createElement('span');
+        s.className = i <= rating ? 'star' : 'star empty';
+        s.textContent = '★';
+        starsEl.appendChild(s);
+      }
+    }
+
+    /* ────────────────────────────────
+       PROGRESS HELPERS
+    ──────────────────────────────── */
+    function showProgress(id, pct) {
+      const bar = document.getElementById(`${id}-progress`);
+      const fill = document.getElementById(`${id}-progress-bar`);
+      bar.classList.add('show');
+      fill.style.width = pct + '%';
+      if (pct >= 100) setTimeout(() => bar.classList.remove('show'), 800);
+    }
+    function setStatus(id, msg, type) {
+      const el = document.getElementById(`${id}-status`);
+      el.innerHTML = msg;
+      el.className = `status-${type}`;
+    }
+
+    /* ────────────────────────────────
+       GITHUB API HELPER
+    ──────────────────────────────── */
+	
+	/* ────────────────────────────────
+   GET DEFAULT BRANCH (auto-detect)
+	──────────────────────────────── */
+	
+	const _branchCache = {};
+	async function getDefaultBranch(token, user, repo) {
+	  const key = `${user}/${repo}`;
+	  if (_branchCache[key]) return _branchCache[key];
+	  const res = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+		headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+	  });
+	  if (!res.ok) throw new Error('Could not fetch repo info. Check your token and repo name.');
+	  const data = await res.json();
+	  _branchCache[key] = data.default_branch;
+	  return data.default_branch;
+	}
+	
+    async function ghPutFile(token, user, repo, path, content, message) {
+      let sha = null;
+      try {
+        const check = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+        });
+        if (check.ok) sha = (await check.json()).sha;
+      } catch(e) {}
+
+		const branch = await getDefaultBranch(token, user, repo);
+		const body = { message, content, branch };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'GitHub API error'); }
+      return res.json();
+    }
+
+    async function ghGetJSON(token, user, repo, path) {
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+      });
+      if (!res.ok) return { data: [], sha: null };
+      const file = await res.json();
+      const data = JSON.parse(atob(file.content.replace(/\n/g, '')));
+      return { data, sha: file.sha };
+    }
+
+    /* ────────────────────────────────
+       UPLOAD REVIEW
+    ──────────────────────────────── */
+    async function uploadReview() {
+      const token = document.getElementById('r-gh-token').value.trim();
+      const user = document.getElementById('r-gh-user').value.trim();
+      const repo = document.getElementById('r-gh-repo').value.trim();
+      const name = document.getElementById('r-name').value.trim();
+      const role = document.getElementById('r-role').value.trim();
+      const text = document.getElementById('r-text').value.trim();
+      const platform = document.getElementById('r-platform').value;
+      const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+      const btn = document.getElementById('review-upload-btn');
+
+      if (!token) return setStatus('review', '⚠️ Please enter your GitHub Token (expand the GitHub Configuration section).', 'error');
       if (!name || !text) return setStatus('review', '⚠️ Reviewer name and review text are required.', 'error');
 
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
@@ -970,37 +1413,63 @@
 
       try {
         const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        let avatarPath = null;
+        let avatarPath = `assets/img/reviews/${slug}.${avatarExt}`;
 
+        // 1. Upload avatar if provided
         if (avatarBase64) {
-          avatarPath = `assets/img/reviews/${slug}.${avatarExt}`;
           showProgress('review', 35);
           await ghPutFile(token, user, repo, avatarPath, avatarBase64, `Add reviewer avatar: ${name}`);
+        } else {
+          avatarPath = null;
         }
 
         showProgress('review', 60);
 
-        const { data: reviews, sha: existingSha } = await ghGetJSON(token, user, repo, 'data/reviews.json');
-        reviews.unshift({
-          id: Date.now(), name, role, text, platform, rating,
+        // 2. Load existing reviews.json or start fresh
+        let reviews = [];
+        let existingSha = null;
+        try {
+          const result = await ghGetJSON(token, user, repo, 'data/reviews.json');
+          reviews = result.data;
+          existingSha = result.sha;
+        } catch(e) {}
+
+        // 3. Add new review
+        const newReview = {
+          id: Date.now(),
+          name,
+          role: role || '',
+          text,
+          platform,
+          rating,
           avatar: avatarPath,
           date: new Date().toISOString().split('T')[0]
-        });
+        };
+        reviews.unshift(newReview);
 
         showProgress('review', 80);
-        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(reviews, null, 2))));
-        const branch = 'master';
-        const body = { message: `Add review from ${name}`, content: jsonContent, branch };
-        if (existingSha) body.sha = existingSha;
 
-        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
-          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+        // 4. Save reviews.json
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(reviews, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+		const jsonBody = { message: `Add review from ${name}`, content: jsonContent, branch };
+        if (existingSha) jsonBody.sha = existingSha;
+
+        const jsonRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(jsonBody)
         });
-        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+        if (!jsonRes.ok) { const e = await jsonRes.json(); throw new Error(e.message); }
 
         showProgress('review', 100);
-        setStatus('review', `✅ <strong>Review saved!</strong> "${name}'s" review committed to GitHub. It will appear live in ~60 seconds.`, 'success');
+        setStatus('review', `✅ <strong>Review saved!</strong> "${name}'s" review has been committed to GitHub. It will appear live on the Reviews page after the site rebuilds (~60 seconds).`, 'success');
 
+        // Reset form
         document.getElementById('r-name').value = '';
         document.getElementById('r-role').value = '';
         document.getElementById('r-text').value = '';
@@ -1024,26 +1493,25 @@
     ──────────────────────────────── */
     async function uploadPortfolioItem() {
       const token = document.getElementById('p-gh-token').value.trim();
-      const user  = document.getElementById('p-gh-user').value.trim();
-      const repo  = document.getElementById('p-gh-repo').value.trim();
-      const title      = document.getElementById('p-title').value.trim();
-      const category   = document.getElementById('p-category').value;
-      const projectUrl = document.getElementById('p-url') ? document.getElementById('p-url').value.trim() : '';
-      const fileInput  = document.getElementById('p-image');
-      const btn        = document.getElementById('portfolio-upload-btn');
+      const user = document.getElementById('p-gh-user').value.trim();
+      const repo = document.getElementById('p-gh-repo').value.trim();
+      const title = document.getElementById('p-title').value.trim();
+      const category = document.getElementById('p-category').value;
+      const fileInput = document.getElementById('p-image');
+      const btn = document.getElementById('portfolio-upload-btn');
 
-      if (!token)              return setStatus('portfolio', '⚠️ Please enter your GitHub Token in GitHub Configuration above.', 'error');
-      if (!title)              return setStatus('portfolio', '⚠️ Project title is required.', 'error');
+      if (!token) return setStatus('portfolio', '⚠️ Please enter your GitHub Token.', 'error');
+      if (!title) return setStatus('portfolio', '⚠️ Project title is required.', 'error');
       if (!fileInput.files[0]) return setStatus('portfolio', '⚠️ Please select a project screenshot.', 'error');
 
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
       btn.disabled = true;
       setStatus('portfolio', '⏳ Uploading image to GitHub...', 'loading');
-      showProgress('portfolio', 20);
+      showProgress('portfolio', 30);
 
       try {
         const file = fileInput.files[0];
-        const ext  = file.name.split('.').pop().toLowerCase();
+        const ext = file.name.split('.').pop().toLowerCase();
         const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         const imagePath = `assets/img/${slug}.${ext}`;
 
@@ -1054,41 +1522,19 @@
           reader.readAsDataURL(file);
         });
 
-        showProgress('portfolio', 40);
-        await ghPutFile(token, user, repo, imagePath, base64, `Add portfolio image: ${title}`);
-        showProgress('portfolio', 65);
-
-        const { data: portfolio, sha: existingSha } = await ghGetJSON(token, user, repo, 'data/portfolio.json');
-        portfolio.unshift({
-          id: Date.now(), title, category,
-          image: imagePath,
-          url: projectUrl || imagePath,
-          date: new Date().toISOString().split('T')[0]
-        });
-
-        showProgress('portfolio', 82);
-        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(portfolio, null, 2))));
-        const branch = 'master';
-        const body = { message: `Add portfolio: ${title}`, content: jsonContent, branch };
-        if (existingSha) body.sha = existingSha;
-
-        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/portfolio.json`, {
-          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
-        });
-        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
-
+        showProgress('portfolio', 60);
+        await ghPutFile(token, user, repo, imagePath, base64, `Add portfolio item: ${title}`);
         showProgress('portfolio', 100);
-        const catLabels = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template' };
-        setStatus('portfolio', `✅ <strong>Uploaded!</strong> "${title}" (${catLabels[category]||category}) saved to GitHub. It will appear on Works page in ~60 seconds.`, 'success');
+
+        const categoryLabels = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template' };
+        setStatus('portfolio', `✅ <strong>Uploaded!</strong> "${title}" (${categoryLabels[category]}) has been committed to GitHub at <code>${imagePath}</code>. It will appear in your Works page after the site rebuilds (~60 seconds).`, 'success');
 
         document.getElementById('p-title').value = '';
-        if (document.getElementById('p-url')) document.getElementById('p-url').value = '';
         document.getElementById('p-image').value = '';
         document.getElementById('p-img-preview').style.display = 'none';
 
       } catch(err) {
         setStatus('portfolio', `❌ <strong>Error:</strong> ${err.message}`, 'error');
-        showProgress('portfolio', 0);
       } finally {
         btn.innerHTML = '<i class="fas fa-upload"></i> Upload to GitHub';
         btn.disabled = false;
@@ -1096,55 +1542,71 @@
     }
 
     /* ────────────────────────────────
-       MANAGE REVIEWS
+       LOAD & MANAGE REVIEWS
     ──────────────────────────────── */
     let loadedReviews = [];
     let reviewsFileSha = null;
 
     async function loadReviews() {
       const token = document.getElementById('m-gh-token').value.trim();
-      const user  = localStorage.getItem('sp_gh_user') || 'saifurpro';
-      const repo  = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
+      const user = localStorage.getItem('sp_gh_user') || 'saifurpro';
+      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
       const statusEl = document.getElementById('manage-status');
-      const grid  = document.getElementById('existingReviewsGrid');
+      const grid = document.getElementById('existingReviewsGrid');
 
-      if (!token) { statusEl.textContent = '⚠️ Please enter your GitHub token above.'; statusEl.style.color='var(--accent2)'; return; }
+      if (!token) {
+        statusEl.textContent = '⚠️ Please enter your GitHub token above.';
+        statusEl.style.color = 'var(--accent2)';
+        return;
+      }
 
-      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading reviews...';
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading reviews from GitHub...';
       statusEl.style.color = 'var(--accent)';
+
       try {
         const result = await ghGetJSON(token, user, repo, 'data/reviews.json');
-        loadedReviews   = result.data;
-        reviewsFileSha  = result.sha;
+        loadedReviews = result.data;
+        reviewsFileSha = result.sha;
+
         if (!loadedReviews.length) {
           grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-star" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No reviews found in data/reviews.json yet.</div>';
           statusEl.textContent = 'No reviews found.';
           return;
         }
-        statusEl.textContent = `${loadedReviews.length} review${loadedReviews.length!==1?'s':''} loaded.`;
+
+        statusEl.textContent = `${loadedReviews.length} review${loadedReviews.length !== 1 ? 's' : ''} loaded.`;
         statusEl.style.color = 'var(--accent3)';
         renderReviewsList(token, user, repo);
+
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">Could not load reviews. Make sure <code>data/reviews.json</code> exists in your repo.</div>';
       }
     }
 
     function renderReviewsList(token, user, repo) {
       const grid = document.getElementById('existingReviewsGrid');
       const platformColors = { Upwork:'#14a314', Fiverr:'#1dbf73', Direct:'var(--accent)', LinkedIn:'#0077b5', Google:'#ea4335' };
-      grid.innerHTML = loadedReviews.map(r => {
-        const stars = Array.from({length:5},(_,j)=>`<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
+
+      grid.innerHTML = loadedReviews.map((r, i) => {
+        const stars = Array.from({length:5}, (_,j) => `<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
         const avatarHtml = r.avatar
           ? `<img src="${r.avatar}" class="er-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22><circle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%236c63ff33%22/><text x=%2218%22 y=%2223%22 text-anchor=%22middle%22 font-size=%2214%22 fill=%22%236c63ff%22>${r.name[0]}</text></svg>'">`
           : `<div class="er-avatar" style="display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);">${r.name[0].toUpperCase()}</div>`;
         return `
           <div class="existing-review-item" id="review-item-${r.id}">
-            <button class="delete-btn" onclick="deleteReview(${r.id},'${token}','${user}','${repo}')" title="Delete"><i class="fas fa-trash"></i></button>
-            <div class="er-header">${avatarHtml}<div><div class="er-name">${r.name}</div><div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role||'—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div></div></div>
+            <button class="delete-btn" onclick="deleteReview(${r.id}, '${token}', '${user}', '${repo}')" title="Delete review"><i class="fas fa-trash"></i></button>
+            <div class="er-header">
+              ${avatarHtml}
+              <div>
+                <div class="er-name">${r.name}</div>
+                <div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role || '—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div>
+              </div>
+            </div>
             <div class="er-stars">${stars}</div>
             <p class="er-text">${r.text}</p>
-            <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date||''}</p>
+            <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date || ''}</p>
           </div>`;
       }).join('');
     }
@@ -1153,22 +1615,31 @@
       if (!confirm('Delete this review? This cannot be undone.')) return;
       const statusEl = document.getElementById('manage-status');
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+      statusEl.style.color = 'var(--accent)';
+
       try {
         loadedReviews = loadedReviews.filter(r => r.id !== id);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedReviews, null, 2))));
-        const branch = 'master';
-        const body = { message: `Delete review #${id}`, content: jsonContent, branch };
+        const branch = await getDefaultBranch(token, user, repo);
+		const body = { message: `Delete review #${id}`, content: jsonContent, branch };
         if (reviewsFileSha) body.sha = reviewsFileSha;
+
         const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
-          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+          method: 'PUT',
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
         });
         if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+
         const item = document.getElementById(`review-item-${id}`);
-        if (item) { item.style.opacity='0'; item.style.transform='scale(0.9)'; item.style.transition='0.3s'; setTimeout(()=>item.remove(),300); }
-        statusEl.textContent = '✅ Review deleted.';
+        if (item) { item.style.opacity = '0'; item.style.transform = 'scale(0.9)'; item.style.transition = '0.3s'; setTimeout(() => item.remove(), 300); }
+        statusEl.textContent = 'Review deleted successfully.';
         statusEl.style.color = 'var(--accent3)';
+
+        // update sha for next delete
         const updated = await ghGetJSON(token, user, repo, 'data/reviews.json');
         reviewsFileSha = updated.sha;
+
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
@@ -1176,51 +1647,61 @@
     }
 
     /* ────────────────────────────────
-       MANAGE PORTFOLIO
+       LOAD & MANAGE PORTFOLIO
     ──────────────────────────────── */
     let loadedPortfolio = [];
     let portfolioFileSha = null;
-    const categoryLabelsMap = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template', lead:'Lead Generation' };
-    const categoryColors    = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
 
     async function loadPortfolio() {
       const token = document.getElementById('mp-gh-token').value.trim();
-      const user  = localStorage.getItem('sp_gh_user') || 'saifurpro';
-      const repo  = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
+      const user = localStorage.getItem('sp_gh_user') || 'saifurpro';
+      const repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
       const statusEl = document.getElementById('manage-portfolio-status');
-      const grid  = document.getElementById('existingPortfolioGrid');
+      const grid = document.getElementById('existingPortfolioGrid');
 
-      if (!token) { statusEl.textContent = '⚠️ Please enter your GitHub token above.'; statusEl.style.color='var(--accent2)'; return; }
+      if (!token) {
+        statusEl.textContent = '⚠️ Please enter your GitHub token above.';
+        statusEl.style.color = 'var(--accent2)';
+        return;
+      }
 
-      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading portfolio...';
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading portfolio from GitHub...';
       statusEl.style.color = 'var(--accent)';
+
       try {
         const result = await ghGetJSON(token, user, repo, 'data/portfolio.json');
-        loadedPortfolio  = result.data;
+        loadedPortfolio = result.data;
         portfolioFileSha = result.sha;
+
         if (!loadedPortfolio.length) {
-          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-briefcase" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No portfolio items found.</div>';
+          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-briefcase" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No portfolio items found in data/portfolio.json yet.</div>';
           statusEl.textContent = 'No items found.';
           return;
         }
-        statusEl.textContent = `${loadedPortfolio.length} item${loadedPortfolio.length!==1?'s':''} loaded.`;
+
+        statusEl.textContent = `${loadedPortfolio.length} item${loadedPortfolio.length !== 1 ? 's' : ''} loaded.`;
         statusEl.style.color = 'var(--accent3)';
         renderPortfolioList(token, user, repo);
+
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">Could not load portfolio. Make sure <code>data/portfolio.json</code> exists in your repo.</div>';
       }
     }
+
+    const categoryLabelsMap = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template', lead:'Lead Generation' };
+    const categoryColors = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
 
     function renderPortfolioList(token, user, repo) {
       const grid = document.getElementById('existingPortfolioGrid');
       grid.innerHTML = loadedPortfolio.map(item => {
         const catLabel = categoryLabelsMap[item.category] || item.category;
-        const catColor = categoryColors[item.category]   || 'var(--text-muted)';
-        const isLocal  = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
+        const catColor = categoryColors[item.category] || 'var(--text-muted)';
+        const isLocal = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
         return `
           <div class="existing-review-item" id="portfolio-item-${item.id}">
-            <button class="delete-btn" onclick="deletePortfolioItem(${item.id},'${token}','${user}','${repo}')" title="Delete"><i class="fas fa-trash"></i></button>
+            <button class="delete-btn" onclick="deletePortfolioItem(${item.id}, '${token}', '${user}', '${repo}')" title="Delete item"><i class="fas fa-trash"></i></button>
             <div style="width:100%;height:110px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:var(--bg3);border:1px solid var(--border);">
               <img src="${item.image}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
             </div>
@@ -1228,8 +1709,11 @@
             <div style="margin-top:4px;margin-bottom:8px;">
               <span style="font-size:10px;font-weight:700;color:${catColor};padding:2px 8px;border-radius:100px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);">${catLabel}</span>
             </div>
-            ${!isLocal?`<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`:`<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`}
-            <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date||''}</p>
+            ${!isLocal
+              ? `<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`
+              : `<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`
+            }
+            <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date || ''}</p>
           </div>`;
       }).join('');
     }
@@ -1238,22 +1722,31 @@
       if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
       const statusEl = document.getElementById('manage-portfolio-status');
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+      statusEl.style.color = 'var(--accent)';
+
       try {
         loadedPortfolio = loadedPortfolio.filter(p => p.id !== id);
         const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedPortfolio, null, 2))));
-        const branch = 'master';
-        const body = { message: `Delete portfolio #${id}`, content: jsonContent, branch };
+        const branch = await getDefaultBranch(token, user, repo);
+        const body = { message: `Delete portfolio item #${id}`, content: jsonContent, branch };
         if (portfolioFileSha) body.sha = portfolioFileSha;
+
         const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/portfolio.json`, {
-          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+          method: 'PUT',
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
         });
         if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+
         const el = document.getElementById(`portfolio-item-${id}`);
-        if (el) { el.style.opacity='0'; el.style.transform='scale(0.9)'; el.style.transition='0.3s'; setTimeout(()=>el.remove(),300); }
-        statusEl.textContent = '✅ Item deleted.';
+        if (el) { el.style.opacity = '0'; el.style.transform = 'scale(0.9)'; el.style.transition = '0.3s'; setTimeout(() => el.remove(), 300); }
+        statusEl.textContent = 'Item deleted successfully.';
         statusEl.style.color = 'var(--accent3)';
+
+        // update sha for next delete in same session
         const updated = await ghGetJSON(token, user, repo, 'data/portfolio.json');
         portfolioFileSha = updated.sha;
+
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
