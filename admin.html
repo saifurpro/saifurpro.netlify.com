@@ -708,10 +708,13 @@
 
   <script>
     /* ────────────────────────────────
-       CONFIG — only change these
+       CONFIG
+       IMG_TOKEN  → only needs contents:write scope (for image uploads only)
+       Workflows handle all JSON via SAIFURPRO_GH_TOCKEN secret
     ──────────────────────────────── */
-    const GH_USER = 'saifurpro';
-    const GH_REPO = 'saifurpro.netlify.com';
+    const IMG_TOKEN = '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'; // paste token with contents:write scope only
+    const GH_USER   = 'saifurpro';
+    const GH_REPO   = 'saifurpro.netlify.com';
     const GH_BRANCH = 'master';
 
     /* ────────────────────────────────
@@ -722,9 +725,9 @@
     window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
-    const closeNav = document.getElementById('closeNav');
+    const closeNav  = document.getElementById('closeNav');
     hamburger.addEventListener('click', () => { mobileNav.classList.add('open'); hamburger.style.display = 'none'; });
-    closeNav.addEventListener('click', () => { mobileNav.classList.remove('open'); hamburger.style.display = ''; });
+    closeNav.addEventListener('click',  () => { mobileNav.classList.remove('open'); hamburger.style.display = ''; });
     const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
@@ -758,67 +761,44 @@
       document.getElementById(`tab-${name}`).classList.add('active');
     }
 
-    /* ────────────────────────────────
-       WORKFLOW TOKEN (safe — workflow scope only)
-    ──────────────────────────────── */
-    function getToken() {
-      return localStorage.getItem('sp_wf_token') || '';
-    }
-    function saveWfToken() {
-      const t1 = document.getElementById('wf-token').value.trim();
-      const t2 = document.getElementById('wf-token-p').value.trim();
-      const token = t1 || t2;
-      if (!token) return;
-      localStorage.setItem('sp_wf_token', token);
-      document.getElementById('wf-token').value = token;
-      document.getElementById('wf-token-p').value = token;
-      document.getElementById('gh-saved-pill-r').style.display = 'inline-block';
-      document.getElementById('gh-saved-pill-p').style.display = 'inline-block';
-      setTimeout(() => {
-        document.getElementById('gh-saved-pill-r').style.display = 'none';
-        document.getElementById('gh-saved-pill-p').style.display = 'none';
-      }, 3000);
-    }
-    // Restore saved token
-    const _savedToken = getToken();
-    if (_savedToken) {
-      document.getElementById('wf-token').value = _savedToken;
-      document.getElementById('wf-token-p').value = _savedToken;
-    }
-
     function toggleConfig(id) {
       document.getElementById(id).classList.toggle('open');
     }
 
     /* ────────────────────────────────
-       WORKFLOW DISPATCH TRIGGER
+       IMAGE UPLOAD via direct API (IMG_TOKEN — contents:write only)
     ──────────────────────────────── */
-    async function triggerWorkflow(workflow, inputs) {
-      const token = getToken();
-      if (!token) throw new Error('No workflow token saved. Expand GitHub Configuration and save your token first.');
-      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/actions/workflows/${workflow}/dispatches`, {
-        method: 'POST',
+    async function ghUploadImage(path, base64content, message) {
+      let sha = null;
+      try {
+        const check = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
+          headers: { Authorization: `token ${IMG_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+        });
+        if (check.ok) sha = (await check.json()).sha;
+      } catch(e) {}
+
+      const body = { message, content: base64content, branch: GH_BRANCH };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
+        method: 'PUT',
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `token ${IMG_TOKEN}`,
           Accept: 'application/vnd.github.v3+json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ ref: GH_BRANCH, inputs })
+        body: JSON.stringify(body)
       });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || `HTTP ${res.status} — check your token has 'workflow' scope`);
-      }
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Image upload failed'); }
+      return path;
     }
 
     /* ────────────────────────────────
-       READ JSON (uses workflow token — read-only, safe)
+       READ JSON via direct API (IMG_TOKEN — read is fine)
     ──────────────────────────────── */
     async function ghGetJSON(path) {
-      const token = getToken();
-      if (!token) return { data: [], sha: null };
       const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
-        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+        headers: { Authorization: `token ${IMG_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
       });
       if (!res.ok) return { data: [], sha: null };
       const file = await res.json();
@@ -827,10 +807,29 @@
     }
 
     /* ────────────────────────────────
+       WORKFLOW DISPATCH — for JSON updates (uses SAIFURPRO_GH_TOCKEN secret)
+    ──────────────────────────────── */
+    async function triggerWorkflow(workflow, inputs) {
+      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/actions/workflows/${workflow}/dispatches`, {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${IMG_TOKEN}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ref: GH_BRANCH, inputs })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Workflow trigger failed — make sure token has 'workflow' scope`);
+      }
+    }
+
+    /* ────────────────────────────────
        PROGRESS / STATUS HELPERS
     ──────────────────────────────── */
     function showProgress(id, pct) {
-      const bar = document.getElementById(`${id}-progress`);
+      const bar  = document.getElementById(`${id}-progress`);
       const fill = document.getElementById(`${id}-progress-bar`);
       bar.classList.add('show');
       fill.style.width = pct + '%';
@@ -887,11 +886,11 @@
       Direct:'platform-direct', LinkedIn:'platform-linkedin', Google:'platform-google'
     };
     function updatePreview() {
-      const name = document.getElementById('r-name').value || 'Client Name';
-      const role = document.getElementById('r-role').value || 'Role / Title';
-      const text = document.getElementById('r-text').value || 'Your review text will appear here as you type...';
+      const name     = document.getElementById('r-name').value || 'Client Name';
+      const role     = document.getElementById('r-role').value || 'Role / Title';
+      const text     = document.getElementById('r-text').value || 'Your review text will appear here as you type...';
       const platform = document.getElementById('r-platform').value;
-      const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+      const rating   = parseInt(document.querySelector('input[name="rating"]:checked').value);
       document.getElementById('preview-name').textContent = name;
       document.getElementById('preview-role').textContent = role;
       document.getElementById('preview-text').textContent = text;
@@ -909,7 +908,9 @@
     }
 
     /* ────────────────────────────────
-       UPLOAD REVIEW → triggers add-review.yml
+       UPLOAD REVIEW
+       Step 1: Upload avatar image via direct API (IMG_TOKEN)
+       Step 2: Trigger add-review.yml workflow (uses secret for JSON)
     ──────────────────────────────── */
     async function uploadReview() {
       const name     = document.getElementById('r-name').value.trim();
@@ -920,22 +921,33 @@
       const btn      = document.getElementById('review-upload-btn');
 
       if (!name || !text) return setStatus('review', '⚠️ Reviewer name and review text are required.', 'error');
-      if (!getToken()) return setStatus('review', '⚠️ Please expand GitHub Configuration and save your workflow token first.', 'error');
 
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering workflow...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
       btn.disabled = true;
-      setStatus('review', '⏳ Triggering GitHub Action...', 'loading');
-      showProgress('review', 40);
+      setStatus('review', '⏳ Uploading...', 'loading');
+      showProgress('review', 20);
 
       try {
+        let avatarPath = '';
+
+        // Step 1: Upload avatar image if provided (direct API)
+        if (avatarBase64) {
+          showProgress('review', 35);
+          const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+          avatarPath = `assets/img/reviews/${slug}.${avatarExt}`;
+          await ghUploadImage(avatarPath, avatarBase64, `Add reviewer avatar: ${name}`);
+        }
+
+        showProgress('review', 65);
+
+        // Step 2: Trigger workflow to update reviews.json (uses secret)
         await triggerWorkflow('add-review.yml', {
           name, role, text, platform, rating,
-          avatar_base64: avatarBase64 || '',
-          avatar_ext: avatarExt
+          avatar_path: avatarPath
         });
 
         showProgress('review', 100);
-        setStatus('review', `✅ <strong>Workflow triggered!</strong> "${name}'s" review is being added by GitHub Actions. It will appear live in ~60 seconds after the site rebuilds.`, 'success');
+        setStatus('review', `✅ <strong>Done!</strong> "${name}'s" review is being saved by GitHub Actions. It will appear live in ~60 seconds.`, 'success');
 
         // Reset form
         document.getElementById('r-name').value = '';
@@ -957,27 +969,31 @@
     }
 
     /* ────────────────────────────────
-       UPLOAD PORTFOLIO → triggers add-portfolio.yml
+       UPLOAD PORTFOLIO ITEM
+       Step 1: Upload image via direct API (IMG_TOKEN)
+       Step 2: Trigger add-portfolio.yml workflow (uses secret for JSON)
     ──────────────────────────────── */
     async function uploadPortfolioItem() {
-      const title     = document.getElementById('p-title').value.trim();
-      const category  = document.getElementById('p-category').value;
+      const title      = document.getElementById('p-title').value.trim();
+      const category   = document.getElementById('p-category').value;
       const projectUrl = document.getElementById('p-url') ? document.getElementById('p-url').value.trim() : '';
-      const fileInput = document.getElementById('p-image');
-      const btn       = document.getElementById('portfolio-upload-btn');
+      const fileInput  = document.getElementById('p-image');
+      const btn        = document.getElementById('portfolio-upload-btn');
 
-      if (!title) return setStatus('portfolio', '⚠️ Project title is required.', 'error');
+      if (!title)              return setStatus('portfolio', '⚠️ Project title is required.', 'error');
       if (!fileInput.files[0]) return setStatus('portfolio', '⚠️ Please select a project screenshot.', 'error');
-      if (!getToken()) return setStatus('portfolio', '⚠️ Please expand GitHub Configuration and save your workflow token first.', 'error');
 
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering workflow...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
       btn.disabled = true;
-      setStatus('portfolio', '⏳ Triggering GitHub Action...', 'loading');
-      showProgress('portfolio', 40);
+      setStatus('portfolio', '⏳ Uploading image...', 'loading');
+      showProgress('portfolio', 20);
 
       try {
         const file = fileInput.files[0];
-        const ext = file.name.split('.').pop().toLowerCase();
+        const ext  = file.name.split('.').pop().toLowerCase();
+        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const imagePath = `assets/img/${slug}.${ext}`;
+
         const image_base64 = await new Promise((res, rej) => {
           const reader = new FileReader();
           reader.onload = () => res(reader.result.split(',')[1]);
@@ -985,15 +1001,22 @@
           reader.readAsDataURL(file);
         });
 
+        showProgress('portfolio', 40);
+
+        // Step 1: Upload image directly (IMG_TOKEN)
+        await ghUploadImage(imagePath, image_base64, `Add portfolio image: ${title}`);
+        showProgress('portfolio', 70);
+
+        // Step 2: Trigger workflow to update portfolio.json (uses secret)
         await triggerWorkflow('add-portfolio.yml', {
           title, category,
-          url: projectUrl,
-          image_base64,
-          image_ext: ext
+          image_path: imagePath,
+          url: projectUrl || imagePath
         });
 
         showProgress('portfolio', 100);
-        setStatus('portfolio', `✅ <strong>Workflow triggered!</strong> "${title}" is being added by GitHub Actions. It will appear on the Works page in ~60 seconds.`, 'success');
+        const catLabels = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template' };
+        setStatus('portfolio', `✅ <strong>Done!</strong> "${title}" (${catLabels[category]||category}) is being saved by GitHub Actions. It will appear on Works page in ~60 seconds.`, 'success');
 
         document.getElementById('p-title').value = '';
         if (document.getElementById('p-url')) document.getElementById('p-url').value = '';
@@ -1010,18 +1033,15 @@
     }
 
     /* ────────────────────────────────
-       LOAD REVIEWS (read-only, safe)
+       MANAGE REVIEWS — load & delete
+       Load: direct API read (IMG_TOKEN)
+       Delete: trigger delete-item.yml workflow (uses secret)
     ──────────────────────────────── */
     let loadedReviews = [];
 
     async function loadReviews() {
       const statusEl = document.getElementById('manage-status');
       const grid = document.getElementById('existingReviewsGrid');
-      if (!getToken()) {
-        statusEl.textContent = '⚠️ Save your workflow token in GitHub Configuration first.';
-        statusEl.style.color = 'var(--accent2)';
-        return;
-      }
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading reviews...';
       statusEl.style.color = 'var(--accent)';
       try {
@@ -1045,23 +1065,24 @@
       const grid = document.getElementById('existingReviewsGrid');
       const platformColors = { Upwork:'#14a314', Fiverr:'#1dbf73', Direct:'var(--accent)', LinkedIn:'#0077b5', Google:'#ea4335' };
       grid.innerHTML = loadedReviews.map(r => {
-        const stars = Array.from({length:5}, (_,j) => `<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
+        const stars = Array.from({length:5}, (_,j) =>
+          `<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
         const avatarHtml = r.avatar
           ? `<img src="${r.avatar}" class="er-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22><circle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%236c63ff33%22/><text x=%2218%22 y=%2223%22 text-anchor=%22middle%22 font-size=%2214%22 fill=%22%236c63ff%22>${r.name[0]}</text></svg>'">`
           : `<div class="er-avatar" style="display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);">${r.name[0].toUpperCase()}</div>`;
         return `
           <div class="existing-review-item" id="review-item-${r.id}">
-            <button class="delete-btn" onclick="deleteReview(${r.id})" title="Delete review"><i class="fas fa-trash"></i></button>
+            <button class="delete-btn" onclick="deleteReview(${r.id})" title="Delete"><i class="fas fa-trash"></i></button>
             <div class="er-header">
               ${avatarHtml}
               <div>
                 <div class="er-name">${r.name}</div>
-                <div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role || '—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div>
+                <div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role||'—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div>
               </div>
             </div>
             <div class="er-stars">${stars}</div>
             <p class="er-text">${r.text}</p>
-            <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date || ''}</p>
+            <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date||''}</p>
           </div>`;
       }).join('');
     }
@@ -1069,13 +1090,13 @@
     async function deleteReview(id) {
       if (!confirm('Delete this review? This cannot be undone.')) return;
       const statusEl = document.getElementById('manage-status');
-      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering delete workflow...';
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
       statusEl.style.color = 'var(--accent)';
       try {
         await triggerWorkflow('delete-item.yml', { type: 'review', id: String(id) });
         const item = document.getElementById(`review-item-${id}`);
         if (item) { item.style.opacity='0'; item.style.transform='scale(0.9)'; item.style.transition='0.3s'; setTimeout(()=>item.remove(),300); }
-        statusEl.textContent = '✅ Delete workflow triggered. Review will be removed in ~30 seconds.';
+        statusEl.textContent = '✅ Review deleted. Will be removed from site in ~30 seconds.';
         statusEl.style.color = 'var(--accent3)';
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
@@ -1084,20 +1105,17 @@
     }
 
     /* ────────────────────────────────
-       LOAD PORTFOLIO (read-only, safe)
+       MANAGE PORTFOLIO — load & delete
+       Load: direct API read (IMG_TOKEN)
+       Delete: trigger delete-item.yml workflow (uses secret)
     ──────────────────────────────── */
     let loadedPortfolio = [];
     const categoryLabelsMap = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template', lead:'Lead Generation' };
-    const categoryColors = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
+    const categoryColors    = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
 
     async function loadPortfolio() {
       const statusEl = document.getElementById('manage-portfolio-status');
       const grid = document.getElementById('existingPortfolioGrid');
-      if (!getToken()) {
-        statusEl.textContent = '⚠️ Save your workflow token in GitHub Configuration first.';
-        statusEl.style.color = 'var(--accent2)';
-        return;
-      }
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading portfolio...';
       statusEl.style.color = 'var(--accent)';
       try {
@@ -1122,10 +1140,10 @@
       grid.innerHTML = loadedPortfolio.map(item => {
         const catLabel = categoryLabelsMap[item.category] || item.category;
         const catColor = categoryColors[item.category] || 'var(--text-muted)';
-        const isLocal = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
+        const isLocal  = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
         return `
           <div class="existing-review-item" id="portfolio-item-${item.id}">
-            <button class="delete-btn" onclick="deletePortfolioItem(${item.id})" title="Delete item"><i class="fas fa-trash"></i></button>
+            <button class="delete-btn" onclick="deletePortfolioItem(${item.id})" title="Delete"><i class="fas fa-trash"></i></button>
             <div style="width:100%;height:110px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:var(--bg3);border:1px solid var(--border);">
               <img src="${item.image}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
             </div>
@@ -1135,9 +1153,8 @@
             </div>
             ${!isLocal
               ? `<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`
-              : `<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`
-            }
-            <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date || ''}</p>
+              : `<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`}
+            <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date||''}</p>
           </div>`;
       }).join('');
     }
@@ -1145,13 +1162,13 @@
     async function deletePortfolioItem(id) {
       if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
       const statusEl = document.getElementById('manage-portfolio-status');
-      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Triggering delete workflow...';
+      statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
       statusEl.style.color = 'var(--accent)';
       try {
         await triggerWorkflow('delete-item.yml', { type: 'portfolio', id: String(id) });
         const el = document.getElementById(`portfolio-item-${id}`);
         if (el) { el.style.opacity='0'; el.style.transform='scale(0.9)'; el.style.transition='0.3s'; setTimeout(()=>el.remove(),300); }
-        statusEl.textContent = '✅ Delete workflow triggered. Item will be removed in ~30 seconds.';
+        statusEl.textContent = '✅ Item deleted. Will be removed from site in ~30 seconds.';
         statusEl.style.color = 'var(--accent3)';
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
