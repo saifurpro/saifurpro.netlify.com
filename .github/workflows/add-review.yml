@@ -7,16 +7,16 @@ on:
         required: true
       role:
         required: false
+        default: ''
       text:
         required: true
       platform:
         required: true
       rating:
         required: true
-      avatar_base64:
+      avatar_path:
         required: false
-      avatar_ext:
-        required: false
+        default: ''
 
 jobs:
   add:
@@ -25,31 +25,21 @@ jobs:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.SAIFURPRO_GH_TOCKEN }}
+          ref: master
 
       - name: Add review to JSON
         run: |
           python3 << 'EOF'
-          import json, base64, os, time
+          import json, os, time, datetime
 
-          # Load existing
           try:
             with open('data/reviews.json') as f:
               reviews = json.load(f)
           except:
             reviews = []
 
-          # Save avatar if provided
-          avatar_b64 = os.environ.get('AVATAR_BASE64', '')
-          avatar_ext = os.environ.get('AVATAR_EXT', 'jpg')
-          avatar_path = None
-          if avatar_b64:
-            slug = ''.join(c if c.isalnum() else '-' for c in os.environ['NAME'].lower()).strip('-')
-            avatar_path = f"assets/img/reviews/{slug}.{avatar_ext}"
-            os.makedirs('assets/img/reviews', exist_ok=True)
-            with open(avatar_path, 'wb') as f:
-              f.write(base64.b64decode(avatar_b64))
+          avatar_path = os.environ.get('AVATAR_PATH', '').strip()
 
-          # Add new review
           reviews.insert(0, {
             "id": int(time.time() * 1000),
             "name": os.environ['NAME'],
@@ -57,27 +47,28 @@ jobs:
             "text": os.environ['TEXT'],
             "platform": os.environ['PLATFORM'],
             "rating": int(os.environ['RATING']),
-            "avatar": avatar_path,
-            "date": __import__('datetime').date.today().isoformat()
+            "avatar": avatar_path if avatar_path else None,
+            "date": datetime.date.today().isoformat()
           })
 
           os.makedirs('data', exist_ok=True)
           with open('data/reviews.json', 'w') as f:
             json.dump(reviews, f, indent=2)
+
+          print(f"Added review from {os.environ['NAME']}. Total: {len(reviews)}")
           EOF
         env:
-          NAME: ${{ inputs.name }}
-          ROLE: ${{ inputs.role }}
-          TEXT: ${{ inputs.text }}
-          PLATFORM: ${{ inputs.platform }}
-          RATING: ${{ inputs.rating }}
-          AVATAR_BASE64: ${{ inputs.avatar_base64 }}
-          AVATAR_EXT: ${{ inputs.avatar_ext }}
+          NAME:        ${{ inputs.name }}
+          ROLE:        ${{ inputs.role }}
+          TEXT:        ${{ inputs.text }}
+          PLATFORM:    ${{ inputs.platform }}
+          RATING:      ${{ inputs.rating }}
+          AVATAR_PATH: ${{ inputs.avatar_path }}
 
-      - name: Commit changes
+      - name: Commit and push to master
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add data/reviews.json
           git diff --staged --quiet || git commit -m "Add review from ${{ inputs.name }}"
-          git push
+          git push origin master
