@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -412,7 +413,30 @@
             <h3><i class="fas fa-star" style="color:var(--accent);margin-right:8px;"></i>Add New Review</h3>
             <p>Fill in the review details. The review will be saved to your GitHub repo and appear on the Reviews page.</p>
 
-
+            <!-- GitHub Config (collapsible) -->
+            <div class="gh-config" id="ghConfigReview">
+              <div class="gh-config-header" onclick="toggleConfig('ghConfigReview')">
+                <span><i class="fab fa-github"></i> GitHub Configuration <span class="gh-saved-pill" id="gh-saved-pill-r" style="display:none">✓ Saved</span></span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+              </div>
+              <div class="gh-config-body">
+                <div class="form-group">
+                  <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
+                  <input type="password" id="r-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>GitHub Username</label>
+                    <input type="text" id="r-gh-user" value="saifurpro">
+                  </div>
+                  <div class="form-group">
+                    <label>Repository</label>
+                    <input type="text" id="r-gh-repo" value="saifurpro.netlify.com">
+                  </div>
+                </div>
+                <button class="btn-outline btn-sm" onclick="saveGhConfig('review')"><i class="fas fa-save"></i> Save Config</button>
+              </div>
+            </div>
 
             <!-- Reviewer Details -->
             <div class="form-group">
@@ -524,7 +548,30 @@
             <h3><i class="fas fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>Add New Portfolio Item</h3>
             <p>Upload a project screenshot. It will be committed to GitHub and added to the Works page automatically.</p>
 
-
+            <!-- GitHub Config (collapsible) -->
+            <div class="gh-config" id="ghConfigPortfolio">
+              <div class="gh-config-header" onclick="toggleConfig('ghConfigPortfolio')">
+                <span><i class="fab fa-github"></i> GitHub Configuration <span class="gh-saved-pill" id="gh-saved-pill-p" style="display:none">✓ Saved</span></span>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+              </div>
+              <div class="gh-config-body">
+                <div class="form-group">
+                  <label>Personal Access Token <span style="color:var(--accent2)">*</span></label>
+                  <input type="password" id="p-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>GitHub Username</label>
+                    <input type="text" id="p-gh-user" value="saifurpro">
+                  </div>
+                  <div class="form-group">
+                    <label>Repository</label>
+                    <input type="text" id="p-gh-repo" value="saifurpro.netlify.com">
+                  </div>
+                </div>
+                <button class="btn-outline btn-sm" onclick="saveGhConfig('portfolio')"><i class="fas fa-save"></i> Save Config</button>
+              </div>
+            </div>
 
             <div class="form-row">
               <div class="form-group">
@@ -596,6 +643,10 @@
           <p>View, preview, and delete existing reviews. Changes are committed directly to your GitHub repository.</p>
 
           <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:240px;margin:0;">
+              <label>GitHub Personal Access Token</label>
+              <input type="password" id="m-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+            </div>
             <button class="btn-outline" onclick="loadReviews()" style="flex-shrink:0;height:46px;">
               <i class="fas fa-sync"></i> Load Reviews
             </button>
@@ -619,6 +670,10 @@
           <p>View and delete existing portfolio items. Changes are committed directly to your GitHub repository.</p>
 
           <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:240px;margin:0;">
+              <label>GitHub Personal Access Token</label>
+              <input type="password" id="mp-gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+            </div>
             <button class="btn-outline" onclick="loadPortfolio()" style="flex-shrink:0;height:46px;">
               <i class="fas fa-sync"></i> Load Portfolio
             </button>
@@ -680,17 +735,8 @@
     </div>
   </footer>
 
-  <script>
-    /* ────────────────────────────────
-       CONFIG
-       IMG_TOKEN  → only needs contents:write scope (for image uploads only)
-       Workflows handle all JSON via SAIFURPRO_GH_TOCKEN secret
-    ──────────────────────────────── */
-    const IMG_TOKEN = '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'; // ← replace this with your ghp_ token
-    const GH_USER   = 'saifurpro';
-    const GH_REPO   = 'saifurpro.netlify.com';
-    const GH_BRANCH = 'master';
 
+  <script>
     /* ────────────────────────────────
        INIT
     ──────────────────────────────── */
@@ -740,63 +786,89 @@
     }
 
     /* ────────────────────────────────
-       IMAGE UPLOAD via direct API (IMG_TOKEN — contents:write only)
+       GH CONFIG — save/restore from localStorage
     ──────────────────────────────── */
-    async function ghUploadImage(path, base64content, message) {
+    function saveGhConfig(type) {
+      const prefix = type === 'review' ? 'r' : 'p';
+      const token = document.getElementById(`${prefix}-gh-token`).value.trim();
+      const user  = document.getElementById(`${prefix}-gh-user`).value.trim();
+      const repo  = document.getElementById(`${prefix}-gh-repo`).value.trim();
+      if (!token) return;
+      localStorage.setItem('sp_gh_token', token);
+      localStorage.setItem('sp_gh_user',  user);
+      localStorage.setItem('sp_gh_repo',  repo);
+      // fill all token fields
+      ['r-gh-token','p-gh-token','m-gh-token','mp-gh-token'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = token;
+      });
+      const pillId = `gh-saved-pill-${prefix[0]}`;
+      const pill = document.getElementById(pillId);
+      if (pill) { pill.style.display = 'inline-block'; setTimeout(() => pill.style.display = 'none', 3000); }
+    }
+
+    // Restore saved config on load
+    const _tok  = localStorage.getItem('sp_gh_token');
+    const _user = localStorage.getItem('sp_gh_user') || 'saifurpro';
+    const _repo = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
+    if (_tok) {
+      ['r-gh-token','p-gh-token','m-gh-token','mp-gh-token'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = _tok;
+      });
+    }
+    ['r-gh-user','p-gh-user'].forEach(id => { const el=document.getElementById(id); if(el) el.value=_user; });
+    ['r-gh-repo','p-gh-repo'].forEach(id => { const el=document.getElementById(id); if(el) el.value=_repo; });
+
+    /* ────────────────────────────────
+       GITHUB API HELPERS
+    ──────────────────────────────── */
+    function ghHeaders(token) {
+      return {
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      };
+    }
+
+    async function getDefaultBranch(token, user, repo) {
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+        headers: ghHeaders(token)
+      });
+      if (!res.ok) throw new Error('Cannot fetch repo info. Check your token and repo name.');
+      return (await res.json()).default_branch;
+    }
+
+    async function ghPutFile(token, user, repo, path, content, message) {
       let sha = null;
       try {
-        const check = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
-          headers: { Authorization: `token ${IMG_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+        const check = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+          headers: ghHeaders(token)
         });
         if (check.ok) sha = (await check.json()).sha;
       } catch(e) {}
 
-      const body = { message, content: base64content, branch: GH_BRANCH };
+      const branch = await getDefaultBranch(token, user, repo);
+      const body = { message, content, branch };
       if (sha) body.sha = sha;
 
-      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `token ${IMG_TOKEN}`,
-          Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+        method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
       });
-      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Image upload failed'); }
-      return path;
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'GitHub API error'); }
+      return res.json();
     }
 
-    /* ────────────────────────────────
-       READ JSON via direct API (IMG_TOKEN — read is fine)
-    ──────────────────────────────── */
-    async function ghGetJSON(path) {
-      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
-        headers: { Authorization: `token ${IMG_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    async function ghGetJSON(token, user, repo, path) {
+      const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+        headers: ghHeaders(token)
       });
       if (!res.ok) return { data: [], sha: null };
       const file = await res.json();
-      const data = JSON.parse(atob(file.content.replace(/\n/g, '')));
-      return { data, sha: file.sha };
-    }
-
-    /* ────────────────────────────────
-       WORKFLOW DISPATCH — for JSON updates (uses SAIFURPRO_GH_TOCKEN secret)
-    ──────────────────────────────── */
-    async function triggerWorkflow(workflow, inputs) {
-      const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/actions/workflows/${workflow}/dispatches`, {
-        method: 'POST',
-        headers: {
-          Authorization: `token ${IMG_TOKEN}`,
-          Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ref: GH_BRANCH, inputs })
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || `Workflow trigger failed — make sure token has 'workflow' scope`);
-      }
+      return {
+        data: JSON.parse(atob(file.content.replace(/\n/g, ''))),
+        sha: file.sha
+      };
     }
 
     /* ────────────────────────────────
@@ -828,9 +900,8 @@
       const reader = new FileReader();
       reader.onload = e => {
         avatarBase64 = e.target.result.split(',')[1];
-        const wrap = document.getElementById('r-avatar-preview');
-        wrap.src = e.target.result;
-        wrap.style.display = 'block';
+        document.getElementById('r-avatar-preview').src = e.target.result;
+        document.getElementById('r-avatar-preview').style.display = 'block';
         document.getElementById('r-avatar-placeholder').style.display = 'none';
         document.getElementById('preview-avatar-wrap').innerHTML =
           `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
@@ -883,47 +954,59 @@
 
     /* ────────────────────────────────
        UPLOAD REVIEW
-       Step 1: Upload avatar image via direct API (IMG_TOKEN)
-       Step 2: Trigger add-review.yml workflow (uses secret for JSON)
     ──────────────────────────────── */
     async function uploadReview() {
+      const token = document.getElementById('r-gh-token').value.trim();
+      const user  = document.getElementById('r-gh-user').value.trim();
+      const repo  = document.getElementById('r-gh-repo').value.trim();
       const name     = document.getElementById('r-name').value.trim();
       const role     = document.getElementById('r-role').value.trim();
       const text     = document.getElementById('r-text').value.trim();
       const platform = document.getElementById('r-platform').value;
-      const rating   = document.querySelector('input[name="rating"]:checked').value;
+      const rating   = parseInt(document.querySelector('input[name="rating"]:checked').value);
       const btn      = document.getElementById('review-upload-btn');
 
+      if (!token) return setStatus('review', '⚠️ Please enter your GitHub Token in GitHub Configuration above.', 'error');
       if (!name || !text) return setStatus('review', '⚠️ Reviewer name and review text are required.', 'error');
 
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
       btn.disabled = true;
-      setStatus('review', '⏳ Uploading...', 'loading');
+      setStatus('review', '⏳ Uploading to GitHub...', 'loading');
       showProgress('review', 20);
 
       try {
-        let avatarPath = '';
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        let avatarPath = null;
 
-        // Step 1: Upload avatar image if provided (direct API)
         if (avatarBase64) {
-          showProgress('review', 35);
-          const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
           avatarPath = `assets/img/reviews/${slug}.${avatarExt}`;
-          await ghUploadImage(avatarPath, avatarBase64, `Add reviewer avatar: ${name}`);
+          showProgress('review', 35);
+          await ghPutFile(token, user, repo, avatarPath, avatarBase64, `Add reviewer avatar: ${name}`);
         }
 
-        showProgress('review', 65);
+        showProgress('review', 60);
 
-        // Step 2: Trigger workflow to update reviews.json (uses secret)
-        await triggerWorkflow('add-review.yml', {
-          name, role, text, platform, rating,
-          avatar_path: avatarPath
+        const { data: reviews, sha: existingSha } = await ghGetJSON(token, user, repo, 'data/reviews.json');
+        reviews.unshift({
+          id: Date.now(), name, role, text, platform, rating,
+          avatar: avatarPath,
+          date: new Date().toISOString().split('T')[0]
         });
 
-        showProgress('review', 100);
-        setStatus('review', `✅ <strong>Done!</strong> "${name}'s" review is being saved by GitHub Actions. It will appear live in ~60 seconds.`, 'success');
+        showProgress('review', 80);
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(reviews, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+        const body = { message: `Add review from ${name}`, content: jsonContent, branch };
+        if (existingSha) body.sha = existingSha;
 
-        // Reset form
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
+          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+        });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+
+        showProgress('review', 100);
+        setStatus('review', `✅ <strong>Review saved!</strong> "${name}'s" review committed to GitHub. It will appear live in ~60 seconds.`, 'success');
+
         document.getElementById('r-name').value = '';
         document.getElementById('r-role').value = '';
         document.getElementById('r-text').value = '';
@@ -944,22 +1027,24 @@
 
     /* ────────────────────────────────
        UPLOAD PORTFOLIO ITEM
-       Step 1: Upload image via direct API (IMG_TOKEN)
-       Step 2: Trigger add-portfolio.yml workflow (uses secret for JSON)
     ──────────────────────────────── */
     async function uploadPortfolioItem() {
+      const token = document.getElementById('p-gh-token').value.trim();
+      const user  = document.getElementById('p-gh-user').value.trim();
+      const repo  = document.getElementById('p-gh-repo').value.trim();
       const title      = document.getElementById('p-title').value.trim();
       const category   = document.getElementById('p-category').value;
       const projectUrl = document.getElementById('p-url') ? document.getElementById('p-url').value.trim() : '';
       const fileInput  = document.getElementById('p-image');
       const btn        = document.getElementById('portfolio-upload-btn');
 
+      if (!token)              return setStatus('portfolio', '⚠️ Please enter your GitHub Token in GitHub Configuration above.', 'error');
       if (!title)              return setStatus('portfolio', '⚠️ Project title is required.', 'error');
       if (!fileInput.files[0]) return setStatus('portfolio', '⚠️ Please select a project screenshot.', 'error');
 
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
       btn.disabled = true;
-      setStatus('portfolio', '⏳ Uploading image...', 'loading');
+      setStatus('portfolio', '⏳ Uploading image to GitHub...', 'loading');
       showProgress('portfolio', 20);
 
       try {
@@ -968,7 +1053,7 @@
         const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         const imagePath = `assets/img/${slug}.${ext}`;
 
-        const image_base64 = await new Promise((res, rej) => {
+        const base64 = await new Promise((res, rej) => {
           const reader = new FileReader();
           reader.onload = () => res(reader.result.split(',')[1]);
           reader.onerror = rej;
@@ -976,21 +1061,31 @@
         });
 
         showProgress('portfolio', 40);
+        await ghPutFile(token, user, repo, imagePath, base64, `Add portfolio image: ${title}`);
+        showProgress('portfolio', 65);
 
-        // Step 1: Upload image directly (IMG_TOKEN)
-        await ghUploadImage(imagePath, image_base64, `Add portfolio image: ${title}`);
-        showProgress('portfolio', 70);
-
-        // Step 2: Trigger workflow to update portfolio.json (uses secret)
-        await triggerWorkflow('add-portfolio.yml', {
-          title, category,
-          image_path: imagePath,
-          url: projectUrl || imagePath
+        const { data: portfolio, sha: existingSha } = await ghGetJSON(token, user, repo, 'data/portfolio.json');
+        portfolio.unshift({
+          id: Date.now(), title, category,
+          image: imagePath,
+          url: projectUrl || imagePath,
+          date: new Date().toISOString().split('T')[0]
         });
+
+        showProgress('portfolio', 82);
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(portfolio, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+        const body = { message: `Add portfolio: ${title}`, content: jsonContent, branch };
+        if (existingSha) body.sha = existingSha;
+
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/portfolio.json`, {
+          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+        });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
 
         showProgress('portfolio', 100);
         const catLabels = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template' };
-        setStatus('portfolio', `✅ <strong>Done!</strong> "${title}" (${catLabels[category]||category}) is being saved by GitHub Actions. It will appear on Works page in ~60 seconds.`, 'success');
+        setStatus('portfolio', `✅ <strong>Uploaded!</strong> "${title}" (${catLabels[category]||category}) saved to GitHub. It will appear on Works page in ~60 seconds.`, 'success');
 
         document.getElementById('p-title').value = '';
         if (document.getElementById('p-url')) document.getElementById('p-url').value = '';
@@ -1007,53 +1102,52 @@
     }
 
     /* ────────────────────────────────
-       MANAGE REVIEWS — load & delete
-       Load: direct API read (IMG_TOKEN)
-       Delete: trigger delete-item.yml workflow (uses secret)
+       MANAGE REVIEWS
     ──────────────────────────────── */
     let loadedReviews = [];
+    let reviewsFileSha = null;
 
     async function loadReviews() {
+      const token = document.getElementById('m-gh-token').value.trim();
+      const user  = localStorage.getItem('sp_gh_user') || 'saifurpro';
+      const repo  = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
       const statusEl = document.getElementById('manage-status');
-      const grid = document.getElementById('existingReviewsGrid');
+      const grid  = document.getElementById('existingReviewsGrid');
+
+      if (!token) { statusEl.textContent = '⚠️ Please enter your GitHub token above.'; statusEl.style.color='var(--accent2)'; return; }
+
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading reviews...';
       statusEl.style.color = 'var(--accent)';
       try {
-        const result = await ghGetJSON('data/reviews.json');
-        loadedReviews = result.data;
+        const result = await ghGetJSON(token, user, repo, 'data/reviews.json');
+        loadedReviews   = result.data;
+        reviewsFileSha  = result.sha;
         if (!loadedReviews.length) {
-          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-star" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No reviews found.</div>';
+          grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-star" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No reviews found in data/reviews.json yet.</div>';
           statusEl.textContent = 'No reviews found.';
           return;
         }
-        statusEl.textContent = `${loadedReviews.length} review${loadedReviews.length !== 1 ? 's' : ''} loaded.`;
+        statusEl.textContent = `${loadedReviews.length} review${loadedReviews.length!==1?'s':''} loaded.`;
         statusEl.style.color = 'var(--accent3)';
-        renderReviewsList();
+        renderReviewsList(token, user, repo);
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
       }
     }
 
-    function renderReviewsList() {
+    function renderReviewsList(token, user, repo) {
       const grid = document.getElementById('existingReviewsGrid');
       const platformColors = { Upwork:'#14a314', Fiverr:'#1dbf73', Direct:'var(--accent)', LinkedIn:'#0077b5', Google:'#ea4335' };
       grid.innerHTML = loadedReviews.map(r => {
-        const stars = Array.from({length:5}, (_,j) =>
-          `<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
+        const stars = Array.from({length:5},(_,j)=>`<span class="star" style="font-size:11px;color:${j<r.rating?'#ffd700':'var(--text-dim)'}">★</span>`).join('');
         const avatarHtml = r.avatar
           ? `<img src="${r.avatar}" class="er-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22><circle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%236c63ff33%22/><text x=%2218%22 y=%2223%22 text-anchor=%22middle%22 font-size=%2214%22 fill=%22%236c63ff%22>${r.name[0]}</text></svg>'">`
           : `<div class="er-avatar" style="display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);">${r.name[0].toUpperCase()}</div>`;
         return `
           <div class="existing-review-item" id="review-item-${r.id}">
-            <button class="delete-btn" onclick="deleteReview(${r.id})" title="Delete"><i class="fas fa-trash"></i></button>
-            <div class="er-header">
-              ${avatarHtml}
-              <div>
-                <div class="er-name">${r.name}</div>
-                <div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role||'—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div>
-              </div>
-            </div>
+            <button class="delete-btn" onclick="deleteReview(${r.id},'${token}','${user}','${repo}')" title="Delete"><i class="fas fa-trash"></i></button>
+            <div class="er-header">${avatarHtml}<div><div class="er-name">${r.name}</div><div class="er-role" style="display:flex;align-items:center;gap:6px;">${r.role||'—'} <span style="font-size:10px;font-weight:700;color:${platformColors[r.platform]||'var(--text-muted)'};">${r.platform}</span></div></div></div>
             <div class="er-stars">${stars}</div>
             <p class="er-text">${r.text}</p>
             <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">${r.date||''}</p>
@@ -1061,17 +1155,26 @@
       }).join('');
     }
 
-    async function deleteReview(id) {
+    async function deleteReview(id, token, user, repo) {
       if (!confirm('Delete this review? This cannot be undone.')) return;
       const statusEl = document.getElementById('manage-status');
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-      statusEl.style.color = 'var(--accent)';
       try {
-        await triggerWorkflow('delete-item.yml', { type: 'review', id: String(id) });
+        loadedReviews = loadedReviews.filter(r => r.id !== id);
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedReviews, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+        const body = { message: `Delete review #${id}`, content: jsonContent, branch };
+        if (reviewsFileSha) body.sha = reviewsFileSha;
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/reviews.json`, {
+          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+        });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
         const item = document.getElementById(`review-item-${id}`);
         if (item) { item.style.opacity='0'; item.style.transform='scale(0.9)'; item.style.transition='0.3s'; setTimeout(()=>item.remove(),300); }
-        statusEl.textContent = '✅ Review deleted. Will be removed from site in ~30 seconds.';
+        statusEl.textContent = '✅ Review deleted.';
         statusEl.style.color = 'var(--accent3)';
+        const updated = await ghGetJSON(token, user, repo, 'data/reviews.json');
+        reviewsFileSha = updated.sha;
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
@@ -1079,45 +1182,51 @@
     }
 
     /* ────────────────────────────────
-       MANAGE PORTFOLIO — load & delete
-       Load: direct API read (IMG_TOKEN)
-       Delete: trigger delete-item.yml workflow (uses secret)
+       MANAGE PORTFOLIO
     ──────────────────────────────── */
     let loadedPortfolio = [];
+    let portfolioFileSha = null;
     const categoryLabelsMap = { wordpress:'WordPress', woocommerce:'WooCommerce', shopify:'Shopify', email:'Email Template', lead:'Lead Generation' };
     const categoryColors    = { wordpress:'var(--accent)', woocommerce:'var(--accent3)', shopify:'#96bf48', email:'var(--accent2)', lead:'#f59e0b' };
 
     async function loadPortfolio() {
+      const token = document.getElementById('mp-gh-token').value.trim();
+      const user  = localStorage.getItem('sp_gh_user') || 'saifurpro';
+      const repo  = localStorage.getItem('sp_gh_repo') || 'saifurpro.netlify.com';
       const statusEl = document.getElementById('manage-portfolio-status');
-      const grid = document.getElementById('existingPortfolioGrid');
+      const grid  = document.getElementById('existingPortfolioGrid');
+
+      if (!token) { statusEl.textContent = '⚠️ Please enter your GitHub token above.'; statusEl.style.color='var(--accent2)'; return; }
+
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading portfolio...';
       statusEl.style.color = 'var(--accent)';
       try {
-        const result = await ghGetJSON('data/portfolio.json');
-        loadedPortfolio = result.data;
+        const result = await ghGetJSON(token, user, repo, 'data/portfolio.json');
+        loadedPortfolio  = result.data;
+        portfolioFileSha = result.sha;
         if (!loadedPortfolio.length) {
           grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);"><i class="fas fa-briefcase" style="font-size:32px;opacity:0.2;display:block;margin-bottom:12px;"></i>No portfolio items found.</div>';
           statusEl.textContent = 'No items found.';
           return;
         }
-        statusEl.textContent = `${loadedPortfolio.length} item${loadedPortfolio.length !== 1 ? 's' : ''} loaded.`;
+        statusEl.textContent = `${loadedPortfolio.length} item${loadedPortfolio.length!==1?'s':''} loaded.`;
         statusEl.style.color = 'var(--accent3)';
-        renderPortfolioList();
+        renderPortfolioList(token, user, repo);
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
       }
     }
 
-    function renderPortfolioList() {
+    function renderPortfolioList(token, user, repo) {
       const grid = document.getElementById('existingPortfolioGrid');
       grid.innerHTML = loadedPortfolio.map(item => {
         const catLabel = categoryLabelsMap[item.category] || item.category;
-        const catColor = categoryColors[item.category] || 'var(--text-muted)';
+        const catColor = categoryColors[item.category]   || 'var(--text-muted)';
         const isLocal  = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(item.url) && !item.url.startsWith('http');
         return `
           <div class="existing-review-item" id="portfolio-item-${item.id}">
-            <button class="delete-btn" onclick="deletePortfolioItem(${item.id})" title="Delete"><i class="fas fa-trash"></i></button>
+            <button class="delete-btn" onclick="deletePortfolioItem(${item.id},'${token}','${user}','${repo}')" title="Delete"><i class="fas fa-trash"></i></button>
             <div style="width:100%;height:110px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:var(--bg3);border:1px solid var(--border);">
               <img src="${item.image}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
             </div>
@@ -1125,25 +1234,32 @@
             <div style="margin-top:4px;margin-bottom:8px;">
               <span style="font-size:10px;font-weight:700;color:${catColor};padding:2px 8px;border-radius:100px;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.15);">${catLabel}</span>
             </div>
-            ${!isLocal
-              ? `<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`
-              : `<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`}
+            ${!isLocal?`<a href="${item.url}" target="_blank" style="font-size:11px;color:var(--accent3);word-break:break-all;">${item.url}</a>`:`<span style="font-size:11px;color:var(--text-dim);">Local image (lightbox)</span>`}
             <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">${item.date||''}</p>
           </div>`;
       }).join('');
     }
 
-    async function deletePortfolioItem(id) {
+    async function deletePortfolioItem(id, token, user, repo) {
       if (!confirm('Delete this portfolio item? This cannot be undone.')) return;
       const statusEl = document.getElementById('manage-portfolio-status');
       statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-      statusEl.style.color = 'var(--accent)';
       try {
-        await triggerWorkflow('delete-item.yml', { type: 'portfolio', id: String(id) });
+        loadedPortfolio = loadedPortfolio.filter(p => p.id !== id);
+        const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(loadedPortfolio, null, 2))));
+        const branch = await getDefaultBranch(token, user, repo);
+        const body = { message: `Delete portfolio #${id}`, content: jsonContent, branch };
+        if (portfolioFileSha) body.sha = portfolioFileSha;
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/portfolio.json`, {
+          method: 'PUT', headers: ghHeaders(token), body: JSON.stringify(body)
+        });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
         const el = document.getElementById(`portfolio-item-${id}`);
         if (el) { el.style.opacity='0'; el.style.transform='scale(0.9)'; el.style.transition='0.3s'; setTimeout(()=>el.remove(),300); }
-        statusEl.textContent = '✅ Item deleted. Will be removed from site in ~30 seconds.';
+        statusEl.textContent = '✅ Item deleted.';
         statusEl.style.color = 'var(--accent3)';
+        const updated = await ghGetJSON(token, user, repo, 'data/portfolio.json');
+        portfolioFileSha = updated.sha;
       } catch(err) {
         statusEl.textContent = `❌ Error: ${err.message}`;
         statusEl.style.color = 'var(--accent2)';
